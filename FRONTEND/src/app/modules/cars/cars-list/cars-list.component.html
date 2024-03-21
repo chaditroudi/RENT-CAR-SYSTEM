@@ -1,0 +1,288 @@
+<app-breadcrumb
+  [title]="'Car Page'"
+  [items]="['Forms', 'Form Layout']"
+  [active_item]="'Car Page'"
+></app-breadcrumb>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12 col-xl-12">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="card">
+            <div class="card-header">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-header">
+                      <h5 style="color: black">List of cars</h5>
+                      <div class="row">
+                        <div class="col-md-12 text-end">
+                          <button
+                            class="btn btn-primary"
+                            (click)="modal.open(content)"
+                          >
+                            Add new car
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="table-responsive signal-table">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th scope="col">Code</th>
+                            <th scope="col">Car</th>
+                            <th scope="col">Plate</th>
+                            <th scope="col">Year</th>
+                            <th scope="col">Insurance</th>
+                            <th scope="col">Registration</th>
+                            <th scope="col">Current</th>
+                            <th scope="col">Next Service</th>
+                            <th scope="col">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th scope="row">1</th>
+                            <td>Phoenix: prod shared lyra-lists</td>
+                            <td>Astrid: NE Shared managed</td>
+                            <td>Medium</td>
+                            <td>Medium</td>
+                            <td>Triaged</td>
+                            <td>0.33</td>
+                            <td>Chase Nguyen</td>
+                            <td>
+                              <ul class="action">
+                                <li class="edit">
+                                  <a href="#"
+                                    ><i class="icon-pencil-alt"></i
+                                  ></a>
+                                </li>
+                                <li class="delete">
+                                  <a href="#"><i class="icon-trash"></i></a>
+                                </li>
+                                <li class="information">
+                                  <a routerLink="/cars/car-details"
+                                    ><i class="icon-menu"></i
+                                  ></a>
+                                </li>
+                              </ul>
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row">2</th>
+                            <td>Phoenix: prod shared lyra-lists</td>
+                            <td>Medium</td>
+                            <td>Cosmo: prod shared ares</td>
+                            <td>Huge</td>
+                            <td>Triaged</td>
+                            <td>0.39</td>
+                            <td>Brie Furman</td>
+                            <td>
+                              <ul class="action">
+                                <li class="edit">
+                                  <a href="#"
+                                    ><i class="icon-pencil-alt"></i
+                                  ></a>
+                                </li>
+                                <li class="delete">
+                                  <a href="#"><i class="icon-trash"></i></a>
+                                </li>
+                                <li class="information">
+                                  <a routerLink="/cars/car-details"
+                                    ><i class="icon-menu"></i
+                                  ></a>
+                                </li>
+                              </ul>
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row">3</th>
+                            <td>Medium</td>
+                            <td>Phoenix: prod shared lyra-lists</td>
+                            <td>Phoenix: prod shared lyra-lists</td>
+                            <td>Minor</td>
+                            <td>No Triaged</td>
+                            <td>3.12</td>
+                            <td>Jeremy Lake</td>
+                            <td>
+                              <ul class="action">
+                                <li class="edit">
+                                  <a href="#"
+                                    ><i class="icon-pencil-alt"></i
+                                  ></a>
+                                </li>
+                                <li class="delete">
+                                  <a href="#"><i class="icon-trash"></i></a>
+                                </li>
+                                <li class="information">
+                                  <a routerLink="/cars/car-details"
+                                    ><i class="icon-menu"></i
+                                  ></a>
+                                </li>
+                              </ul>
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row">4</th>
+                            <td>Medium</td>
+                            <td>Phoenix: prod shared lyra-lists</td>
+                            <td>Astrid: NE Shared managed</td>
+                            <td>Negligible</td>
+                            <td>Triaged</td>
+                            <td>13.18</td>
+                            <td>Angelica Howards</td>
+                            <td>
+                              <ul class="action">
+                                <li class="edit">
+                                  <a href="#"
+                                    ><i class="icon-pencil-alt"></i
+                                  ></a>
+                                </li>
+                                <li class="delete">
+                                  <a href="#"><i class="icon-trash"></i></a>
+                                </li>
+                                <li class="information">
+                                  <a routerLink="/cars/car-details"
+                                    ><i class="icon-menu"></i
+                                  ></a>
+                                </li>
+                              </ul>
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row">5</th>
+                            <td>Medium</td>
+                            <td>Phoenix: prod shared lyra-lists</td>
+                            <td>Astrid: NE Shared managed</td>
+                            <td>Medium</td>
+                            <td>No Triaged</td>
+                            <td>5.33</td>
+                            <td>Diane Okuma</td>
+                            <td>
+                              <ul class="action">
+                                <li class="edit">
+                                  <a href="#"
+                                    ><i class="icon-pencil-alt"></i
+                                  ></a>
+                                </li>
+                                <li class="delete">
+                                  <a href="#"><i class="icon-trash"></i></a>
+                                </li>
+                                <li class="information">
+                                  <a routerLink="/cars/car-details"
+                                    ><i class="icon-menu"></i
+                                  ></a>
+                                </li>
+                              </ul>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <ng-template #content let-modal>
+            <div class="modal-header">
+              <h4 class="modal-title" id="modal-basic-title">Add new car</h4>
+              <button
+                type="button"
+                class="btn-close"
+                aria-label="Close"
+                (click)="modal.dismiss('Cross click')"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <form class="theme-form mega-form">
+                <h6>Car definition</h6>
+                <span> </span>
+                <div class="row g-2">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="col-form-label">Code</label>
+                      <input
+                        class="form-control"
+                        type="text"
+                        placeholder="Car code"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="col-form-label">Car</label>
+                      <input
+                        class="form-control"
+                        type="text"
+                        placeholder="Car name"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row g-2">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="col-form-label">Year</label>
+                      <input
+                        class="form-control"
+                        type="text"
+                        placeholder="Enter year"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="col-form-label">Plate</label>
+                      <input
+                        class="form-control"
+                        type="text"
+                        placeholder="Enter Plate"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row g-2">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="col-form-label">Car Price<(QAR)</label>
+                      <input
+                        class="form-control"
+                        type="text"
+                        placeholder="Enter car price in QAR"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="col-form-label">Purchase Date</label>
+                      <input class="form-control" type="date" />
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-outline-dark"
+                (click)="modal.close('Save click')"
+              >
+                Add this car
+              </button>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

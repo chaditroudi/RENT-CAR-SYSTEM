@@ -1,0 +1,99 @@
+<app-breadcrumb [title]="'Invoice'" [items]="['Apps', 'Ecommerce']" [active_item]="'Invoice'"></app-breadcrumb>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="invoice">
+            <div id="print-section">
+              <div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="media">
+                      <div class="media-center"><img class="media-object img-60" src="assets/images/logo.png" alt="" /></div>
+                      <div class="media-body m-l-20">
+                        <h4 class="media-heading">Go Rent Car</h4>
+                        <p>hdsqsd.in<br /><span>289-335-6503</span></p>
+                      </div>
+                    </div>
+                    <!-- End Info-->
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="text-md-end">
+                      <h3>Invoice #<span class="counter">1069</span></h3>
+                      <p>
+                        Issued: May<span> 27, 2022</span><br />
+                        Payment Due: June <span>27, 2022</span>
+                      </p>
+                    </div>
+                    <!-- End Title-->
+                  </div>
+                </div>
+              </div>
+              <hr />
+              <!-- End InvoiceTop-->
+              <div class="row">
+                
+                
+              <div>
+                <div class="container">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="card">
+                          <img src="../../../../assets/images/avtar/3.jpg" class="card-img-top" alt="Card 1 Image">
+                          <div class="card-body">
+                            <span class="card-title">Customer passport 125489566</span>
+                            <p class="card-text">This is the content of card 1.</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6 h-100">
+                        <div class="card">
+                          <img src="card2-image.jpg" class="card-img-top" alt="Card 2 Image">
+                          <div class="card-body">
+                            <h5 class="card-title">Card 2</h5>
+                            <p class="card-text">This is the content of card 2.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="card">
+                          <img src="card3-image.jpg" class="card-img-top" alt="Card 3 Image">
+                          <div class="card-body">
+                            <h5 class="card-title">Card 3</h5>
+                            <p class="card-text">This is the content of card 3.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <!-- End Table-->
+                <div class="row">
+                  <div class="col-md-8">
+                    <div>
+                      <p class="legal"><strong>DOHA VISION RENT A CAR </strong>  
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="text-end">
+                        <h6>Customer</h6>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- End InvoiceBot-->
+            </div>
+            <div class="col-sm-12 text-center mt-3">
+              <button class="btn btn btn-primary me-2" type="button" appGeneratePdf  contentToConvert="container">Print</button>
+            </div>
+            <!-- End Invoice-->
+            <!-- End Invoice Holder-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

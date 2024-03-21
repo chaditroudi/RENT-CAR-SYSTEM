@@ -1,0 +1,239 @@
+<app-breadcrumb
+  [title]="'Customers page'"
+  [items]="['Home', 'Customers page']"
+  [active_item]="'Customers page'"
+></app-breadcrumb>
+
+<!-- Container-fluid starts-->
+<div class="container-fluid">
+  <div class="edit-profile card">
+    <div class="card-header">
+      <h4 class="card-title mb-0">Add new customer</h4>
+    </div>
+    <form class="theme-form mega-form ng-untouched ng-pristine ng-valid">
+      <div class="row">
+        <div class="col-xl-4">
+          <div class="card-body">
+            <div class="row mb-2">
+              <div class="profile-title">
+                <div class="media">
+                  <img
+                    class="img-70 rounded-circle"
+                    alt=""
+                    src="../assets/images/user/7.jpg"
+                  />
+                  <div class="media-body">
+                    <h5 class="mb-1">user@user.com</h5>
+                    <p>Customer</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-xl-12">
+                <button class="btn btn-outline-primary w-100">
+                  Take picture
+                </button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xl-12">
+                <div class="mt-3">
+                  <button class="btn btn-primary w-100">Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-8">
+          <div class="card-body">
+            <div class="row">
+              <hr class="mt-4 mb-4" />
+              <h6>Identification</h6>
+
+              <div class="col-md-5">
+                <div class="mb-3">
+                  <label class="form-label">Passport No</label>
+                  <input class="form-control" type="text" placeholder="Passport No" />
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <div class="mb-3">
+                  <label class="form-label">ID No</label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="ID No"
+                  />
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-4">
+                <div class="mb-3">
+                  <label class="form-label">Pass expiry</label>
+                  <input
+                    class="form-control"
+                    type="date"
+                  />
+                </div>
+              </div>
+
+              <hr class="mt-4 mb-4" />
+              <h6>Main</h6>
+              <div class="col-md-5">
+                <div class="mb-3">
+                  <label class="form-label">Title</label>
+                  <input class="form-control" type="text" placeholder="Title" />
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <div class="mb-3">
+                  <label class="form-label">Warning</label>
+                  <input
+                    class="form-control"
+                    type="text"
+                  />
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-4">
+                <div class="mb-3">
+                  <label class="form-label">Fullname</label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="Fullname" />
+                  />
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Nationality</label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="Nationality"
+                  />
+                </div>
+              </div>
+              
+              <div class="col-sm-6 col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Date of birth</label>
+
+                  <input type="date" name="date_start" class="form-control" />
+                </div>
+              </div>
+              <hr class="mt-4 mb-4" />
+              <h6>Address</h6>
+              <div class="col-sm-6 col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">QAR Address</label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="QAR Address"
+                  />
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Permanent Address</label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="Permanent Address"
+                  />
+                </div>
+              </div>
+              <hr class="mt-4 mb-4" />
+              <h6>Contact</h6>
+              <div class="col-sm-6 col-md-6">
+                <div class="mb-3">
+                  <label class="form-label"
+                    >Reference Person name and Mobile</label
+                  >
+                  <input
+                    class="form-control"
+                    type="number"
+                    placeholder="Reference Person name and Mobile"
+                  />
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-6">
+                <div class="mb-3">
+                  <label class="form-label"
+                    >Home country Telephone and Mobile</label
+                  >
+                  <input
+                    class="form-control"
+                    type="number"
+                    placeholder="Home country Telephone and Mobile"
+                  />
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Email</label>
+                  <input
+                    class="form-control"
+                    type="email"
+                    placeholder="Email"
+                  />
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Mobile</label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="Mobile"
+                  />
+                </div>
+              </div>
+              <hr class="mt-4 mb-4" />
+              <h6>Driver license</h6>
+              <div class="col-md-5">
+                <div class="mb-3">
+                  <label class="form-label">No</label>
+                  <input class="form-control" type="text" placeholder="No" />
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <div class="mb-3">
+                  <label class="form-label">Issued by</label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="Issued by"
+                  />
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-4">
+                <div class="mb-3">
+                  <label class="form-label">Issued on</label>
+                  <input
+                    class="form-control"
+                    type="date"
+                    placeholder="Issued on"
+                  />
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-4">
+                <div class="mb-3">
+                  <label class="form-label">Expiry</label>
+                  <input
+                    class="form-control"
+                    type="date"
+                    placeholder="Issued on"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- Container-fluid Ends-->

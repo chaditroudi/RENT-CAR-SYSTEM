@@ -1,0 +1,568 @@
+<app-breadcrumb
+  [title]="'Car Page'"
+  [items]="['Forms', 'Form Layout']"
+  [active_item]="'Car Page'"
+></app-breadcrumb>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12 box-col-12">
+      <div class="text-center">
+        <div class="cardheader socialheader">
+          <div class="info market-tabs col-md-12">
+            <ul
+              id="top-tab"
+              role="tablist"
+              class="nav nav-tabs border-tab tabs-scoial"
+            >
+              <li class="nav-item">
+                <button
+                  class="btn btn-pill btn-light btn-air-light active txt-dark me-1"
+                  type="button"
+                  disabled
+                >
+                  Voucher 0
+                </button>
+              </li>
+              <li class="nav-item">
+                <button
+                  class="btn btn-pill btn-light btn-air-light active txt-dark me-1"
+                  type="button"
+                  disabled
+                >
+                  Change car
+                </button>
+              </li>
+              <li class="nav-item">
+                <button
+                  class="btn btn-pill btn-light btn-air-light active txt-dark me-1"
+                  type="button"
+                >
+                  Deposit back
+                </button>
+              </li>
+
+              <li class="nav-item">
+                <button
+                  class="btn btn-pill btn-light btn-air-light active txt-dark me-1"
+                  type="button"
+                >
+                  Rec. Voucher
+                </button>
+              </li>
+              <li class="nav-item">
+                <button
+                  class="btn btn-pill btn-light btn-air-light active txt-dark me-1"
+                  type="button"
+                >
+                  Pay. Voucher
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-9">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card">
+            <div class="card-header">
+              <ul class="action">
+                <li class="plus">
+                  <a href="#"><i class="icon-plus-alt"></i></a>
+                </li>
+                <li class="edit">
+                  <a href="#"><i class="icon-pencil-alt"></i></a>
+                </li>
+                <li class="delete">
+                  <a href="#"><i class="icon-trash mb-3"></i></a>
+                </li>
+                <li class="information">
+                  <a routerlink="/cars/car-details" href="/cars/car-details"
+                    ><i class="icon-printer"></i
+                  ></a>
+                </li>
+              </ul>
+
+              <li class="text-end">
+                <button  class="btn btn-primary" 
+                  
+                (click)="modal.open(content)"
+
+                > Add new car </button>
+              </li>
+
+            </div>
+
+            <div class="card-body">
+              <form class="theme-form mega-form">
+                <h6>Car definition</h6>
+                <div *ngIf="formData.length > 0;else noDataFound">
+                    
+                  <div *ngFor="let c of formData">
+                    <div>
+                     <div class="row g-2">
+                       <div class="col-md-6">
+                         <div class="mb-3">
+                           <label class="col-form-label">Code</label>
+                           <input
+                             class="form-control"
+                             type="text"
+                             placeholder="Car code"
+                             [value]="c.code ? code : ''"
+                           />
+                           />
+                         </div>
+                       </div>
+   
+                       <div class="col-md-6">
+                         <div class="mb-3">
+                           <label class="col-form-label">Car</label>
+                           <input
+                             class="form-control"
+                             type="text"
+                             placeholder="Car name"
+                             [value]="c.car"
+                           />
+                           />
+                         </div>
+                       </div>
+                     </div>
+   
+                     <div class="row g-2">
+                       <div class="col-md-6">
+                         <div class="mb-3">
+                           <label class="col-form-label">Year</label>
+                           <input
+                             class="form-control"
+                             type="text"
+                             placeholder="Enter year"
+                             [value]="c.year"
+                           />
+                           />
+                         </div>
+                       </div>
+                       <div class="col-md-6">
+                         <div class="mb-3">
+                           <label class="col-form-label">Plate</label>
+                           <input
+                             class="form-control"
+                             type="text"
+                             placeholder="Enter Plate"
+                             [value]="c.plate"
+                           />
+   
+                           />
+                         </div>
+                       </div>
+                     </div>
+   
+                     <hr class="mt-4 mb-4" />
+                     <h6>Default Rent price</h6>
+                     <div class="row g-4">
+                       <div class="col-md-3">
+                         <div class="mb-3">
+                           <label class="col-form-label">Daily</label>
+                           <input
+                             class="form-control"
+                             type="text"
+                             placeholder="Daily"
+                           />
+                         </div>
+                       </div>
+   
+                       <div class="col-md-3">
+                         <div class="mb-3">
+                           <label class="col-form-label">Weekly</label>
+                           <input
+                             class="form-control"
+                             type="text"
+                             placeholder="Weekly"
+                           />
+                         </div>
+                       </div>
+                       <div class="col-md-3">
+                         <div class="mb-3">
+                           <label class="col-form-label">Monthly</label>
+                           <input
+                             class="form-control"
+                             type="text"
+                             placeholder="Monthly"
+                           />
+                         </div>
+                       </div>
+                       <div class="col-md-3">
+                         <div class="mb-3">
+                           <label class="col-form-label">Annual</label>
+                           <input
+                             class="form-control"
+                             type="text"
+                             placeholder="Annual"
+                           />
+                         </div>
+                       </div>
+                     </div>
+   
+                     <hr class="mt-4 mb-4" />
+                     <h6>No Kilometer</h6>
+                     <div class="row g-2">
+                       <div class="col-md-6">
+                         <div class="mb-3">
+                           <label class="col-form-label">Current</label>
+                           <input
+                             class="form-control"
+                             type="text"
+                             placeholder="Current"
+                           />
+                         </div>
+                       </div>
+   
+                       <div class="col-md-6">
+                         <div class="mb-3">
+                           <label class="col-form-label">Next Service</label>
+                           <input
+                             class="form-control"
+                             type="text"
+                             placeholder="Next Service"
+                           />
+                         </div>
+                       </div>
+                     </div>
+                     <hr class="mt-4 mb-4" />
+                     <h6>Expiry</h6>
+                     <div class="row g-2">
+                       <div class="col-md-6">
+                         <div class="mb-3">
+                           <label class="col-form-label">Insurance</label>
+                           <input
+                             class="form-control"
+                             type="date"
+                             placeholder="Insurance"
+                           />
+                         </div>
+                       </div>
+   
+                       <div class="col-md-6">
+                         <div class="mb-3">
+                           <label class="col-form-label">Registration</label>
+                           <input
+                             class="form-control"
+                             type="date"
+                             placeholder="Registration"
+                           />
+                         </div>
+                       </div>
+                     </div>
+                     <hr class="mt-4 mb-4" style="color: grey" />
+                     <div class="row g-4">
+                       <div class="col-md-3">
+                         <div class="mb-3">
+                           <label class="col-form-label">Engine No</label>
+                           <input
+                             class="form-control"
+                             type="text"
+                             placeholder="Engine No"
+                           />
+                         </div>
+                       </div>
+                       <div class="col-md-3">
+                         <div class="mb-3">
+                           <label class="col-form-label">Chassis No</label>
+                           <input
+                             class="form-control"
+                             type="text"
+                             placeholder="Chassis No"
+                           />
+                         </div>
+                       </div>
+   
+                       <div class="col-md-3">
+                         <div class="mb-3">
+                           <label class="col-form-label">Fuel</label>
+                           <input
+                             class="form-control"
+                             type="number"
+                             placeholder="0"
+                           />
+                         </div>
+                       </div>
+                       <div class="col-md-3">
+                         <div class="mb-3">
+                           <label class="col-form-label">Petrol charge</label>
+                           <input
+                             class="form-control"
+                             type="text"
+                             placeholder="Petrol charge"
+                           />
+                         </div>
+                       </div>
+                       <div class="col-md-12">
+                         <div class="mb-3">
+                           <label class="col-form-label">Comments</label>
+                           <textarea
+                             class="form-control"
+                             id="exampleFormControlTextarea4"
+                             rows="3"
+                           ></textarea>
+                         </div>
+                       </div>
+                     </div>
+                    </div>
+                   </div>
+                
+                </div>
+
+                <ng-template #noDataFound>
+                  <app-init-car-form></app-init-car-form>
+                </ng-template>
+        
+              </form>
+            </div>
+            <div class="card-footer text-end">
+              <nav>
+                <div class="row">
+                  <div class="m-t-15 btn-showcase">
+                    <ul class="pagination pagination-primary">
+                      <li class="page-item">
+                        <button class="page-link" (click)="previousPage()">
+                          <span aria-hidden="true">«</span>
+                        </button>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link">
+                          {{ currentPage +1  }} /{{ totalPages }}</a
+                        >
+                        
+                      </li>
+
+                      <li class="page-item">
+                        <button class="page-link" (click)="nextPage()">
+                          <span aria-hidden="true">»</span>
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-3">
+      <div class="card">
+        <div class="card-block row">
+          <div class="table-responsive">
+            <table class="table table-responsive-sm">
+              <thead>
+                <tr>
+                  <th scope="col">Variable</th>
+                  <th scope="col">Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>lorem1 epsum</td>
+                  <td>
+                    <input type="text" class="form-control" value="value111" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>lorem1 epsum</td>
+                  <td>
+                    <input type="text" class="form-control" value="value111" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>lorem1 epsum</td>
+                  <td>
+                    <input type="text" class="form-control" value="value111" />
+                  </td>
+                </tr>   <tr>
+                  <td>lorem1 epsum</td>
+                  <td>
+                    <input type="text" class="form-control" value="value111" />
+                  </td>
+                </tr>   <tr>
+                  <td>lorem1 epsum</td>
+                  <td>
+                    <input type="text" class="form-control" value="value111" />
+                  </td>
+                </tr>   <tr>
+                  <td>lorem1 epsum</td>
+                  <td>
+                    <input type="text" class="form-control" value="value111" />
+                  </td>
+                </tr>   <tr>
+                  <td>lorem1 epsum</td>
+                  <td>
+                    <input type="text" class="form-control" value="value111" />
+                  </td>
+                </tr>   <tr>
+                  <td>lorem1 epsum</td>
+                  <td>
+                    <input type="text" class="form-control" value="value111" />
+                  </td>
+                </tr>   <tr>
+                  <td>lorem1 epsum</td>
+                  <td>
+                    <input type="text" class="form-control" value="value111" />
+                  </td>
+                </tr>   <tr>
+                  <td>lorem1 epsum</td>
+                  <td>
+                    <input type="text" class="form-control" value="value111" />
+                  </td>
+                </tr>   <tr>
+                  <td>lorem1 epsum</td>
+                  <td>
+                    <input type="text" class="form-control" value="value111" />
+                  </td>
+                </tr>   <tr>
+                  <td>lorem1 epsum</td>
+                  <td>
+                    <input type="text" class="form-control" value="value111" />
+                  </td>
+                </tr>   <tr>
+                  <td>lorem1 epsum</td>
+                  <td>
+                    <input type="text" class="form-control" value="value111" />
+                  </td>
+                </tr>   <tr>
+                  <td>lorem1 epsum</td>
+                  <td>
+                    <input type="text" class="form-control" value="value111" />
+                  </td>
+                </tr>   <tr>
+                  <td>lorem1 epsum</td>
+                  <td>
+                    <input type="text" class="form-control" value="value111" />
+                  </td>
+                </tr>   <tr>
+                  <td>lorem1 epsum
+
+                    
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" value="value111" />
+                  </td>
+                </tr>   <tr>
+                  <td>lorem1 epsum</td>
+                  <td>
+                    <input type="text" class="form-control" value="value111" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 
+Modal add car -->
+
+  <div class="card-body">
+    <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Add new car</h4>
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          (click)="modal.dismiss('Cross click')"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="carForm" (ngSubmit)="createCar()" class="theme-form mega-form">
+          <h6>Car definition</h6>
+          <span> </span>
+          <div class="row g-2">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="col-form-label">Code</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="Car code"
+                  formControlName="code"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="col-form-label">Car</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="Car name"
+                  formControlName="car"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-2">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="col-form-label">Year</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="Enter year"
+                  formControlName="year"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="col-form-label">Plate</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="Enter Plate"
+                  formControlName="plate"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row g-2">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="col-form-label">Car Price<(QAR)</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="Enter car price in QAR"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="col-form-label">Purchase Date</label>
+                <input class="form-control" type="date" />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="submit"
+              
+              class="btn btn-outline-dark"
+              (click)="modal.close('Save click')"
+            >
+              Add this car
+            </button>
+          </div>
+        </form>
+      </div>
+
+
+    </ng-template>
+  </div>
+</div>
