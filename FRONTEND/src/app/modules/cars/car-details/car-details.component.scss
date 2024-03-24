@@ -1,5 +1,46 @@
+@import "../../../../assets/scss/utils/variables.scss";
+
 h5,h6,label  {
     color:black;
 }
 
 
+.action {
+    display: flex;
+    i {
+        cursor: pointer;
+        display:inline-block;
+        border:2px solid transparent;
+        border-radius: 50%;
+        transition:  all 0.3s ease;
+    
+        padding: 8px;
+
+        &:hover {
+            background-color: $light-gray;
+            color:gray;
+        }
+    
+
+    }
+    .pdf {
+      i {
+        font-size: 20px;
+        color: $dark-color;
+      }
+    }
+    .edit {
+      margin-right: 5px;
+      i {
+        color: $success-color;
+      }
+      [dir="rtl"] & {
+        margin-left: 5px;
+      }
+    }
+    .delete {
+      i {
+        color: $danger-color;
+      }
+    }
+  }

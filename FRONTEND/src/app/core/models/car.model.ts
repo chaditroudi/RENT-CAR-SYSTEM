@@ -1,6 +1,10 @@
 export interface Car {
     _id : number;
     next_service: Date;
+    code: number;
+    year: number;
+    plate:number,
+    car: string;
     insurance: string;
     registration: string;
     engine_no: string;

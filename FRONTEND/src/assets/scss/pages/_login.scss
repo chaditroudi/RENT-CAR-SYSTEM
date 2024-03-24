@@ -58,20 +58,6 @@
         border: 1px solid #dfdfdf;
       }
 
-      .or {
-        position: relative;
-
-        &:before {
-          content: "";
-          position: absolute;
-          width: 65%;
-          height: 2px;
-          background-color: #f3f3ff;
-          top: 9px;
-          z-index: 0;
-          right: 0;
-        }
-      }
 
       input {
         background-color: #f3f3ff;

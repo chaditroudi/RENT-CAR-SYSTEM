@@ -10,6 +10,9 @@
     transform-style:  preserve-3d;
 }
 
+button {
+    cursor: pointer;
+}
 :host  {
     display: block;
     position: absolute;

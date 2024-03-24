@@ -1,8 +1,8 @@
-import { ToastService } from './services/toast.service';
-import { BaseModule } from './../ui/base/base.module';
-import { LoaderComponent } from './components/loader/loader.component';
-import { ContentComponent } from './../layout/content/content.component';
-import { FullComponent } from './../layout/full/full.component';
+import { ToastService } from "./services/toast.service";
+import { BaseModule } from "./../ui/base/base.module";
+import { LoaderComponent } from "./components/loader/loader.component";
+import { ContentComponent } from "./../layout/content/content.component";
+import { FullComponent } from "./../layout/full/full.component";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { NgModule } from "@angular/core";
@@ -31,8 +31,12 @@ import { NavService } from "./services/nav.service";
 import { DecimalPipe } from "@angular/common";
 import { SvgIconComponent } from "./components/svg-icon/svg-icon.component";
 import { SwiperModule } from "swiper/angular";
-import { ModalComponent, NgbdModalContent } from '../ui/base/modal/modal.component';
-import { GeneratePdfDirective } from './directives/generate-pdf.directive';
+import {
+  ModalComponent,
+  NgbdModalContent,
+} from "../ui/base/modal/modal.component";
+import { GeneratePdfDirective } from "./directives/generate-pdf.directive";
+import { ConfirmationModalComponent } from "./components/confirmation-modal/confirmation-modal.component";
 
 @NgModule({
   declarations: [
@@ -54,15 +58,34 @@ import { GeneratePdfDirective } from './directives/generate-pdf.directive';
     MessageBoxComponent,
     MyAccountComponent,
     SvgIconComponent,
-    GeneratePdfDirective
-    
+    GeneratePdfDirective,
+    ConfirmationModalComponent,
   ],
   imports: [
-    
-    CommonModule, RouterModule, FormsModule, ReactiveFormsModule, NgbModule, DragulaModule.forRoot(), TranslateModule.forRoot(), SwiperModule],
-  providers: [NavService, LayoutService, DecimalPipe,ToastService],
-  exports: [NgbModule,
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgbModule,
+    DragulaModule.forRoot(),
+    TranslateModule.forRoot(),
+    SwiperModule,
+  ],
+  providers: [NavService, LayoutService, DecimalPipe, ToastService],
+  exports: [
+    NgbModule,
     GeneratePdfDirective,
-    FormsModule, ReactiveFormsModule, TranslateModule, ModalComponent,LoaderComponent, BreadcrumbComponent, FeatherIconsComponent, TapToTopComponent, SvgIconComponent, SwiperModule],
+    FormsModule,
+    ReactiveFormsModule,
+    TranslateModule,
+    ModalComponent,
+    LoaderComponent,
+    BreadcrumbComponent,
+    FeatherIconsComponent,
+    TapToTopComponent,
+    SvgIconComponent,
+    SwiperModule,
+    ConfirmationModalComponent,
+  ],
 })
 export class SharedModule {}

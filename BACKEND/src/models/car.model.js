@@ -6,7 +6,7 @@ const carSchema = new Schema({
     code:Number,
     car:String,
     year:Number,
-    
+    plate:Number,
     next_service: Date,
     insurance: Date,
     registration: Date,

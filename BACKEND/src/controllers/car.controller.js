@@ -56,7 +56,7 @@ exports.getCarById = async (req, res) => {
         return res.status(404).json({ status: 404, message: 'Car not found' });
       }
   
-      return res.status(200).json({ status: 200, data: car, message: 'Successfully retrieved car' });
+      return res.status(200).json(car);
     } catch (error) {
       return res.status(400).json({ status: 400, message: error.message });
     }

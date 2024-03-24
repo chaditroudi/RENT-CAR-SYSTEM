@@ -4,3 +4,23 @@
 label,p,h1,h2,h3,h4,h5,h6 {
     color: black;
 }
+
+
+.info-block {
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid $light-color;
+
+    a {
+      color: #656565;
+      margin-bottom: 3px;
+    }
+
+    h6 {
+      color: $primary-color;
+    }
+
+    +.info-block {
+      margin-top: 20px;
+    }
+  }
