@@ -1,7 +1,8 @@
-import { Injectable, OnDestroy } from "@angular/core";
+import { Injectable, OnChanges, OnDestroy, OnInit } from "@angular/core";
 import { Subject, BehaviorSubject, fromEvent } from "rxjs";
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { Router } from "@angular/router";
+import { UserManagementService } from "src/app/core/services/user-management.service";
 
 // Menu
 export interface Menu {
@@ -31,6 +32,10 @@ export class NavService implements OnDestroy {
   // Language
   public language: boolean = false;
 
+
+  // role :
+
+  role = 0;
   // Mega Menu
   public megaMenu: boolean = false;
   public levelMenu: boolean = false;
@@ -45,7 +50,7 @@ export class NavService implements OnDestroy {
   // Full screen
   public fullScreen: boolean = false;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private userServMang:UserManagementService) {
     this.setScreenWidth(window.innerWidth);
     fromEvent(window, "resize")
       .pipe(debounceTime(1000), takeUntil(this.unsubscriber))
@@ -78,46 +83,142 @@ export class NavService implements OnDestroy {
     this.screenWidth.next(width);
   }
 
-  MENUITEMS: Menu[] = [
-    {
-      headTitle1: "Pages",
-    },
-    {
-      title: "Cars",
-      icon: "home",
-      type: "sub",
-      badgeType: "light-primary",
-      badgeValue: "1",
-      active: true,
-      children: [
-        { path: "/modules/cars/car-details", title: "Cars Details", type: "link" },
-      ],
-    },
-    {
-      title: "Contract",
-      icon: "user",
-      type: "sub",
-      badgeType: "light-primary",
-      badgeValue: "1",
-      active: false,
-      children: [
-        { path: "/modules/contracts/contract-details", title: "Contract Page", type: "link" },
-      ],
-    },
-    {
-      title: "Customers",
-      icon: "users",
-      type: "sub",
-      badgeType: "light-primary",
-      badgeValue: "1",
-      active: false,
-      children: [
-        { path: "/modules/customers/customers-list", title: "Customers Page", type: "link" },
-      ],
-    },
-    // { path: "/single-page", icon: "search", title: "Single Page", type: "link", bookmark: true },
-  ];
+  getMenuItems(role: number): Menu[] {
+    // Generate menu items based on role
+    let menuItems: Menu[] = [];
 
-  // Array
-  items = new BehaviorSubject<Menu[]>(this.MENUITEMS);
+    // Common menu items
+ 
+
+    role = JSON.parse(this.userServMang.getCurrentUser()).data.role;
+
+     if (role === 1) {
+      menuItems.push(
+        {
+          headTitle1: "Pages",
+        },
+        {
+          title: "Cars",
+          icon: "home",
+          type: "sub",
+          badgeType: "light-primary",
+          badgeValue: "1",
+          active: true,
+          children: [
+            { path: "/modules/cars/car-details", title: "Cars Details", type: "link" },
+          ],
+        },
+        {
+          title: "Contract",
+          icon: "user",
+          type: "sub",
+          badgeType: "light-primary",
+          badgeValue: "1",
+          active: false,
+          children: [
+            { path: "/modules/contracts/contract-details", title: "Contract Page", type: "link" },
+          ],
+        },
+        {
+          title: "Customers",
+          icon: "file-text",
+          type: "sub",
+          badgeType: "light-primary",
+          badgeValue: "1",
+          active: false,
+          children: [
+            { path: "/modules/customers/customers-list", title: "Customers Page", type: "link" },
+          ],
+        },
+        {  title: "Permission",
+        icon: "log-out",
+        type: "sub",
+        badgeType: "light-primary",
+        badgeValue: "1",
+        active: false,
+        children: [
+          { path: "/modules/permissions/permissions-details", title: "Permission Page", type: "link" },
+        ],}
+      );
+    }
+
+
+    // EDITOR USER
+    else if(role == 2) {
+      menuItems.push(
+        {
+          headTitle1: "Pages",
+        },
+        {
+          title: "Cars",
+          icon: "home",
+          type: "sub",
+          badgeType: "light-primary",
+          badgeValue: "1",
+          active: true,
+          children: [
+            { path: "/modules/cars/car-details", title: "Cars Details", type: "link" },
+          ],
+        },
+        {
+          title: "Contract",
+          icon: "user",
+          type: "sub",
+          badgeType: "light-primary",
+          badgeValue: "1",
+          active: false,
+          children: [
+            { path: "/modules/contracts/contract-details", title: "Contract Page", type: "link" },
+          ],
+        },
+        {
+          title: "Reports",
+          icon: "reports",
+          type: "sub",
+          badgeType: "light-primary",
+          badgeValue: "1",
+          active: false,
+          children: [
+            { path: "/modules/customers/customers-list", title: "Customers Page", type: "link" },
+          ],
+        },
+        
+      );
+    }
+    // VIEWER 
+    else {
+      console.log("viewer user")
+      menuItems.push(
+        {
+          headTitle1: "Pages",
+        },
+        
+        {
+          title: "Reports",
+          icon: "reports",
+          type: "sub",
+          badgeType: "light-primary",
+          badgeValue: "1",
+          active: false,
+          children: [
+            { path: "/modules/customers/customers-list", title: "Customers Page", type: "link" },
+          ],
+        },
+        
+      );
+    }
+
+    return menuItems;
+  }
+
+
+  items = new BehaviorSubject<Menu[]>(this.getMenuItems(this.role)); 
+  updateMenuItems(role: number): void {
+    this.role = role;
+    const updatedMenuItems = this.getMenuItems(role);
+    this.items.next(updatedMenuItems);
+  }
+
+
+
 }

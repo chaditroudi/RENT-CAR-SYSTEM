@@ -1,8 +1,12 @@
+
+require('dotenv').config;
 const express = require("express");
+
 const app = express();
 const bodyParser = require("body-parser");
 var cors = require("cors");
 require("./src/utils/mongo-connection");
+
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./src/utils/swagger');

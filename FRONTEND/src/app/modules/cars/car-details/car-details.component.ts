@@ -20,12 +20,10 @@ import { Car } from "src/app/core/models/car.model";
   templateUrl: "./car-details.component.html",
   styleUrls: ["./car-details.component.scss"],
 })
-export class CarDetailsComponent implements OnInit {
+export class CarDetailsComponent implements OnInit, OnChanges {
   public carData: any;
 
-  totalPages: number;
-  pageSize = 1;
-  currentPage: number = 1;
+
 
   formData = [];
 
@@ -43,8 +41,8 @@ export class CarDetailsComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.loadData();
  
-     this.loadData();
   }
 
   constructor(
@@ -68,22 +66,42 @@ export class CarDetailsComponent implements OnInit {
       annual: [""],
       comments: [""],
       current: [""],
-      nextService: [""],
+      next_service: [""],
       insurance: [""],
       registration: [""],
-      engineNo: [""],
-      chassisNo: [""],
+      engine_no: [""],
+      chassis_no: [""],
       fuel: [""],
-      petrolCharge: [""],
+      petrol_charge: [""],
+      color:[""],
+      category:[""],
+      origin:[""],
+      doors:[""],
+      seats:[""],
+      cylinders:[""],
+      insurance_company:[""],
+      type_of_insurance:[""],
+      owner_name:[""],
+      owner_id:[""],
+      nationality:[""],
     });
   }
+  ngOnChanges(changes: SimpleChanges): void {
+    this.loadData();
+  }
+
 
   createCar() {
     this.carService.create(this.carForm.value).subscribe(
       (response) => {
         console.log(response);
-        if (response) {
+
+
+        if(this.carForm.valid) {
           this.toastr.showSuccess("car added successfully");
+
+        }
+        if (response) {
         } else {
           this.toastr.showError("Error in adding the car details");
         }
@@ -136,7 +154,17 @@ export class CarDetailsComponent implements OnInit {
         plate: parseInt(this.inputsValue[3]) || res.plate ,
         daily: this.inputsValue[4] || res.daily ,
         weekly: this.inputsValue[5] || res.weekly,
+        
         monthly: this.inputsValue[6] || res.monthly ,
+        annual: this.inputsValue[7] || res.annual ,
+        current: this.inputsValue[8] || res.current ,
+        next_service:this.inputsValue[9] || res.next_service,
+        insurance: this.inputsValue[10] || res.insurance,
+        registration: this.inputsValue[11] || res.registration,
+        engine_no: this.inputsValue[12] || res.engine_no,
+        chassis_no: this.inputsValue[13] || res.chassis_no,
+        fuel: this.inputsValue[14] || res.fuel,
+        petrolCharge:this.inputsValue[15] || res.petrol_charge
 
       };
   
@@ -170,6 +198,7 @@ export class CarDetailsComponent implements OnInit {
         this.toastr.showError("Error in deleting the car");
       }
     );
+
   }
 
   loadData() {
@@ -194,26 +223,29 @@ export class CarDetailsComponent implements OnInit {
   // }
 
   // ConfirmationModal Code
-  @ViewChild("confirmationModal")
-  private modalComponent!: ConfirmationModalComponent;
+// ConfirmationModal Code
+@ViewChild("confirmationModal")
+private modalComponent!: ConfirmationModalComponent;
 
-  modalStyle: string = "modal-style-success";
-  modalTitle: string = "Success Confirmation";
-  modalBody: string = "This is a Success Confirmation message";
-  modalButtonColor: string = "btn-success";
+modalStyle: string = "modal-style-success";
+modalTitle: string = "Success Confirmation";
+modalBody: string = "This is a Success Confirmation message";
+modalButtonColor: string = "btn-success";
 
-  async openModal() {
-    return await this.modalComponent.open();
+async openModal() {
+  return await this.modalComponent.open();
+}
+
+getConfirmationValue(value: any, carId: number) {
+  if (value == "Yes") {
+    this.deleteCar(carId);
+    console.log("first");
   }
+}
 
-  getConfirmationValue(value: any, carId: number) {
-    if (value == "Yes") {
-      this.deleteCar(carId);
-      console.log("first");
-    }
-  }
+open() {
+  this.openModal();
+}
 
-  open() {
-    this.openModal();
-  }
+  
 }

@@ -26,14 +26,11 @@ export class CarService {
 
 
   getCars() {
-    return this.http.get<any[]>(`${baseUrl}/car/display-cars`)
-      .pipe(
-        tap(cars => {
-          this.carSource.next(cars);
-          console.log("data ",cars)
-        })
-      )
-      .subscribe();
+    return this.http.get<any[]>(`${baseUrl}/car/display-cars`).subscribe(data => {
+      this.carSource.next(data);
+    })
+
+
   }
 
 
@@ -55,12 +52,14 @@ export class CarService {
   }
 
   delete(id: any): Observable<any> {
-    return this.http.delete(`${baseUrl}/car/delete-car/${id}`);
-  }
+    return this.http.delete(`${baseUrl}/car/delete-car/${id}`).pipe(tap(()=> {
+      const newData = this.carSource.value.filter(item => item._id !==id);
+      console.log("new data=",newData);
 
-  deleteAll(): Observable<any> {
-    return this.http.delete(baseUrl);
-  }
+      this.carSource.next(newData);
+    }))}
+   
+
 
   findByTitle(title: any): Observable<Car[]> {
     return this.http.get<Car[]>(`${baseUrl}?title=${title}`);

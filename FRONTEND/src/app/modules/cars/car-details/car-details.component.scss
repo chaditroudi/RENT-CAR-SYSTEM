@@ -1,7 +1,14 @@
 @import "../../../../assets/scss/utils/variables.scss";
 
 h5,h6,label  {
-    color:black;
+    color:$black;
+}
+
+
+.form-control{
+  color:$black;
+  font-weight: 700;
+
 }
 
 

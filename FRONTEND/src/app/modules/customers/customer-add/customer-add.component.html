@@ -10,7 +10,11 @@
     <div class="card-header">
       <h4 class="card-title mb-0">Add new customer</h4>
     </div>
-    <form class="theme-form mega-form ">
+    <form
+      [formGroup]="customerForm"
+      (ngSubmit)="addCustomer()"
+      class="theme-form mega-form"
+    >
       <div class="row">
         <div class="col-xl-4">
           <div class="card-body">
@@ -23,7 +27,7 @@
                     src="../assets/images/user/7.jpg"
                   />
                   <div class="media-body">
-                    <h5 class="mb-1">user@user.com</h5>
+                    <h5 class="mb-1"></h5>
                     <p>Customer</p>
                   </div>
                 </div>
@@ -48,80 +52,91 @@
         </div>
         <div class="col-xl-8">
           <div class="card-body">
-            
             <div class="row">
+              <div class="info-block">
+                <h6>Identification</h6>
               
-            <div class="info-block">
-
-              <h6>Identification</h6>
 
                 <div class="mb-3">
                   <label class="form-label">Passport No</label>
-                  <input class="form-control" type="text" placeholder="Passport No" />
+                  <input
+                    class="form-control"
+                    formControlName="passport_number"
+                    type="text"
+                    placeholder="Passport No"
+                  />
                 </div>
                 <div class="mb-3">
                   <label class="form-label">ID No</label>
                   <input
                     class="form-control"
                     type="text"
+                    formControlName="id_number"
                     placeholder="ID No"
                   />
-              </div>
+                </div>
                 <div class="mb-3">
                   <label class="form-label">Pass expiry</label>
                   <input
                     class="form-control"
+                    formControlName="passport_expiry"
                     type="date"
                   />
+                </div>
               </div>
-            </div>
 
-            <div class="info-block">
-
-              <h6>Main</h6>
+              <div class="info-block">
+                <h6>Main</h6>
                 <div class="mb-3">
                   <label class="form-label">Title</label>
-                  <input class="form-control" type="text" placeholder="Title" />
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Warning</label>
                   <input
                     class="form-control"
+                    formControlName="title"
                     type="text"
+                    placeholder="Title"
                   />
-              </div>
+                </div>
+
                 <div class="mb-3">
                   <label class="form-label">Fullname</label>
                   <input
                     class="form-control"
                     type="text"
-                    placeholder="Fullname" />
+                    placeholder="Fullname"
+                    formControlName="fullName"
                   />
-              </div>
+                  />
+                </div>
                 <div class="mb-3">
                   <label class="form-label">Nationality</label>
                   <input
                     class="form-control"
                     type="text"
                     placeholder="Nationality"
+                    formControlName="nationality"
                   />
-              </div>
-              
+                </div>
+
                 <div class="mb-3">
                   <label class="form-label">Date of birth</label>
 
-                  <input type="date" name="date_start" class="form-control" />
+                  <input
+                    type="date"
+                    name="date_start"
+                    class="form-control"
+                    formControlName="date_birth"
+                  />
+                </div>
               </div>
-            </div>
-            <div class="info-block">
-
-              <h6>Address</h6>
+              <div class="info-block">
+                <h6>Address</h6>
                 <div class="mb-3">
                   <label class="form-label">QAR Address</label>
                   <input
                     class="form-control"
                     type="text"
                     placeholder="QAR Address"
+                    formControlName="QAR_address"
                   />
                 </div>
                 <div class="mb-3">
@@ -130,11 +145,11 @@
                     class="form-control"
                     type="text"
                     placeholder="Permanent Address"
+                    formControlName="permanent_address"
                   />
-              </div>
+                </div>
               </div>
 
-            
               <div class="info-block">
                 <h6>Contact</h6>
                 <div class="mb-3">
@@ -143,70 +158,84 @@
                   >
                   <input
                     class="form-control"
-                    type="number"
+                    type="text"
+                    formControlName="person_name"
                     placeholder="Reference Person name and Mobile"
                   />
-              </div>
+                </div>
                 <div class="mb-3">
                   <label class="form-label"
                     >Home country Telephone and Mobile</label
                   >
                   <input
                     class="form-control"
-                    type="number"
+                    formControlName="home_country"
+                    type="text"
                     placeholder="Home country Telephone and Mobile"
                   />
-              </div>
+                </div>
                 <div class="mb-3">
                   <label class="form-label">Email</label>
                   <input
                     class="form-control"
                     type="email"
                     placeholder="Email"
+                    formControlName="email"
                   />
-              </div>
+                </div>
                 <div class="mb-3">
                   <label class="form-label">Mobile</label>
                   <input
                     class="form-control"
                     type="text"
                     placeholder="Mobile"
+                    formControlName="mobile"
                   />
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Telephone</label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      placeholder="Telephone"
+                      formControlName="telephone"
+                    />
                 </div>
-             
               </div>
               <div class="info-block">
                 <h6>Driver license</h6>
                 <div class="mb-3">
                   <label class="form-label">No</label>
-                  <input class="form-control" type="text" placeholder="No" />
-              </div>
+                  <input class="form-control" type="text" placeholder="No"  formControlName="license_number"/>
+                </div>
                 <div class="mb-3">
                   <label class="form-label">Issued by</label>
                   <input
                     class="form-control"
                     type="text"
                     placeholder="Issued by"
+                    formControlName="issued_by"
                   />
-              </div>
+                </div>
                 <div class="mb-3">
                   <label class="form-label">Issued on</label>
                   <input
                     class="form-control"
                     type="date"
                     placeholder="Issued on"
+                    formControlName="issued_on"
                   />
-              </div>
+                </div>
                 <div class="mb-3">
                   <label class="form-label">Expiry</label>
                   <input
                     class="form-control"
                     type="date"
-                    placeholder="Issued on"
+                    placeholder="Expiry"
+                    formControlName="expiry_date"
                   />
+                </div>
               </div>
-              </div>
-             
             </div>
           </div>
         </div>
@@ -214,11 +243,8 @@
       <div class="row mb-2">
         <div class="col-md-3 p-3">
           <button class="btn btn-primary w-100">Save</button>
-
-          </div></div>
-        
-     
-      
+        </div>
+      </div>
     </form>
   </div>
 </div>

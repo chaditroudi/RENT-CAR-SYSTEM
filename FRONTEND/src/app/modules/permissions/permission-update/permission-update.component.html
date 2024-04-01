@@ -1,0 +1,52 @@
+<app-breadcrumb
+  [title]="'Customers page'"
+  [items]="['Home', 'Customers page']"
+  [active_item]="'Customers page'"
+></app-breadcrumb>
+
+<!-- Container-fluid starts-->
+<div class="container-fluid">
+  <div class="edit-profile card">
+    <div class="card-header">
+      <h4 class="card-title mb-0">Update new customer</h4>
+    </div>
+    <form (ngSubmit)="updatePermission(permission)"
+    [formGroup]="formGroup"
+    >
+      <div class="row">
+       
+        <div class="col-xl-8">
+          <div class="card-body">
+        <ng-container *ngIf="permission" >
+          <div class="row">
+            <div class="info-block">
+              <h6>Identification</h6>
+
+              <div class="mb-3">
+                <label class="form-label">Permission name</label>
+                
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="Permission name"
+                  [(ngModel)]="permission.permission_name"
+                  formControlName="permission_name"
+                  #permission_name
+                  />
+              </div>
+           
+            </div>
+
+    
+          </div></ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-md-3 p-3">
+          <button class="btn btn-primary w-100">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

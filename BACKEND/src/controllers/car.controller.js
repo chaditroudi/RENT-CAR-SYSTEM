@@ -1,5 +1,6 @@
 const { default: mongoose } = require("mongoose");
 const Car = require("../models/car.model");
+const { autoIncrement } = require("../utils/auto-increment");
 
 exports.createCar = async (req, res) => {
   try {
@@ -16,9 +17,15 @@ exports.createCar = async (req, res) => {
       });
     }
 
+    // autoinc
+    const autoInc= await autoIncrement(Car);
 
 
-    const newcar = new Car(req.body);
+    const newcar = new Car({
+      ...req.body,serial:autoInc
+    });
+
+    console.log("auto inc", autoInc);
     const result = await newcar.save();
 
     return res.status(201).json(result);

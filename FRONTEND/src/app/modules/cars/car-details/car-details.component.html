@@ -127,7 +127,7 @@
                               class="form-control"
                               type="text"
                               placeholder="Car code"
-                              [value]="c.code"
+                              [value]="c.serial"
                               (change)="onChangeInputValue($event,0)"
                           
                             />
@@ -180,6 +180,19 @@
                             />
                           </div>
                         </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label class="col-form-label">Code</label>
+                            <input
+                              class="form-control"
+                              type="text"
+                              placeholder="Car code"
+                              [value]="c.code"
+                              (change)="onChangeInputValue($event,0)"
+                          
+                            />
+                          </div>
+                        </div>
                       </div>
 
                       <hr class="mt-4 mb-4" />
@@ -192,8 +205,8 @@
                               class="form-control"
                               type="text"
                               placeholder="Daily"
-                              formControlName="daily"
                               (change)="onChangeInputValue($event,4)"
+                              [value]="c.daily"
 
                               
                             />
@@ -207,8 +220,8 @@
                               class="form-control"
                               type="text"
                               placeholder="Weekly"
-                              formControlName="weekly"
                               (change)="onChangeInputValue($event,5)"
+                              [value]="c.weekly"
 
                             />
                           </div>
@@ -220,8 +233,8 @@
                               class="form-control"
                               type="text"
                               placeholder="Monthly"
-                              formControlName="monthly"
                               (change)="onChangeInputValue($event,6)"
+                              [value]="c.monthly"
 
                             />
                           </div>
@@ -233,8 +246,8 @@
                               class="form-control"
                               type="text"
                               placeholder="Annual"
-                              formControlName="annual"
                               (change)="onChangeInputValue($event,7)"
+                              [value]="c.annual"
 
                             />
                           </div>
@@ -251,7 +264,9 @@
                               class="form-control"
                               type="text"
                               placeholder="Current"
-                              formControlName="current"
+                              (change)="onChangeInputValue($event,8)"
+                              [value]="c.current"
+
                             />
                           </div>
                         </div>
@@ -263,7 +278,9 @@
                               class="form-control"
                               type="text"
                               placeholder="Next Service"
-                              formControlName="nextService"
+                              (change)="onChangeInputValue($event,9)"
+                              [value]="c.next_service"
+
                             />
                           </div>
                         </div>
@@ -278,7 +295,9 @@
                               class="form-control"
                               type="date"
                               placeholder="Insurance"
-                              formControlName="insurance"
+                              (change)="onChangeInputValue($event,10)"
+                              [value]="c.insurance | date:'yyyy-MM-dd'"
+
                             />
                           </div>
                         </div>
@@ -290,7 +309,9 @@
                               class="form-control"
                               type="date"
                               placeholder="Registration"
-                              formControlName="registration"
+                              (change)="onChangeInputValue($event,11)"
+                              [value]="c.registration | date: 'yyyy-MM-dd'"
+
                             />
                           </div>
                         </div>
@@ -304,7 +325,9 @@
                               class="form-control"
                               type="text"
                               placeholder="Engine No"
-                              formControlName="engineNo"
+                              (change)="onChangeInputValue($event,12)"
+                              [value]="c.engine_no"
+
                             />
                           </div>
                         </div>
@@ -315,7 +338,9 @@
                               class="form-control"
                               type="text"
                               placeholder="Chassis No"
-                              formControlName="chassisNo"
+                              (change)="onChangeInputValue($event,13)"
+                              [value]="c.chassis_no"
+
                             />
                           </div>
                         </div>
@@ -327,7 +352,9 @@
                               class="form-control"
                               type="number"
                               placeholder="0"
-                              formControlName="fuel"
+                              (change)="onChangeInputValue($event,14)"
+                              [value]="c.fuel"
+
                             />
                           </div>
                         </div>
@@ -338,7 +365,9 @@
                               class="form-control"
                               type="text"
                               placeholder="Petrol charge"
-                              formControlName="petrolCharge"
+                              (change)="onChangeInputValue($event,15)"
+                              [value]="c.petrol_charge"
+
                             />
                           </div>
                         </div>
@@ -350,6 +379,9 @@
                               id="exampleFormControlTextarea4"
                               rows="3"
                               formControlName="comments"
+                              (change)="onChangeInputValue($event,16)"
+                              [value]="c.comments"
+
                             ></textarea>
                           </div>
                         </div>
@@ -363,7 +395,7 @@
                           <div class="m-t-15 btn-showcase">
                             <ul class="pagination pagination-primary">
                               <li>
-                                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                <pagination-controls (pageChange)="p   = $event"></pagination-controls>
 
                               </li>
                             </ul>
@@ -401,10 +433,10 @@
               </thead>
               <tbody>
                 <tr>
-                  <td>lorem1 epsum</td>
+                  <td>Color</td>
                   <td>
-                    <input type="text" class="form-control" value="value111" />
-                  </td>
+                    <input type="text" class="form-control" value="color" />
+                  </td>,
                 </tr>
                 <tr>
                   <td>lorem1 epsum</td>

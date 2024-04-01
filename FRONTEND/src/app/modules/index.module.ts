@@ -1,3 +1,4 @@
+import { PermissionUpdateComponent } from './permissions/permission-update/permission-update.component';
 import { IndexRoutingModule } from './index-routing.module';
 import { NgxPaginationModule } from "ngx-pagination";
 import { CarsListComponent } from "./cars/cars-list/cars-list.component";
@@ -13,9 +14,16 @@ import { ContractInvoiceComponent } from './contract/contract-invoice/contract-i
 import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { InitCarFormComponent } from './cars/init-car-form/init-car-form.component';
+import { CustomerUpdateComponent } from './customers/customer-update/customer-update.component';
+import { PermissionsDetailsComponent } from './permissions/permissions-details/permissions-details.component';
 
 @NgModule({
-  declarations: [CarDetailsComponent, CarsListComponent,ContractDetailsComponent,InitCarFormComponent, CustomersListComponent, CustomerAddComponent, ContractInvoiceComponent, InitCarFormComponent,],
+  declarations: [CarDetailsComponent, CarsListComponent,ContractDetailsComponent
+    ,InitCarFormComponent, CustomersListComponent, CustomerAddComponent, 
+    CustomerUpdateComponent,ContractInvoiceComponent, InitCarFormComponent,
+    
+    CustomerUpdateComponent, PermissionsDetailsComponent,
+  PermissionUpdateComponent],
   imports: [CommonModule, SharedModule,    HttpClientModule,ToastrModule,
 
     

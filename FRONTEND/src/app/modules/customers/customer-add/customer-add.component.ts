@@ -1,6 +1,7 @@
+import { CustomerService } from './../../../core/services/customer.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-customer-add',
@@ -9,59 +10,50 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class CustomerAddComponent implements OnInit {
 
-  public jobs: any
-  public arr: any
-  public jobForm: FormGroup;
-  public dropdownList: any;
-  public selectedItems: any;
-  public dropdownSettings: any;
-  model1: Date;
-  model2: Date;
-  model3: Date;
-  model4: Date;
-  model5: Date;
-
-  constructor(private route: ActivatedRoute, private router: Router, private fb: FormBuilder) {
+  customerForm = this.formBuilder.group({
+    passport_number: [0],
+    id_number: [0],
+    title: [''],
+    fullName: [''],
+    date_birth: [''],
+    license_number: [''],
+    issued_by: [''],
+    issued_on: [''],
+    expiry_date: [''],
+    passport_expiry: [''],
+    mobile: [''],
+    telephone: [''],
+    email: [''],
+    QAR_address: [''],
+    permanent_address: [''],
+    person_name: [''],
+    home_country: [''],
+    nationality: ['']
+  });
+  constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder,private readonly customerService:CustomerService) {
 
   }
 
-  ngOnInit() {
-    this.jobForm = this.fb.group({
-      name: ['', Validators.required],
-      phone: ['', Validators.required],
-      email: ['', Validators.email],
-      password: ['', Validators.required],
-      rpassword: ['', Validators.required],
-      collegename: ['', Validators.required],
-      specialization: ['', Validators.required],
-      location: ['', Validators.required],
-      company_name: ['', Validators.required],
-    })
-    this.dropdownList = [
-      { "id": 1, "itemName": "India" },
-      { "id": 2, "itemName": "Singapore" },
-      { "id": 3, "itemName": "Australia" },
-      { "id": 4, "itemName": "Canada" },
-      { "id": 5, "itemName": "South Korea" },
-      { "id": 6, "itemName": "Germany" },
-      { "id": 7, "itemName": "France" },
-      { "id": 8, "itemName": "Russia" },
-      { "id": 9, "itemName": "Italy" },
-      { "id": 10, "itemName": "Sweden" }
-    ];
-    this.selectedItems = [
-      { "id": 2, "itemName": "Singapore" },
-      { "id": 3, "itemName": "Australia" },
-      { "id": 4, "itemName": "Canada" },
-      { "id": 5, "itemName": "South Korea" }
-    ];
-    this.dropdownSettings = {
-      singleSelection: false,
-      text: "Select Countries",
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      enableSearchFilter: true,
-      classes: "myclass custom-class"
-    };
+  ngOnInit() {}
+
+
+  addCustomer(): void {
+
+
+    if (this.customerForm.valid) {
+
+   
+      this.customerService.createCustomer(this.customerForm.value).subscribe(
+        response => {
+          console.log('Customer added successfully', response);
+        this.customerForm.reset();
+     this.router.navigate(['modules/customers/customers-list']);
+        },
+        error => {
+          console.error('Error adding customer', error);
+        }
+      );
+    }
   }
+ 
 }

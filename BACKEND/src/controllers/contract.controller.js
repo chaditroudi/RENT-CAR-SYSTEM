@@ -3,8 +3,12 @@ const Contract = require("../models/contract.model");
 
 exports.createcontract = async (req, res) => {
   try {
-    const contract = new Contract(req.body);
+
+    const autoInc= await autoIncrement(Contract);
+
+    const contract = new Contract({...req.body,serial:autoInc});
     const result = await contract.save();
+
 
     return res.status(201).json(result);
   } catch (err) {

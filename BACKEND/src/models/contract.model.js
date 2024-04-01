@@ -1,8 +1,15 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+  var AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const contractSchema = new mongoose.Schema({
 
+
+  serial:{
+    type:Number,
+    default:0
+    
+  },
 
   car:{
     type: mongoose.Schema.Types.ObjectId,
@@ -101,5 +108,7 @@ const contractSchema = new mongoose.Schema({
       }
     
 })
+
+contractSchema.plugin(AutoIncrement, {id:'no_seq',inc_field: 'no'});
 
 module.exports = mongoose.model('contract', contractSchema);

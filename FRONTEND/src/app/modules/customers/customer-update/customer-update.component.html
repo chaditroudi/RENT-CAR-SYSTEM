@@ -1,0 +1,290 @@
+<app-breadcrumb
+  [title]="'Customers page'"
+  [items]="['Home', 'Customers page']"
+  [active_item]="'Customers page'"
+></app-breadcrumb>
+
+<!-- Container-fluid starts-->
+<div class="container-fluid">
+  <div class="edit-profile card">
+    <div class="card-header">
+      <h4 class="card-title mb-0">Update new customer</h4>
+    </div>
+    <form (ngSubmit)="updateCustomer()"
+    [formGroup]="customerForm"
+    >
+      <div class="row">
+        <div class="col-xl-4">
+          <div class="card-body">
+            <div class="row mb-2">
+              <div class="profile-title">
+                <div class="media">
+                  <img
+                    class="img-70 rounded-circle"
+                    alt=""
+                    src="../assets/images/user/7.jpg"
+                  />
+                  <div class="media-body">
+                    <h5 class="mb-1">user@user.com</h5>
+                    <p>Customer</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-xl-12">
+                <button class="btn btn-outline-primary w-100">
+                  Take picture
+                </button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xl-12">
+                <div class="mt-3">
+                  <button class="btn btn-primary w-100">Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-8">
+          <div class="card-body">
+        <ng-container *ngIf="customer" >
+          <div class="row">
+            <div class="info-block">
+              <h6>Identification</h6>
+
+              <div class="mb-3">
+                <label class="form-label">Passport No</label>
+                
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="Passport No"
+                  [(ngModel)]="customer.passport_number"
+                  formControlName="passport_number"
+                  #passport_number
+                  />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">ID No</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="ID No"
+                  [(ngModel)]="customer.id_number"
+                  formControlName="id_number"
+                  #id_number
+
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Pass expiry</label>
+                <input
+                  class="form-control"
+                  [(ngModel)]="customer.passport_expiry"
+
+                  type="date"
+                  formControlName="passport_expiry"
+                  #passport_expiry
+                />
+              </div>
+            </div>
+
+            <div class="info-block">
+              <h6>Main</h6>
+              <div class="mb-3">
+                <label class="form-label">Title</label>
+                <input
+                  class="form-control"
+                  [(ngModel)]="customer.title"
+                  type="text"
+                  placeholder="Title"
+                  formControlName="title"
+                  #title
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Fullname</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="Fullname"
+                  [(ngModel)]="customer.fullName"
+                  formControlName="fullName"
+                  #fullName
+
+                />
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Nationality</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="Nationality"
+                  [(ngModel)]="customer.nationality"
+                  formControlName="nationality"
+                  #nationality
+
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Date of birth</label>
+
+                <input
+                  type="date"
+                  name="date_start"
+                  class="form-control"
+                  [(ngModel)]="customer.date_birth"
+                  formControlName="date_birth"
+                  #date_birth
+                />
+              </div>
+            </div>
+            <div class="info-block">
+              <h6>Address</h6>
+              <div class="mb-3">
+                <label class="form-label">QAR Address</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="QAR Address"
+                  [(ngModel)]="customer.QAR_address"
+                  formControlName="QAR_address"
+                  #QAR_address
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Permanent Address</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="Permanent Address"
+                  [(ngModel)]="customer.permanent_address"
+                  formControlName="permanent_address"
+                  #permanent_address
+                />
+              </div>
+            </div>
+
+            <div class="info-block">
+              <h6>Contact</h6>
+              <div class="mb-3">
+                <label class="form-label"
+                  >Reference Person name and Mobile</label
+                >
+                <input
+                  class="form-control"
+                  type="text"
+                  [(ngModel)]="customer.person_name"
+                  placeholder="Reference Person name and Mobile"
+                  formControlName="person_name"
+                  #person_name
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label"
+                  >Home country Telephone and Mobile</label
+                >
+                <input
+                  class="form-control"
+                  [(ngModel)]="customer.home_country"
+                  type="text"
+                  placeholder="Home country Telephone and Mobile"
+                  formControlName="home_country"
+                  #home_country
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input
+                  class="form-control"
+                  type="email"
+                  placeholder="Email"
+                  [(ngModel)]="customer.email"
+                  formControlName="email"
+                  #email
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Mobile</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="Mobile"
+                  [(ngModel)]="customer.mobile"
+                  formControlName="mobile"
+                  #mobile
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Telephone</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="Telephone"
+                  [(ngModel)]="customer.telephone"
+                  formControlName="telephone"
+                  #telephone
+                />
+              </div>
+            </div>
+            <div class="info-block">
+              <h6>Driver license</h6>
+              <div class="mb-3">
+                <label class="form-label">No</label>
+                <input class="form-control" type="text" placeholder="No"  
+                
+                [(ngModel)]="customer.license_number"
+                formControlName="license_number" #license_number/>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Issued by</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="Issued by"
+                  [(ngModel)]="customer.issued_by"
+                  formControlName="issued_by"
+                  #issued_by
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Issued on</label>
+                <input
+                  class="form-control"
+                  type="date"
+                  placeholder="Issued on"
+                  [(ngModel)]="customer.issued_on"
+                  formControlName="issued_on"
+                  #issued_on
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Expiry</label>
+                <input
+                  class="form-control"
+                  type="date"
+                  placeholder="Expiry"
+                  [(ngModel)]="customer.expiry_date"
+                  formControlName="expiry_date"
+                  #expiry_date
+                />
+              </div>
+            </div>
+          </div></ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-md-3 p-3">
+          <button class="btn btn-primary w-100">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

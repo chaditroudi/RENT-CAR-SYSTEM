@@ -6,6 +6,9 @@ import { ContractDetailsComponent } from "./contract/contract-details/contract-d
 import { CustomersListComponent } from "./customers/customers-list/customers-list.component";
 import { CustomerAddComponent } from "./customers/customer-add/customer-add.component";
 import { ContractInvoiceComponent } from "./contract/contract-invoice/contract-invoice.component";
+import { CustomerUpdateComponent } from "./customers/customer-update/customer-update.component";
+import { PermissionsDetailsComponent } from "./permissions/permissions-details/permissions-details.component";
+import { PermissionUpdateComponent } from "./permissions/permission-update/permission-update.component";
 
 const routes: Routes = [
   {
@@ -28,6 +31,10 @@ const routes: Routes = [
         component:CustomerAddComponent
       },
       {
+        path:"customers/customers-update/:id",
+        component:CustomerUpdateComponent
+      },
+      {
         path:"contracts/contract-details",
         component: ContractDetailsComponent
       },
@@ -35,6 +42,16 @@ const routes: Routes = [
         path:"contracts/contract-invoice/:id",
         component: ContractInvoiceComponent
       },
+      {
+        path:"permissions/permissions-details",
+        component: PermissionsDetailsComponent
+      },
+      {
+        path:"permissions/permissions-update/:id",
+        component: PermissionUpdateComponent
+      },
+
+
 
 
       

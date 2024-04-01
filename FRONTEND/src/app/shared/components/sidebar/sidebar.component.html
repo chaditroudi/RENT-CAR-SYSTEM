@@ -1,23 +1,8 @@
 <!-- Page Sidebar Start-->
 
-<div class="page-wrapper compact-wrapper dark-sidebar">
-
-<div class="logo-wrapper">
-  <a routerLink="/">
-    <img class="img-fluid for-light" width="80" height="80" src="assets/images/logo/logo.png" alt="" />
-    <img class="img-fluid for-dark" src="assets/images/logo/logo_dark.png" alt="" />
-  </a>
-  <div class="back-btn" (click)="sidebarToggle()">
-    <i class="fa fa-angle-left"></i>
-  </div>
-  <div class="toggle-sidebar" (click)="sidebarToggle()">
-    <i data-feather="grid" class="status_toggle middle sidebar-toggle"></i>
-    <!-- <app-feather-icons icon="'grid'" class="status_toggle middle sidebar-toggle"></app-feather-icons> -->
-  </div>
-</div>
 <div class="logo-icon-wrapper">
   <a href="javascript:void(0)">
-    <img class="img-fluid" width="70" height="50" src="assets/images/logo/logo.png" alt="" />
+    <img class="img-fluid" src="assets/images/logo/logo-icon.png" alt="" />
   </a>
 </div>
 <nav class="sidebar-main">
@@ -105,7 +90,23 @@
                         <span>{{ childrenItem.title | translate }}</span>
                         <i class="fa fa-angle-down pull-right" *ngIf="childrenItem.children"></i>
                       </a>
-                
+                      <!-- 3rd Level Menu -->
+                      <ul class="nav-sub-childmenu submenu-content" *ngIf="childrenItem.children" [ngClass]="{ active: childrenItem.active }" [ngClass]="{ 'menu-open': childrenItem.active, 'menu-close': !childrenItem.active }" [style.display]="childrenItem.active ? 'block' : 'none'">
+                        <li *ngFor="let childrenSubItem of childrenItem.children" [ngClass]="{ active: childrenSubItem.active }">
+                          <!-- Link -->
+                          <a [routerLink]="!childrenSubItem.type ? null : [childrenSubItem.path]" *ngIf="childrenSubItem.type === 'link'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                            {{ childrenSubItem.title | translate }}
+                          </a>
+                          <!-- External Link -->
+                          <a href="{{ !childrenSubItem.type ? null : childrenSubItem.path }}" *ngIf="childrenSubItem.type === 'extLink'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                            {{ childrenSubItem.title | translate }}
+                          </a>
+                          <!-- External Tab Link -->
+                          <a href="{{ !childrenSubItem.type ? null : childrenSubItem.path }}" target="_blank" *ngIf="childrenSubItem.type === 'extTabLink'">
+                            {{ childrenSubItem.title | translate }}
+                          </a>
+                        </li>
+                      </ul>
                     </li>
                   </ul>
                 </li>
@@ -120,4 +121,3 @@
     <app-feather-icons [icon]="'arrow-right'"></app-feather-icons>
   </div>
 </nav>
-</div>
