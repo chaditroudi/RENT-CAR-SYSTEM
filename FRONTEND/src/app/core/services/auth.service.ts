@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { UserManagementService } from './user-management.service';
+import { StorageService } from './storage.service';
 
 
 
@@ -33,15 +33,12 @@ export class AuthService {
 
 
 
-  private accessToken: string | null = null;
-  private expDate: string | null = null;
-
   private user:User;
   constructor
   (
     private router: Router,
     private http: HttpClient,
-    private readonly userMangementService :UserManagementService
+    private readonly userMangementService :StorageService
   ) { }
 
     login(email: string, password: string) {
@@ -52,7 +49,10 @@ export class AuthService {
       .pipe(tap((res)=> {
 
        
+
+        this.userMangementService.setToken(res.accessToken,res.expDate);
        return this.userMangementService.setCurrentUser(res);
+
       
 
         
@@ -62,11 +62,13 @@ export class AuthService {
 
     isLoggedIn() {
       const user = JSON.parse(localStorage.getItem('user')!) as User;
+      const accessToken = JSON.parse(sessionStorage.getItem('accessToken'));
+      const expDate = JSON.parse(sessionStorage.getItem('expiration'));
       if (user) {
-        const token = user.accessToken;
-        const sExpDate = user.expDate;
+        const token = accessToken;
+        const sExpDate = expDate;
         console.log(sExpDate)
-        if (token && sExpDate && new Date().getTime() < new Date(sExpDate).getTime())
+        if (token && sExpDate && new Date().toLocaleString() < new Date(sExpDate).toLocaleString())
         {
           return true;
         }

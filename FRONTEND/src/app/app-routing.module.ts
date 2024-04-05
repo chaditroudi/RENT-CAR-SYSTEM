@@ -8,12 +8,7 @@ import { FullComponent } from './layout/full/full.component';
 import { CarDetailsComponent } from './modules/cars/car-details/car-details.component';
 
 const routes: Routes = [
-  
-  {
-    path: "cars",
-    component:CarDetailsComponent,
-    pathMatch: "full",
-  },
+
 
   {
     path:"account/login",

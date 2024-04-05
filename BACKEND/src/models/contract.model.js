@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
-  var AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const contractSchema = new mongoose.Schema({
 
@@ -11,40 +10,42 @@ const contractSchema = new mongoose.Schema({
     
   },
 
+
   car:{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Car',
-    required: true
-},
+    type:String
+  },
     version: {
       type: Number,
-      required: true
+      
     },
     sponsor: {
       type: String,
-      required: true
+      
     },
     car_out: {
       type: Date,
+    },
+    days:{
+      type:Number
     },
     car_back:{
         type: Date,
     },
     select_one: {
         type:String,
-        required: true
+        
     },
     deposit:{
         type:String,
-        required: true
+        
     },
     location:{
         type:String,
-        required: true
+        
     },
     hirer:{
         type:String,
-        required: true
+        
     },
     comments:{
         type:String,
@@ -75,11 +76,11 @@ const contractSchema = new mongoose.Schema({
   
       fuel_back: {
         type: String,
-        required: true
+        
       },
       no_km_back: {
         type: String,
-        required: true
+        
       },
       features:{
           type:Array,
@@ -109,6 +110,5 @@ const contractSchema = new mongoose.Schema({
     
 })
 
-contractSchema.plugin(AutoIncrement, {id:'no_seq',inc_field: 'no'});
 
 module.exports = mongoose.model('contract', contractSchema);

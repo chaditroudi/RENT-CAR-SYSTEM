@@ -34,14 +34,7 @@ const routes: Routes = [
         path:"customers/customers-update/:id",
         component:CustomerUpdateComponent
       },
-      {
-        path:"contracts/contract-details",
-        component: ContractDetailsComponent
-      },
-      {
-        path:"contracts/contract-invoice/:id",
-        component: ContractInvoiceComponent
-      },
+    
       {
         path:"permissions/permissions-details",
         component: PermissionsDetailsComponent

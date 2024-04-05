@@ -1,0 +1,72 @@
+<div class="card-body">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Our Available Cars</h4>
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          (click)="activeModal.dismiss('Cross click')"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form class="theme-form mega-form">
+          <div class="col-sm-12">
+            <div class="card">
+              <div class="card-block row">
+                <div class="col-sm-12 col-lg-12 col-xl-12">
+                  <div
+                    class="card-body pt-0 campaign-table click-drag-handler scroll-demo p-0"
+                  >
+                    <div class="recent-table table-responsive currency-table">
+                        {{carInfo.length >0}}
+                        <div *ngIf="carInfo.length > 0" >
+
+
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">Car</th>
+                            <th scope="col">Year</th>
+                            <th scope="col">Plate</th>
+                            <th scope="col">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody   
+               
+                        >
+                          <tr          *ngFor="
+                          let d of carData">
+                            <td>{{d.car}}</td>
+                            <td>{{d.year}}</td>
+                            <td>{{d.plate}}</td>
+                            <td>
+                              <button (click)="chooseCar(d)" class="btn btn-outline-dark btn-xs">
+                                Choose
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+  
+      <div class="modal-footer">
+        <button
+          (click)="activeModal.close('Save click')"
+          type="button"
+          placement="top"
+          ngbtooltip="btn btn-light"
+          class="btn btn-light active txt-dark"
+        >
+          Close
+        </button>
+      </div>
+  </div>

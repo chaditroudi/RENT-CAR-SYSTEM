@@ -2,7 +2,7 @@ import { Injectable, OnChanges, OnDestroy, OnInit } from "@angular/core";
 import { Subject, BehaviorSubject, fromEvent } from "rxjs";
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { Router } from "@angular/router";
-import { UserManagementService } from "src/app/core/services/user-management.service";
+import { StorageService } from "src/app/core/services/storage.service";
 
 // Menu
 export interface Menu {
@@ -50,7 +50,7 @@ export class NavService implements OnDestroy {
   // Full screen
   public fullScreen: boolean = false;
 
-  constructor(private router: Router, private userServMang:UserManagementService) {
+  constructor(private router: Router, private userServMang:StorageService) {
     this.setScreenWidth(window.innerWidth);
     fromEvent(window, "resize")
       .pipe(debounceTime(1000), takeUntil(this.unsubscriber))
@@ -113,11 +113,15 @@ export class NavService implements OnDestroy {
           icon: "user",
           type: "sub",
           badgeType: "light-primary",
-          badgeValue: "1",
+          badgeValue: "2",
           active: false,
           children: [
-            { path: "/modules/contracts/contract-details", title: "Contract Page", type: "link" },
-          ],
+            { path: "/modules/contracts/contract/contract-details", title: "Contract Page", type: "link"
+          },
+          { path: "/modules/contracts/contract/contract-backups", title: "Backup Contract", type: "link"
+          
+        },
+        ],
         },
         {
           title: "Customers",
@@ -169,6 +173,7 @@ export class NavService implements OnDestroy {
           active: false,
           children: [
             { path: "/modules/contracts/contract-details", title: "Contract Page", type: "link" },
+            { path: "/modules/contracts/contract-backup", title: "Contract Backups", type: "link" },
           ],
         },
         {

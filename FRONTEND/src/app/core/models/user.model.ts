@@ -3,7 +3,5 @@ export interface User {
     name:string,
     password:string,
     email:string,
-    expDate:string,
-    accessToken:string,
 
 }

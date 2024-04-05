@@ -12,6 +12,5 @@ router.post('/login', loginValidator, authController.loginUser);
 
 // Authenticated Routes
 
-router.get('/profile', auth, authController.getProfile);
 
 module.exports = router;

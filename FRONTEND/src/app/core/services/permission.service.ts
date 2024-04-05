@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, of } from "rxjs";
 import { catchError, map, tap } from "rxjs/operators";
 import { baseUrl } from "../api/base.url";
 import { Permission } from "../models/permission.model";
-import { UserManagementService } from "./user-management.service";
+import { StorageService } from "./storage.service";
 
 @Injectable({
   providedIn: "root",
@@ -13,15 +13,17 @@ export class PermissionService {
   private permissionSource = new BehaviorSubject<any[]>([]);
   public permissions$ = this.permissionSource.asObservable();
 
+
   public accessToken ='';
 
-  constructor(private http: HttpClient,private userMangementServ:UserManagementService) {}
+  constructor(private http: HttpClient,private userMangementServ:StorageService) {}
 
 
 
 
    getHeaders():HttpHeaders{
     this.accessToken = JSON.parse(this.userMangementServ.getCurrentUser()).accessToken;
+    console.log(this.accessToken,"acctoken")
 
     console.log("token",this.accessToken)
     return new HttpHeaders({
@@ -29,6 +31,7 @@ export class PermissionService {
       'Authorization': `Bearer ${this.accessToken}`
     })
   }
+  
 
   fetchAllpermissions(): void {
     const headers = this.getHeaders();

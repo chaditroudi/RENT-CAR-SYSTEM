@@ -8,7 +8,6 @@ import { RouterModule } from "@angular/router";
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-import { DragulaModule } from "ng2-dragula";
 import { TranslateModule } from "@ngx-translate/core";
 // Components
 import { BreadcrumbComponent } from "./components/breadcrumb/breadcrumb.component";
@@ -67,7 +66,6 @@ import { ConfirmationModalComponent } from "./components/confirmation-modal/conf
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    DragulaModule.forRoot(),
     TranslateModule.forRoot(),
     SwiperModule,
   ],

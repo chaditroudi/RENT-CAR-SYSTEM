@@ -1,10 +1,12 @@
 
-require('dotenv').config;
 const express = require("express");
+require('dotenv').config();
 
 const app = express();
 const bodyParser = require("body-parser");
 var cors = require("cors");
+const cookieParser = require('cookie-parser');
+
 require("./src/utils/mongo-connection");
 
 
@@ -17,6 +19,8 @@ const appRoutes = require("./src/routes");
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
 app.use(cors());
+app.use(cookieParser());
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 

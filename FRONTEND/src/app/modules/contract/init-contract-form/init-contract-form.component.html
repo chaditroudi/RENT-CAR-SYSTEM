@@ -1,0 +1,632 @@
+<form class="theme-form mega-form" [formGroup]="contractForm">
+
+  <div class="col-md-12">
+    <ul class="action">
+      <li class="plus">
+        <a (click)="createContract()"
+          ><i class="icon-plus"></i>
+          </a>
+      </li>
+    </ul>
+  </div>
+  
+  <div class="row g-4">
+    <div class="col-md-3">
+      <div class="mb-3">
+        <label class="col-form-label">No</label>
+        <input class="form-control" type="text" placeholder="No" />
+      </div>
+    </div>
+  
+    <div class="col-md-3">
+      <div class="mb-3">
+        <label class="col-form-label">Version</label>
+        <input class="form-control" type="text" placeholder="Version"
+        
+        formControlName="version"
+  
+        />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="mb-3">
+        <label class="col-form-label">Sponsor/Driver</label>
+        <input class="form-control" type="text" placeholder="Sponsor"
+        
+        formControlName="sponsor"
+        />
+      </div>
+    </div>
+  </div>
+  
+  <div class="row g-6">
+    <div class="col-md-3">
+      <div class="mb-3">
+        <label class="col-form-label">Car out</label>
+        <input class="form-control" type="date" formControlName="car_out"   
+        />
+      </div>
+    </div>
+  
+    <div class="col-md-3">
+      <div class="mb-3">
+        <label class="col-form-label">Days</label>
+        <input class="form-control" type="number" formControlName="days" />
+  
+        <span>02/02/2024</span>
+      </div>
+    </div>
+  
+    <div class="col-md-4">
+      <div class="mb-3">
+        <label class="col-form-label">Car back</label>
+        <input class="form-control" type="date" formControlName="car_back" />
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="mb-3">
+        <label class="col-form-label"></label>
+        <div class="form-check checkbox checkbox-solid-primary">
+          <input
+            class="form-check-input"
+            id="solid3"
+            type="checkbox"
+            checked=""
+          />
+          <label class="form-check-label" for="solid3"></label>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row g-4">
+    <div class="col-md-3">
+      <div class="mb-3">
+        <label class="col-form-label">Car</label>
+        <div class="d-flex">
+          <input class="form-control" type="text" placeholder="Car" formControlName="car" />
+          <button
+            class="btn btn-outline-primary btn-xs"
+            (click)="openCarModal()"
+            >
+            Choose
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-md-3">
+      <div class="mb-3">
+        <label class="col-form-label">select one</label>
+        <select class="select form-control" formControlName="select_one">
+          <option>Kia</option>
+          <option>Bmw</option>
+          <option>Hondai</option>
+          <option>Benz</option>
+          <option>Kia sportage</option>
+        </select>
+      </div>
+    </div>
+  
+    <div class="col-md-3">
+      <div class="mb-3">
+        <label class="col-form-label">Deposit</label>
+        <div class="d-flex">
+          <input class="form-control" type="text" placeholder="Deposit" formControlName="deposit" />
+          <button
+            class="btn btn-outline-primary btn-xs"
+            (click)="modal.open(content)"
+          >
+            Choose
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-md-6">
+      <div class="mb-3">
+        <label class="col-form-label">Location</label>
+        <input class="form-control" type="text" placeholder="No"  formControlName="location"/>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="mb-3">
+        <label class="col-form-label">Hirer</label>
+        <div class="d-flex">
+          <input class="form-control" type="text" placeholder="Hirer" formControlName="hirer" />
+          <button class="btn btn-outline-primary btn-xs" (click)="goToHirer()">
+            Choose
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-md-12">
+      <div class="mb-3">
+        <label class="col-form-label">Comments </label>
+        <textarea
+          class="comments form-control"
+          type="text"
+          placeholder="No"
+          formControlName="comments"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3 m-t-15 custom-radio-ml p-2">
+    <div class="form-check radio radio-primary">
+      <div class="d-flex">
+        <div class="col-sm-2">
+          <input
+            class="form-check-input"
+            id="radio22"
+            type="radio"
+            name="radio1"
+            value="option1"
+          />
+          <label class="form-check-label" for="radio22">Daily</label>
+        </div>
+        <div class="col-auto">
+          <input type="number" class="form-control"             formControlName="daily"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="form-check radio radio-primary">
+      <div class="d-flex">
+        <div class="col-sm-2">
+          <input
+            class="form-check-input"
+            id="radio22"
+            type="radio"
+            name="radio1"
+            value="option1"
+          />
+          <label class="form-check-label" for="radio22">Weekly</label>
+        </div>
+        <div class="col-auto">
+          <input type="number" class="form-control" formControlName="weekly" />
+        </div>
+      </div>
+    </div>
+    <div class="form-check radio radio-primary">
+      <div class="d-flex">
+        <div class="col-sm-2">
+          <input
+            class="form-check-input"
+            id="radio22"
+            type="radio"
+            name="radio1"
+            value="option1"
+          />
+          <label class="form-check-label" for="radio22" formControlName="monthly">Monthly</label>
+        </div>
+        <div class="col-auto">
+          <input type="number" class="form-control" />
+        </div>
+      </div>
+    </div>
+    <div class="form-check radio radio-primary">
+      <div class="d-flex">
+        <div class="col-sm-2">
+          <input
+            class="form-check-input"
+            id="radio22"
+            type="radio"
+            name="radio1"
+            value="option1"
+          />
+          <label class="form-check-label" for="radio22">Annual</label>
+        </div>
+        <div class="col-auto">
+          <input type="number" class="form-control" formControlName="annual" />
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <hr class="mt-4 mb-4" />
+  <div class="row">
+    <div class="col-sm-12 col-xl-12">
+      <ul
+        ngbNav
+        #nav="ngbNav"
+        [(activeId)]="active3"
+        (navChange)="onNavChange1($event)"
+        class="nav-tabs"
+      >
+        <li [ngbNavItem]="1">
+          <a ngbNavLink>Car parts</a>
+          <ng-template ngbNavContent>
+            <div class="row">
+              <div class="col-md-12">
+                <h5 class="mb-3 pt-4">Out</h5>
+  
+                <div class="animate-chk">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="mb-3 pt-2">
+                        <input
+                          class="form-control"
+                          type="text"
+                          placeholder="Fuel out"
+                          formControlName="fuel_out"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="mb-3 pt-2">
+                        <input
+                          class="form-control"
+                          type="text"
+                          placeholder="No KM out"
+                          formControlName="no_km_out"
+                        />
+                      </div>
+                    </div>
+                  </div>
+  
+                  <div class="row">
+                    <div class="col">
+                      <label for="chk-ani" class="d-block"
+                        ><input
+                          id="chk-ani"
+                          type="checkbox"
+                          checked=""
+                          class="checkbox_animated"
+                          
+                        />
+                        Spare wheel </label
+                      ><label for="chk-ani1" class="d-block"
+                        ><input
+                          id="chk-ani1"
+                          type="checkbox"
+                          class="checkbox_animated"
+                        />
+                        Wheel cover </label
+                      ><label for="chk-ani2" class="d-block"
+                        ><input
+                          id="chk-ani2"
+                          type="checkbox"
+                          checked=""
+                          class="checkbox_animated"
+                        />
+                        Tools & Jack </label
+                      ><label for="chk-ani3" class="d-block"
+                        ><input
+                          id="chk-ani3"
+                          type="checkbox"
+                          class="checkbox_animated"
+                        />
+                        Radio / Tape
+                      </label>
+                      <label for="chk-ani4" class="d-block"
+                        ><input
+                          id="chk-ani4"
+                          type="checkbox"
+                          class="checkbox_animated"
+                        />
+                        Fire Extinguisher
+                      </label>
+                    </div>
+                    <div class="col">
+                      <label for="chk-ani" class="d-block"
+                        ><input
+                          id="chk-ani"
+                          type="checkbox"
+                          checked=""
+                          class="checkbox_animated"
+                        />
+                        First AID box</label
+                      ><label for="chk-ani1" class="d-block"
+                        ><input
+                          id="chk-ani1"
+                          type="checkbox"
+                          class="checkbox_animated"
+                        />
+                        Lights </label
+                      ><label for="chk-ani2" class="d-block"
+                        ><input
+                          id="chk-ani2"
+                          type="checkbox"
+                          checked=""
+                          class="checkbox_animated"
+                        />
+                        GPS </label
+                      ><label for="chk-ani3" class="d-block"
+                        ><input
+                          id="chk-ani3"
+                          type="checkbox"
+                          class="checkbox_animated"
+                        />
+                        Heater / AC
+                      </label>
+                      <label for="chk-ani3" class="d-block"
+                        ><input
+                          id="chk-ani3"
+                          type="checkbox"
+                          class="checkbox_animated"
+                        />
+                        Fuel panel
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr class="mt-4 mb-4" />
+  
+            <div class="row">
+              <div class="col-md-12">
+                <h5 class="mb-3 pt-4">Back</h5>
+                <div class="animate-chk">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="mb-3 pt-2">
+                        <input
+                          class="form-control"
+                          type="text"
+                          placeholder="Fuel back"
+                          formControlName="fuel_back"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="mb-3 pt-2">
+                        <input
+                          class="form-control"
+                          type="text"
+                          placeholder="No Km back"
+                          formControlName="no_km_back"
+
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <label for="chk-ani" class="d-block"
+                        ><input
+                          id="chk-ani"
+                          type="checkbox"
+                          checked=""
+                          class="checkbox_animated"
+                        />
+                        Spare wheel </label
+                      ><label for="chk-ani1" class="d-block"
+                        ><input
+                          id="chk-ani1"
+                          type="checkbox"
+                          class="checkbox_animated"
+                        />
+                        Wheel cover </label
+                      ><label for="chk-ani2" class="d-block"
+                        ><input
+                          id="chk-ani2"
+                          type="checkbox"
+                          checked=""
+                          class="checkbox_animated"
+                        />
+                        Tools & Jack </label
+                      ><label for="chk-ani3" class="d-block"
+                        ><input
+                          id="chk-ani3"
+                          type="checkbox"
+                          class="checkbox_animated"
+                        />
+                        Radio / Tape
+                      </label>
+                      <label for="chk-ani4" class="d-block"
+                        ><input
+                          id="chk-ani4"
+                          type="checkbox"
+                          class="checkbox_animated"
+                        />
+                        Fire Extinguisher
+                      </label>
+                    </div>
+                    <div class="col">
+                      <label for="chk-ani" class="d-block"
+                        ><input
+                          id="chk-ani"
+                          type="checkbox"
+                          checked=""
+                          class="checkbox_animated"
+                        />
+                        First AID box</label
+                      ><label for="chk-ani1" class="d-block"
+                        ><input
+                          id="chk-ani1"
+                          type="checkbox"
+                          class="checkbox_animated"
+                        />
+                        Lights </label
+                      ><label for="chk-ani2" class="d-block"
+                        ><input
+                          id="chk-ani2"
+                          type="checkbox"
+                          checked=""
+                          class="checkbox_animated"
+                        />
+                        GPS </label
+                      ><label for="chk-ani3" class="d-block"
+                        ><input
+                          id="chk-ani3"
+                          type="checkbox"
+                          class="checkbox_animated"
+                        />
+                        Heater / AC
+                      </label>
+                      <label for="chk-ani3" class="d-block"
+                        ><input
+                          id="chk-ani3"
+                          type="checkbox"
+                          class="checkbox_animated"
+                        />
+                        Fuel panel
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="2">
+          <a ngbNavLink>Payments</a>
+          <ng-template ngbNavContent>
+            <div class="row g-4">
+              <div class="col-md-3">
+                <div class="mb-3">
+                  <div class="d-flex">
+                    <input
+                      type="text"
+                      ng-model="val1"
+                      class="form-control"
+                      formControlName="daily_val1"
+
+                    /><strong style="color: black" class="ps-1 pt-3 pe-1"
+                      >X</strong
+                    ><input class="form-control" type="text" ng-model="val2" formControlName="daily_val2" />
+                    <strong style="color: black" class="ps-1 pt-3 pe-1">=</strong>
+                    <input
+                      type="text"
+                      ng-model="val1"
+                      class="form-control"
+                      formControlName="daily_result"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <div
+              class="row row-cols-sm-3 theme-form mt-3 form-bottom align-items-center g-2 ng-untouched ng-pristine ng-valid"
+            >
+              <div class="col-md-3 d-flex">
+                <input
+                  type="number"
+                  placeholder="Overtime"
+                  class="form-control"
+                />
+              </div>
+  
+              <div class="d-flex">
+                <button class="btn btn-primary">Set</button>
+              </div>
+            </div>
+  
+            <div
+              class="row row-cols-sm-3 theme-form mt-3 form-bottom align-items-center g-2 ng-untouched ng-pristine ng-valid"
+            >
+              <div class="col-md-3 d-flex">
+                <input
+                  type="number"
+                  placeholder="Driver / Petrol"
+                  class="form-control"
+                />
+              </div>
+  
+              <div class="d-flex">
+                <button class="btn btn-primary">Calc</button>
+              </div>
+            </div>
+            <div
+              class="row row-cols-sm-3 theme-form mt-3 form-bottom align-items-center g-2 ng-untouched ng-pristine ng-valid"
+            >
+              <div class="col-md-3 d-flex">
+                <input type="number" placeholder="Fines" class="form-control" />
+              </div>
+  
+              <div class="d-flex">
+                <button class="btn btn-primary">Show</button>
+              </div>
+            </div>
+            <div
+              class="row row-cols-sm-3 theme-form mt-3 form-bottom align-items-center g-2 ng-untouched ng-pristine ng-valid"
+            >
+              <div class="col-md-3 d-flex">
+                <input
+                  type="number"
+                  placeholder="Overdrive / Other"
+                  class="form-control"
+                />
+              </div>
+  
+              <div class="d-flex">
+                <button class="btn btn-primary">Set</button>
+              </div>
+  
+              <hr class="mt-4 mb-4" />
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Advance</th>
+                    <th scope="col">Discount</th>
+                    <th scope="col">Sum</th>
+                    <th scope="col">Payable</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <input type="number" class="form-control" formControlName="advance" />
+                    </td>
+                    <td>
+                      <input type="number" class="form-control"  formControlName="discount"/>
+                    </td>
+                    <td>
+                      <input type="number" class="form-control" formControlName="sum" />
+                    </td>
+                    <td>
+                      <input type="number" class="form-control" formControlName="payable" />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="3">
+          <a ngbNavLink>Car body</a>
+          <ng-template ngbNavContent>
+            <img class="img-fluid w-100" src="assets/images/cars/car_body.png" />
+          </ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="nav" class="mt-2"></div>
+    </div>
+  </div>
+  
+
+  </form>
+<div class="card-body">
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Our Available Cars</h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      ></button>
+    </div>
+
+
+    <div class="modal-footer">
+      <button
+        (click)="modal.close('Save click')"
+        type="button"
+        placement="top"
+        ngbtooltip="btn btn-light"
+        class="btn btn-light active txt-dark"
+      >
+        Close
+      </button>
+    </div>
+  </ng-template>
+</div>

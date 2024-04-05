@@ -1,0 +1,20 @@
+@import "../../../../assets/scss/utils/variables.scss";
+h1,h2,h3,h4,h5,h6,label {
+    color:black;
+}
+span {
+    color: $primary-color;
+}
+
+.comments ,.select {
+    box-shadow: none;
+    border-color: #efefef;
+    background-color: #fff;
+    font-size: 14px;
+    color: #898989;
+    padding: 12px 10px;
+    box-shadow: none;
+}
+hr {
+    color: $dark-border-color;
+}

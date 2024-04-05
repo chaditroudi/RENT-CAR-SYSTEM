@@ -1,0 +1,58 @@
+<app-breadcrumb
+  [title]="'Contracts Page'"
+  [items]="['Forms', 'Form Layout']"
+  [active_item]="'Contracts Page'"
+></app-breadcrumb>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          <h5>Backup Contracts</h5>
+        </div>
+        <div class="card-body">
+          <div class="product-list-custom custom-datatable">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Serial</th>
+                    <th scope="col">Version</th>
+                    <th scope="col">Days</th>
+                    <th scope="col">Brand</th>
+                    <th scope="col">Car</th>
+                    <th scope="col">car Back</th>
+                    <th scope="col">Car out</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Daily</th>
+                    <th scope="col">Weekly</th>
+                    <th scope="col">Monthly</th>
+                    <th scope="col">Annual</th>
+                  </tr>
+                </thead>
+                <tbody *ngFor="let item of contracts">
+                  <tr>
+                    <td>{{ item.serial }}</td>
+                    <td>{{ item.version }}</td>
+                    <td>{{ item.days}}</td>
+                    <td>{{ item.select_one}}</td>
+                    <td>{{ item.car}}</td>
+                    <td>{{ item.car_back | date:'yyyy-mm-dd'}}</td>
+                    <td>{{ item.car_out | date:'yyyy-mm-dd'}}</td>
+                    <td>{{ item.location}}</td>
+                    <td>{{ item.daily}}</td>
+                    <td>{{ item.weekly}}</td>
+                    <td>{{ item.monthly}}</td>
+                    <td>{{ item.annual}}</td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

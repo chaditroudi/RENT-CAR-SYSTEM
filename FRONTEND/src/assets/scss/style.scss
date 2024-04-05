@@ -52,8 +52,7 @@ body[class="dark-only"] {
 /* ---------------------
 	*** Icons Scss ***
 -----------------------*/
-@import "vendors/whether-icon";
-@import "vendors/flag-icon";
+//@import "vendors/whether-icon";
 @import "vendors/icofont";
 @import "vendors/themify";
 
@@ -70,7 +69,6 @@ body[class="dark-only"] {
 @import "components/alert.scss";
 @import "components/avatars.scss";
 @import "components/badge.scss";
-@import "components/bookmark.scss";
 @import "components/breadcrumb.scss";
 @import "components/builders.scss";
 

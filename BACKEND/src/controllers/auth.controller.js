@@ -2,13 +2,14 @@ const User = require('../models/user.model');
 
 const { validationResult } = require('express-validator');
 
+const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
 
-const jwt = require('jsonwebtoken');
 
 
 const UserPermission = require('../models/user.permission');
 const Permission = require('../models/permission.model');
+const generateAccessToken = require('../helper/token');
 
 
 // Register New User API Method
@@ -94,10 +95,6 @@ const registerUser = async(req, res) => {
 
 // Generating the JWT Access Token
 
-const generateAccessToken = async(user) => {
-    const token = jwt.sign(user, "secret", { expiresIn:"7d" });
-    return token;
-}
 
 // Login User API Method
 
@@ -134,14 +131,30 @@ const loginUser = async(req, res) => {
                 msg: 'E-mail or Password does not match!'
             });
         }
+        const user = {
+            email: userData.email,
+            role: userData.role,
 
-        const accessToken = await generateAccessToken({ user: userData });
+        }
 
-        const expDate = new Date(Date.now() + 7 *24 * 60 * 60 * 1000).toLocaleString();
-        //store token and date:
-        userData.accessToken = accessToken;
-        userData.expDate =  expDate
+        const gat = await generateAccessToken(user);
+
+        expiration = gat.expiration;
+        token = gat.token
+       
+       
+        res.cookie('token', token, {
+            expiration: new Date(Date.now() + gat.expiration).toLocaleString(),
+            secure: false, 
+            httpOnly: true,
+          });
+
+
+
+  
         
+          userData.accessToken = token;
+          userData.expDate = expiration;
         await userData.save();
 
         // Fetch User Data with all the assigned permissions
@@ -185,8 +198,8 @@ const loginUser = async(req, res) => {
         return res.status(200).json({
             success: true,
             msg: 'You have successfully logged in.',
-            accessToken: accessToken,
-            expDate:expDate,
+            accessToken: gat.token,
+            expDate:gat.expiration,
             tokenType:'Bearer Token',
             data: result[0]
         });

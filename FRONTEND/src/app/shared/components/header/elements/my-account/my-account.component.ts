@@ -1,4 +1,4 @@
-import { UserManagementService } from './../../../../../core/services/user-management.service';
+import { StorageService } from '../../../../../core/services/storage.service';
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { AuthService } from "src/app/core/services/auth.service";
@@ -14,10 +14,11 @@ export class MyAccountComponent implements OnInit {
   public roleData:string;
   public profileImg: "assets/images/dashboard/user-profile.png";
 
-  constructor(public router: Router, private authService: AuthService, private userMangementServ: UserManagementService) {
+  constructor(public router: Router, private authService: AuthService, private userMangementServ: StorageService) {
     if (this.authService.isLoggedIn()) {
       console.log("true");
       
+      console.log("userconnte",this.userMangementServ.getCurrentUser());
       this.userName = JSON.parse(this.userMangementServ.getCurrentUser()).data.name;
 
       this.role = JSON.parse(this.userMangementServ.getCurrentUser()).data.role;

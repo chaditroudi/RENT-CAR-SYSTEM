@@ -248,7 +248,8 @@ $datepickerTransitionOffset: 8px !default;
 // -------------------------
 
 .datepicker--cell-year {
-  width: 100% / $datepickerYearsPerRow;
+  width: calc(100% / $datepickerYearsPerRow); 
+
   height: 33.33%;
 
   &.-other-decade- {

@@ -54,7 +54,6 @@ export class CarService {
   delete(id: any): Observable<any> {
     return this.http.delete(`${baseUrl}/car/delete-car/${id}`).pipe(tap(()=> {
       const newData = this.carSource.value.filter(item => item._id !==id);
-      console.log("new data=",newData);
 
       this.carSource.next(newData);
     }))}

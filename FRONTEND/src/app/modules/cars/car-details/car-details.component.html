@@ -69,7 +69,6 @@
         <div class="col-xl-12">
           <div class="card">
             <div class="card-header">
-           
               <li class="text-end">
                 <button class="btn btn-primary" (click)="modal.open(content)">
                   Add new car
@@ -80,7 +79,12 @@
             <div class="card-body">
               <form [formGroup]="carForm" class="theme-form mega-form">
                 <div *ngIf="formData.length > 0; else noDataFound">
-                  <div *ngFor="let c of formData | paginate: { itemsPerPage: 1, currentPage: p } ">
+                  <div
+                    *ngFor="
+                      let c of formData
+                        | paginate : { itemsPerPage: 1, currentPage: p }
+                    "
+                  >
                     <div class="row">
                       <div class="col-md-12">
                         <ul class="action">
@@ -88,16 +92,18 @@
                             <a href="#"><i class="icon-plus-alt"></i></a>
                           </li>
                           <li class="edit">
-                            <a (click)="updateCar(c._id)"><i class="icon-pencil-alt"></i></a>
+                            <a (click)="updateCar(c._id)"
+                              ><i class="icon-pencil-alt"></i
+                            ></a>
                           </li>
                           <li class="delete">
                             <a (click)="open()"
                               ><i class="icon-trash mb-3"></i>
-  
+
                               <confirmation-modal
                                 #confirmationModal
                                 (newConfirmationEvent)="
-                                  getConfirmationValue($event,c._id)
+                                  getConfirmationValue($event, c._id)
                                 "
                                 [modalStyle]="modalStyle"
                                 [modalTitle]="modalTitle"
@@ -114,9 +120,7 @@
                             ></a>
                           </li>
                         </ul>
-
                       </div>
-             
                     </div>
                     <div>
                       <div class="row g-2">
@@ -128,8 +132,7 @@
                               type="text"
                               placeholder="Car code"
                               [value]="c.serial"
-                              (change)="onChangeInputValue($event,0)"
-                          
+                              (change)="onChangeInputValue($event, 0)"
                             />
                           </div>
                         </div>
@@ -142,8 +145,7 @@
                               type="text"
                               placeholder="Car name"
                               [value]="c.car"
-                              (change)="onChangeInputValue($event,1)"
-
+                              (change)="onChangeInputValue($event, 1)"
                             />
                             />
                           </div>
@@ -159,8 +161,7 @@
                               type="text"
                               placeholder="Enter year"
                               [value]="c.year"
-                              (change)="onChangeInputValue($event,2)"
-
+                              (change)="onChangeInputValue($event, 2)"
                             />
                             />
                           </div>
@@ -173,8 +174,7 @@
                               type="text"
                               placeholder="Enter Plate"
                               [value]="c.plate"
-                              (change)="onChangeInputValue($event,3)"
-
+                              (change)="onChangeInputValue($event, 3)"
                             />
 
                             />
@@ -188,8 +188,7 @@
                               type="text"
                               placeholder="Car code"
                               [value]="c.code"
-                              (change)="onChangeInputValue($event,0)"
-                          
+                              (change)="onChangeInputValue($event, 0)"
                             />
                           </div>
                         </div>
@@ -205,10 +204,8 @@
                               class="form-control"
                               type="text"
                               placeholder="Daily"
-                              (change)="onChangeInputValue($event,4)"
+                              (change)="onChangeInputValue($event, 4)"
                               [value]="c.daily"
-
-                              
                             />
                           </div>
                         </div>
@@ -220,9 +217,8 @@
                               class="form-control"
                               type="text"
                               placeholder="Weekly"
-                              (change)="onChangeInputValue($event,5)"
+                              (change)="onChangeInputValue($event, 5)"
                               [value]="c.weekly"
-
                             />
                           </div>
                         </div>
@@ -233,9 +229,8 @@
                               class="form-control"
                               type="text"
                               placeholder="Monthly"
-                              (change)="onChangeInputValue($event,6)"
+                              (change)="onChangeInputValue($event, 6)"
                               [value]="c.monthly"
-
                             />
                           </div>
                         </div>
@@ -246,9 +241,8 @@
                               class="form-control"
                               type="text"
                               placeholder="Annual"
-                              (change)="onChangeInputValue($event,7)"
+                              (change)="onChangeInputValue($event, 7)"
                               [value]="c.annual"
-
                             />
                           </div>
                         </div>
@@ -264,9 +258,8 @@
                               class="form-control"
                               type="text"
                               placeholder="Current"
-                              (change)="onChangeInputValue($event,8)"
+                              (change)="onChangeInputValue($event, 8)"
                               [value]="c.current"
-
                             />
                           </div>
                         </div>
@@ -278,9 +271,8 @@
                               class="form-control"
                               type="text"
                               placeholder="Next Service"
-                              (change)="onChangeInputValue($event,9)"
+                              (change)="onChangeInputValue($event, 9)"
                               [value]="c.next_service"
-
                             />
                           </div>
                         </div>
@@ -295,9 +287,8 @@
                               class="form-control"
                               type="date"
                               placeholder="Insurance"
-                              (change)="onChangeInputValue($event,10)"
-                              [value]="c.insurance | date:'yyyy-MM-dd'"
-
+                              (change)="onChangeInputValue($event, 10)"
+                              [value]="c.insurance | date : 'yyyy-MM-dd'"
                             />
                           </div>
                         </div>
@@ -309,9 +300,8 @@
                               class="form-control"
                               type="date"
                               placeholder="Registration"
-                              (change)="onChangeInputValue($event,11)"
-                              [value]="c.registration | date: 'yyyy-MM-dd'"
-
+                              (change)="onChangeInputValue($event, 11)"
+                              [value]="c.registration | date : 'yyyy-MM-dd'"
                             />
                           </div>
                         </div>
@@ -325,9 +315,8 @@
                               class="form-control"
                               type="text"
                               placeholder="Engine No"
-                              (change)="onChangeInputValue($event,12)"
+                              (change)="onChangeInputValue($event, 12)"
                               [value]="c.engine_no"
-
                             />
                           </div>
                         </div>
@@ -338,9 +327,8 @@
                               class="form-control"
                               type="text"
                               placeholder="Chassis No"
-                              (change)="onChangeInputValue($event,13)"
+                              (change)="onChangeInputValue($event, 13)"
                               [value]="c.chassis_no"
-
                             />
                           </div>
                         </div>
@@ -352,9 +340,8 @@
                               class="form-control"
                               type="number"
                               placeholder="0"
-                              (change)="onChangeInputValue($event,14)"
+                              (change)="onChangeInputValue($event, 14)"
                               [value]="c.fuel"
-
                             />
                           </div>
                         </div>
@@ -365,9 +352,8 @@
                               class="form-control"
                               type="text"
                               placeholder="Petrol charge"
-                              (change)="onChangeInputValue($event,15)"
+                              (change)="onChangeInputValue($event, 15)"
                               [value]="c.petrol_charge"
-
                             />
                           </div>
                         </div>
@@ -379,24 +365,35 @@
                               id="exampleFormControlTextarea4"
                               rows="3"
                               formControlName="comments"
-                              (change)="onChangeInputValue($event,16)"
+                              (change)="onChangeInputValue($event, 16)"
                               [value]="c.comments"
-
                             ></textarea>
                           </div>
                         </div>
                       </div>
                     </div>
-                
-                
+
                     <div class="card-footer text-end">
                       <nav>
                         <div class="row">
                           <div class="m-t-15 btn-showcase">
-                            <ul class="pagination pagination-primary">
+                            <ul>
                               <li>
-                                <pagination-controls (pageChange)="p   = $event"></pagination-controls>
-
+                                <pagination-controls
+                                  class="custom-pagination"
+                                  (pageChange)="p = $event"
+                                 
+                                  (pageBoundsCorrection)="pageChanged($event)"
+                                  maxSize="10"
+                                  directionLinks="true"
+                                  autoHide="true"
+                                  responsive="true"
+                                  previousLabel="Previous"
+                                  nextLabel="Next"
+                                  screenReaderPaginationLabel="Pagination"
+                                  screenReaderPageLabel="page"
+                                  screenReaderCurrentLabel="You're on page">
+                                </pagination-controls>
                               </li>
                             </ul>
                           </div>
@@ -404,18 +401,13 @@
                       </nav>
                     </div>
                   </div>
-
-
-
                 </div>
-       
 
                 <ng-template #noDataFound>
                   <app-init-car-form></app-init-car-form>
                 </ng-template>
               </form>
             </div>
-           
           </div>
         </div>
       </div>
@@ -436,7 +428,8 @@
                   <td>Color</td>
                   <td>
                     <input type="text" class="form-control" value="color" />
-                  </td>,
+                  </td>
+                  ,
                 </tr>
                 <tr>
                   <td>lorem1 epsum</td>

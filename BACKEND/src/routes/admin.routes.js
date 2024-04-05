@@ -2,12 +2,12 @@ const express = require('express');
 const router = express();
 
 const auth = require('../middleware/auth.middleware');
+const { OnlyAdminCanAccess } = require('../middleware/admin.midlleware');
 
 const permissionController = require('../controllers/permission.controller');
 
 const roleController = require('../controllers/role.controller');
 
-const { OnlyAdminCanAccess } = require('../middleware/admin.midlleware');
 
 const { permissionAddValidator, permissionDeleteValidator, permissionUpdateValidator, storeRoleValidator } = require('../helper/admin-validator.helper');
 

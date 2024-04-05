@@ -1,10 +1,18 @@
-const express = require("express");
-const contractController = require("../controllers/contract.controller")
-const contractRouter = express.Router();
+const express = require('express');
+const contractController = require('../controllers/contract.controller');
+const router = express.Router();
 
-contractRouter.route("/create-contract").post(contractController.createcontract);
-contractRouter.route("/update-contract/:id").put(contractController.updateContract);
-contractRouter.route("/delete-contract/:id").delete(contractController.deleteContract);
-contractRouter.route("/display-contracts").get(contractController.getAllContracts);
+const auth = require('../middleware/auth.middleware');
+const { OnlyAdminCanAccess } = require('../middleware/admin.midlleware');
 
-module.exports = contractRouter;
+
+router.post('/', contractController.createContract,auth, OnlyAdminCanAccess,);
+router.get('/', contractController.getAllContracts,auth, OnlyAdminCanAccess,);
+router.put('/:id', contractController.updateContract,auth, OnlyAdminCanAccess,);
+router.delete('/:id', contractController.deleteContract,auth, OnlyAdminCanAccess,);
+router.get('/:id', contractController.getContractById,auth, OnlyAdminCanAccess,);
+
+
+
+
+module.exports = router;

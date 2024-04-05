@@ -1,5 +1,17 @@
 <!-- Page Sidebar Start-->
-
+<div class="logo-wrapper">
+  <a routerLink="/">
+    <img class="img-fluid for-light" src="assets/images/logo/logo.png" alt="" />
+    <img class="img-fluid for-dark" src="assets/images/logo/logo_dark.png" alt="" />
+  </a>
+  <div class="back-btn" (click)="sidebarToggle()">
+    <i class="fa fa-angle-left"></i>
+  </div>
+  <div class="toggle-sidebar" (click)="sidebarToggle()">
+    <i data-feather="grid" class="status_toggle middle sidebar-toggle"></i>
+    <!-- <app-feather-icons icon="'grid'" class="status_toggle middle sidebar-toggle"></app-feather-icons> -->
+  </div>
+</div>
 <div class="logo-icon-wrapper">
   <a href="javascript:void(0)">
     <img class="img-fluid" src="assets/images/logo/logo-icon.png" alt="" />
@@ -10,7 +22,7 @@
     <!-- <i data-feather="arrow-left" ></i> -->
     <app-feather-icons [icon]="'arrow-left'"></app-feather-icons>
   </div>
-  <div id="sidebar-menu" [ngStyle]="{ marginLeft: this.layout.config.settings.layout == 'Rome' || 'Singapore' || 'Barcelona' ? margin + 'px' : '0px' }">
+  <div id="sidebar-menu">
     <ul class="sidebar-links custom-scrollbar">
       <div class="simplebar-wrapper">
         <div class="simplebar-mask">

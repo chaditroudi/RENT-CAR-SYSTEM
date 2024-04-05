@@ -5,131 +5,7 @@
 ></app-breadcrumb>
 
 <div class="container">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-12 col-xl-12">
-        <div class="row">
-          
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-header">
-             
-                <h5>Filter Records</h5>
-                <div class="text-end">
-                  <button
-                  class="btn btn-primary"
-                  (click)="goToListCus()"
-                 
-                >Add customer</button>
-                </div>
-              </div>
-        
-        
-              <div class="row">
-                <div class="people-list">
-                  <div class="search">
-                    <form
-                      novalidate=""
-                      class="theme-form ng-untouched ng-pristine ng-valid"
-                    >
-                      <div class="form-group ps-3 pt-2">
-                        <div class="row">
-                          <div class="col-auto">
-                            <label class="col-form-label">Code:</label>
-                            <input
-                              type="text"
-                              class="form-control"
-                              placeholder="Code"
-                            />
-                          </div>
-
-                          <div class="col-auto">
-                            <label class="col-form-label">Full name:</label>
-
-                            <input
-                              type="text"
-                              class="form-control"
-                              placeholder="Full name"
-                            />
-                          </div>
-                          <div class="col-auto">
-                            <label class="col-form-label">Passport:</label>
-
-                            <input
-                              type="text"
-                              class="form-control"
-                              placeholder="Passport"
-                            />
-                          </div>
-                          <div class="col-auto">
-                            <label class="col-form-label">Id:</label>
-
-                            <input
-                              type="text"
-                              class="form-control"
-                              placeholder="Id"
-                            />
-                          </div>
-                          <div class="col-auto">
-                            <label class="col-form-label">Mobile:</label>
-
-                            <input
-                              type="text"
-                              class="form-control"
-                              placeholder="Mobile"
-                            />
-                          </div>
-                          <div class="col-auto">
-                            <label class="col-form-label">Telephone:</label>
-
-                            <input
-                              type="text"
-                              class="form-control"
-                              placeholder="Telephone"
-                            />
-                          </div>
-                          <div class="col-auto">
-                            <label class="col-form-label">Email:</label>
-
-                            <input
-                              type="email"
-                              class="form-control"
-                              placeholder="Email"
-                            />
-                          </div>
-                          <div class="col-auto">
-                            <label class="col-form-label"
-                              >Driver license:</label
-                            >
-
-                            <input
-                              type="text"
-                              class="form-control"
-                              placeholder="Driver license"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </form>
-                    <
-                  </div>
-                </div>
-
-                <!-- <div class="row">
-                  <div class="col-md-12 text-end">
-                    <button class="btn btn-primary" (click)="modal.open(content)">
-                      Add new customers
-                    </button>
-                  </div>
-                </div> -->
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+  
 
 <div class="container-fluid">
   <div class="row">
@@ -139,7 +15,15 @@
           <div class="card">
             <div class="card-header">
               <h5 style="color: black">List of customers</h5>   
+              <div class="text-end">
+                <button
+                class="btn btn-primary"
+                (click)="goToListCus()"
+               
+              >Add customer</button>
+              </div>  
             </div>
+            
             <div class="card-body">
               <div *ngIf="customers.length > 0; else noData">
                 <div class="table-responsive signal-table">

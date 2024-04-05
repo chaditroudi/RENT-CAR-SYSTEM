@@ -4,7 +4,8 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
 import { ToastService } from 'src/app/shared/services/toast.service';
-import { UserManagementService } from 'src/app/core/services/user-management.service';
+import { StorageService } from "src/app/core/services/storage.service";
+import { LoadingBarService } from '@ngx-loading-bar/core';
 
 @Component({
   selector: "app-login",
@@ -17,9 +18,14 @@ export class LoginComponent implements OnInit {
   public show: boolean = false
   public errorMessage: any;
 
-  constructor(private fb: FormBuilder, public router: Router,
+
+ 
+  constructor(private fb: FormBuilder, 
+    
+    private loader: LoadingBarService,
+    public router: Router,
     private navService:NavService,
-    private userServMang:UserManagementService,
+    private userServMang:StorageService,
     private authService:AuthService,private toastr:ToastService) {
     this.loginForm = this.fb.group({
       email: ["admin@gmail.com", [Validators.required, Validators.email]],
@@ -28,6 +34,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  
 
   role = 0;
 
@@ -39,6 +47,7 @@ export class LoginComponent implements OnInit {
 
       console.log("resultat login cp",res);
 
+      
       this.toastr.showSuccess(res.msg);
 
       this.router.navigate(['/dashboard']);
