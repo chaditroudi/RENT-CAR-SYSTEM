@@ -20,7 +20,7 @@ const routes: Routes = [
         component: ContractBackupsComponent
       },
       {
-        path:"contract-invoice/:id",
+        path:"contract-invoice/:id/:price",
         component: ContractInvoiceComponent
       },
       

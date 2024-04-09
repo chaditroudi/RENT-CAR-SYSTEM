@@ -46,7 +46,7 @@ const carSchema = new Schema({
 carSchema.plugin(AutoIncrement, {id:'serial_seq',inc_field: 'serial'});
 
 // Create a model using the schema
-const car = mongoose.model('car', carSchema);
+const car = mongoose.model('Car', carSchema);
 
 
 

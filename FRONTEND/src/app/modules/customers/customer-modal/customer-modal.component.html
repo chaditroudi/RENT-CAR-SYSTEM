@@ -1,0 +1,95 @@
+<div class="card-body">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Customers</h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <form class="theme-form mega-form">
+        <div class="col-sm-12">
+          <div class="card">
+
+            <!-- <div class="card-header">
+              <app-search></app-search>
+            </div> -->
+            <div class="card-block row">
+              <div class="col-sm-12 col-lg-12 col-xl-12">
+                <div
+                  class="card-body pt-0 campaign-table click-drag-handler scroll-demo p-0"
+                >
+                  <div class="recent-table table-responsive currency-table">
+                      <div *ngIf="customerInfo.length > 0" >
+
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                              <th scope="col">Code</th>
+                              <th scope="col">Passport</th>
+                              <th scope="col">Title</th>
+                              <th scope="col">Full name</th>
+                              <th scope="col">Date of birth</th>
+                              <th scope="col">Dirver license</th>
+                              <th scope="col">Issued by</th>
+                              <th scope="col">Issued on</th>
+                              <th scope="col">mobile</th>
+          
+                              <th scope="col">Drv.Lns. Expiry</th>
+                              <th scope="col">Passport Expiry</th>
+                              <th scope="col">Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody  >
+                            <tr *ngFor="let customer of customerInfo">
+                              <th scope="row">{{customer.code}}</th>
+                              <td>{{customer.passport_number}}</td>
+                              <td>{{customer.id_number}}</td>
+                              <td>{{customer.fullName}}</td>
+                              <td>{{customer.date_birth | date:'yyyy-MM-dd'}}</td>
+                              <td>{{customer.license_number}}</td>
+                              <td>{{customer.issued_by}}</td>
+                              <td>{{customer.issued_on | date:'yyyy-MM-dd'}}</td>
+                              <td>{{customer.mobile}}</td>
+                              <td>{{customer.expiry_date | date:'yyyy-MM-dd'}}</td>
+                              <td>{{customer.passport_expiry | date:'yyyy-MM-dd'}}</td>
+          
+                          
+                    
+                     
+                              <td>
+                                <button (click)="chooseCustomer(customer)" class="btn btn-outline-dark btn-xs">
+                                    Choose
+                                  </button>
+                              </td>
+                            </tr>
+                        
+                           
+                          </tbody>
+                    </table>
+                  </div>
+
+              </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        (click)="activeModal.close('Save click')"
+        type="button"
+        placement="top"
+        ngbtooltip="btn btn-light"
+        class="btn btn-light active txt-dark"
+      >
+        Close
+      </button>
+    </div>
+</div>

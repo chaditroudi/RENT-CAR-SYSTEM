@@ -30,7 +30,7 @@ export class CarDetailsComponent implements OnInit, OnChanges {
 
   carForm: FormGroup;
 
-  inputsValue: string[] = Array(17).fill("");
+  inputsValue: string[] = Array(28).fill("");
 
   ngOnInit(): void {
     this.loadData();
@@ -145,6 +145,18 @@ export class CarDetailsComponent implements OnInit, OnChanges {
           chassis_no: this.inputsValue[13] || res.chassis_no,
           fuel: this.inputsValue[14] || res.fuel,
           petrolCharge: this.inputsValue[15] || res.petrol_charge,
+          color:this.inputsValue[17] || res.color,
+          category: this.inputsValue[18] || res.category,
+          origin: this.inputsValue[19] || res.origin,
+          doors: this.inputsValue[20] || res.doors,
+          seats:this.inputsValue[21] || res.seats,
+          cylinders: this.inputsValue[22] || res.cylinders,
+          insurance_company: this.inputsValue[23] || res.insurance_company,
+          type_of_insurance:this.inputsValue[24] || res.type_of_insurance,
+          owner_name:this.inputsValue[25] ||res.owner_name,
+          owner_id:this.inputsValue[26] ||res.owner_id,
+          nationality:this.inputsValue[27] || res.nationality
+
         };
   
         console.log("new data", newCar);

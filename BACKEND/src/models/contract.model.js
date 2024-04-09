@@ -11,8 +11,16 @@ const contractSchema = new mongoose.Schema({
   },
 
 
+    status: { type: String },
+
   car:{
-    type:String
+    type:Schema.Types.ObjectId,
+    ref:'Car'
+  },
+
+  owner:{
+    type:Schema.Types.ObjectId,
+    ref:'Customer'
   },
     version: {
       type: Number,
@@ -23,13 +31,13 @@ const contractSchema = new mongoose.Schema({
       
     },
     car_out: {
-      type: Date,
+      type: String,
     },
     days:{
       type:Number
     },
     car_back:{
-        type: Date,
+        type: String,
     },
     select_one: {
         type:String,
@@ -43,10 +51,7 @@ const contractSchema = new mongoose.Schema({
         type:String,
         
     },
-    hirer:{
-        type:String,
-        
-    },
+ 
     comments:{
         type:String,
         required: false
@@ -88,24 +93,42 @@ const contractSchema = new mongoose.Schema({
       },
       daily_val1:{
         type:Number,
+        default:0
+
       },
       daily_val2:{
         type:Number,
+        default:0
+
       },
       daily_result:{
         type:Number,
+        default:0
+
       },
       sum:{
         type:Number,
+        default:0
+
       },
       discount:{
         type:Number,
+        default:0
       },
       advance:{
         type:Number,
+        default:0
+
+      },
+      amount:{
+        type:Number,
+        default:0
+
       },
       payable:{
         type:Number,
+        default:0
+
       }
     
 })

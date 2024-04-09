@@ -81,7 +81,6 @@ body[class="dark-only"] {
 @import "components/dropdown.scss";
 @import "components/form-builder.scss";
 @import "components/form-input.scss";
-@import "components/form-wizard";
 @import "components/forms.scss";
 @import "components/form_builder-2.scss";
 @import "components/icons.scss";
@@ -89,49 +88,34 @@ body[class="dark-only"] {
 @import "components/loader.scss";
 @import "components/popover.scss";
 @import "components/print.scss";
-//@import "components/ribbon.scss";
 @import "components/switch.scss";
 @import "components/tab.scss";
 @import "components/table.scss";
-@import "components/touchspin.scss";
 @import "components/typeahead-search.scss";
 @import "components/scrollbar";
 
 //	*** pages ***
 
-@import "pages/blog.scss";
 @import "pages/bookmark-app.scss";
 @import "pages/cart.scss";
-@import "pages/chart.scss";
-@import "pages/chat.scss";
 @import "pages/checkout.scss";
-@import "pages/comingsoon.scss";
 @import "pages/contacts.scss";
 @import "pages/dashboard_2.scss";
-@import "pages/dashboard_3.scss";
-@import "pages/dashboard_4.scss";
-@import "pages/dashboard_5.scss";
+
 @import "pages/dashboard_default.scss";
 @import "pages/ecommerce.scss";
-@import "pages/email-application.scss";
 @import "pages/errorpage.scss";
 @import "pages/faq.scss";
 @import "pages/file.scss";
-@import "pages/gallery.scss";
-@import "pages/internationalization.scss";
 @import "pages/job-search.scss";
-@import "pages/jsgrid.scss";
 @import "pages/language.scss";
 @import "pages/learning.scss";
 @import "pages/login.scss";
 @import "pages/megaoption.scss";
 @import "pages/order-history.scss";
 @import "pages/page.scss";
-@import "pages/pricing.scss";
 @import "pages/progress.scss";
 @import "pages/projectlist.scss";
-@import "pages/social-app.scss";
-@import "pages/task.scss";
 @import "pages/timeline-v.scss";
 @import "pages/timeliny.scss";
 @import "pages/user-profile.scss";

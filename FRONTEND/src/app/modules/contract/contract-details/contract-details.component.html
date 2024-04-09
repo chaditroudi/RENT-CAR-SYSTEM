@@ -84,12 +84,10 @@
         <div class="col-sm-12">
           <div class="card">
             <div class="card-header">
-              <h5 class="text-center" style="color: green">
-                Contract is closed
-              </h5>
+           
 
               <div class="text-end">
-                <button (click)="resetForm()" class="btn btn-primary">
+                <button (click)="resetForm()" class="btn btn-success">
                   {{ buttonAdd }}
                 </button>
               </div>
@@ -105,6 +103,15 @@
                     "
                   >
                     <div class="row">
+                      <div class="col-md-12">
+                        <h5 class="text-center" >
+                          <span 
+                          [ngClass]="{'text-danger': status === 'Contract is Open', 'text-success': status === 'Contract is Closed'}"
+                          >{{mycb ? status : c.status}}
+                        </span>
+          
+                        </h5>
+                      </div>
                       <div class="col-md-12">
                         <ul class="action">
                           <li class="edit">
@@ -131,7 +138,7 @@
                           <li class="pdf">
                             <a
                               routerlink="/cars/car-details"
-                              href="/cars/car-details"
+                              (click)="goToInvoice(c._id)"
                               ><i class="icon-printer"></i
                             ></a>
                           </li>
@@ -145,6 +152,7 @@
                           <input
                             class="form-control"
                             type="text"
+                            disabled="true"
                             placeholder="No"
                             (change)="onChangeInputValue($event, 0)"
                             [value]="c.serial"
@@ -184,10 +192,11 @@
                           <label class="col-form-label">Car out</label>
                           <input
                             class="form-control"
-                            type="date"
+                            type="datetime-local"
                             (change)="onChangeInputValue($event, 3)"
-                            [value]="c.car_out | date : 'yyyy-MM-dd'"
+                            [value]="c.car_out | date : 'yyyy-MM-dd HH:mm'"
                           />
+                          
                         </div>
                       </div>
 
@@ -198,10 +207,10 @@
                             class="form-control"
                             type="number"
                             (change)="onChangeInputValue($event, 4)"
+
                             [value]="c.days"
                           />
 
-                          <span>02/02/2024</span>
                         </div>
                       </div>
 
@@ -210,9 +219,11 @@
                           <label class="col-form-label">Car back</label>
                           <input
                             class="form-control"
-                            type="date"
+                            type="datetime-local"
                             (change)="onChangeInputValue($event, 5)"
-                            [value]="c.car_back | date : 'yyyy-MM-dd'"
+                            [value]="c.car_back| date : 'yyyy-MM-dd HH:mm'"
+
+                            [ngClass]="{'disabled': isDisabled}"
                           />
                         </div>
                       </div>
@@ -226,7 +237,8 @@
                               class="form-check-input"
                               id="solid3"
                               type="checkbox"
-                              checked=""
+                              #mycb
+                              (click)="onCarBackEvent(mycb.checked)"
                             />
                             <label
                               class="form-check-label"
@@ -246,9 +258,8 @@
                               class="form-control"
                               type="text"
                               placeholder="Car "
-                              [value]="c.car"
+                              [value]="selectedCarData && selectedCarData ? selectedCarData : c.car?.car +'-'+c.car?.plate +'-'+c.car?.year"
                               (change)="onChangeInputValue($event, 6)"
-
                             />
                             <button
                               class="btn btn-outline-primary btn-xs"
@@ -263,11 +274,11 @@
                       <div class="col-md-3">
                         <div class="mb-3">
                           <label class="col-form-label">select one</label>
-                          <select class="select form-control" 
-                          
-                          (change)="onChangeInputValue($event, 7)"
-
-                          [value]="c.select_one">
+                          <select
+                            class="select form-control"
+                            (change)="onChangeInputValue($event, 7)"
+                            [value]="c.select_one"
+                          >
                             <option>Kia</option>
                             <option>Bmw</option>
                             <option>Hondai</option>
@@ -302,7 +313,8 @@
                           <input
                             class="form-control"
                             type="text"
-                            (change)="onChangeInputValue($event, 8)" [value]="c.location" 
+                            (change)="onChangeInputValue($event, 8)"
+                            [value]="c.location"
                             placeholder="No"
                           />
                         </div>
@@ -311,16 +323,17 @@
                         <div class="mb-3">
                           <label class="col-form-label">Hirer</label>
                           <div class="d-flex">
+                            
                             <input
                               class="form-control"
                               type="text"
                               placeholder="Hirer"
-                              (change)="onChangeInputValue($event, 10)" [value]="c.hirer" 
-
+                              (change)="onChangeInputValue($event, 10)"
+                              [value]="selectedCustomerData && selectedCustomerData ? selectedCustomerData : c.owner?.fullName +'-'+c.owner?.mobile +'-'+c.car?.year"
                             />
                             <button
                               class="btn btn-outline-primary btn-xs"
-                              (click)="goToHirer()"
+                              (click)="openCustomerModal()"
                             >
                               Choose
                             </button>
@@ -334,7 +347,8 @@
                           <textarea
                             class="comments form-control"
                             type="text"
-                            (change)="onChangeInputValue($event, 11)" [value]="c.comments"
+                            (change)="onChangeInputValue($event, 11)"
+                            [value]="c.comments"
                             placeholder="No"
                           ></textarea>
                         </div>
@@ -349,17 +363,21 @@
                               id="radio22"
                               type="radio"
                               name="radio1"
-                              value="option1"
+                              value="daily"
+                              (change)="onChangeRadioValue($event,c.days,c.daily)"
                             />
                             <label class="form-check-label" for="radio22"
                               >Daily</label
                             >
                           </div>
                           <div class="col-auto">
-                            <input type="number" class="form-control"
-                            
-                            [value]="c.daily"
-                            (change)="onChangeInputValue($event, 12)"
+                            <input
+                              type="number"
+                              class="form-control"
+                              [value]="c.daily "
+
+                              (change)="onChangeInputValue($event, 12)"
+                              [disabled]="c.daily!== ''"
                             />
                           </div>
                         </div>
@@ -372,17 +390,22 @@
                               id="radio22"
                               type="radio"
                               name="radio1"
-                              value="option1"
+                              (change)="onChangeRadioValue($event,c.days,c.weekly)"
+
+                              value="weekly"
                             />
                             <label class="form-check-label" for="radio22"
                               >Weekly</label
                             >
                           </div>
                           <div class="col-auto">
-                            <input type="number" class="form-control"
-                            
-                            [value]="c.weekly"
-                            (change)="onChangeInputValue($event, 13)"
+                            <input
+                              type="number"
+                              class="form-control"
+                              [value]="c.weekly"
+                              (change)="onChangeInputValue($event, 13)"
+                              [disabled]="c.weekly!== ''"
+
                             />
                           </div>
                         </div>
@@ -395,16 +418,22 @@
                               id="radio22"
                               type="radio"
                               name="radio1"
-                              value="option1"
+                              value="monthly"
+                              (change)="onChangeRadioValue($event,c.days,c.monthly)"
+
                             />
                             <label class="form-check-label" for="radio22"
                               >Monthly</label
                             >
                           </div>
                           <div class="col-auto">
-                            <input type="number" class="form-control"
-                            [value]="c.monthly"
-                            (change)="onChangeInputValue($event, 14)"
+                            <input
+                              type="number"
+                              class="form-control"
+                              [value]="c.monthly"
+                              (change)="onChangeInputValue($event, 14)"
+                              [disabled]="c.monthly!== ''"
+
                             />
                           </div>
                         </div>
@@ -417,16 +446,22 @@
                               id="radio22"
                               type="radio"
                               name="radio1"
-                              value="option1"
+                              value="annual"
+                              (change)="onChangeRadioValue($event,c.days,c.annual)"
+
                             />
                             <label class="form-check-label" for="radio22"
                               >Annual</label
                             >
                           </div>
                           <div class="col-auto">
-                            <input type="number" class="form-control" 
-                            [value]="c.annual"
-                            (change)="onChangeInputValue($event, 15)"
+                            <input
+                              type="number"
+                              class="form-control"
+                              [value]="c.annual"
+                              (change)="onChangeInputValue($event, 15)"
+                              [disabled]="c.annual!== ''"
+
                             />
                           </div>
                         </div>
@@ -459,8 +494,9 @@
                                             type="text"
                                             placeholder="Fuel out"
                                             [value]="c.fuel_out"
-                                            (change)="onChangeInputValue($event, 16)"
-
+                                            (change)="
+                                              onChangeInputValue($event, 16)
+                                            "
                                           />
                                         </div>
                                       </div>
@@ -473,94 +509,52 @@
                                             type="text"
                                             placeholder="No KM out"
                                             [value]="c.no_km_out"
-                                            (change)="onChangeInputValue($event, 17)"
-
+                                            (change)="
+                                              onChangeInputValue($event, 17)
+                                            "
                                           />
                                         </div>
                                       </div>
                                     </div>
-
                                     <div class="row">
                                       <div class="col">
-                                        <label for="chk-ani" class="d-block"
-                                          ><input
-                                            id="chk-ani"
+                                        <label
+                                          *ngFor="
+                                            let item of checkboxItems.slice(
+                                              0,
+                                              5
+                                            );
+                                            let i = index
+                                          "
+                                          class="d-block"
+                                        >
+                                          <input
                                             type="checkbox"
-                                            checked=""
+                                            [(ngModel)]="item.checked"
+                                            [ngModelOptions]="{standalone: true}"
+                                            (change)="onCheckboxChange()"
                                             class="checkbox_animated"
                                           />
-                                          Spare wheel </label
-                                        ><label for="chk-ani1" class="d-block"
-                                          ><input
-                                            id="chk-ani1"
-                                            type="checkbox"
-                                            class="checkbox_animated"
-                                          />
-                                          Wheel cover </label
-                                        ><label for="chk-ani2" class="d-block"
-                                          ><input
-                                            id="chk-ani2"
-                                            type="checkbox"
-                                            checked=""
-                                            class="checkbox_animated"
-                                          />
-                                          Tools & Jack </label
-                                        ><label for="chk-ani3" class="d-block"
-                                          ><input
-                                            id="chk-ani3"
-                                            type="checkbox"
-                                            class="checkbox_animated"
-                                          />
-                                          Radio / Tape
-                                        </label>
-                                        <label for="chk-ani4" class="d-block"
-                                          ><input
-                                            id="chk-ani4"
-                                            type="checkbox"
-                                            class="checkbox_animated"
-                                          />
-                                          Fire Extinguisher
+                                          {{ item.label }}
                                         </label>
                                       </div>
                                       <div class="col">
-                                        <label for="chk-ani" class="d-block"
-                                          ><input
-                                            id="chk-ani"
+                                        <label
+                                          *ngFor="
+                                            let item of checkboxItems.slice(5);
+                                            let i = index
+                                          "
+                                          class="d-block"
+                                        >
+                                          <input
                                             type="checkbox"
-                                            checked=""
+                                            [(ngModel)]="item.checked"
+                                            [ngModelOptions]="{standalone: true}"
+
+                                            (change)="onCheckboxChange()"
                                             class="checkbox_animated"
                                           />
-                                          First AID box</label
-                                        ><label for="chk-ani1" class="d-block"
-                                          ><input
-                                            id="chk-ani1"
-                                            type="checkbox"
-                                            class="checkbox_animated"
-                                          />
-                                          Lights </label
-                                        ><label for="chk-ani2" class="d-block"
-                                          ><input
-                                            id="chk-ani2"
-                                            type="checkbox"
-                                            checked=""
-                                            class="checkbox_animated"
-                                          />
-                                          GPS </label
-                                        ><label for="chk-ani3" class="d-block"
-                                          ><input
-                                            id="chk-ani3"
-                                            type="checkbox"
-                                            class="checkbox_animated"
-                                          />
-                                          Heater / AC
-                                        </label>
-                                        <label for="chk-ani3" class="d-block"
-                                          ><input
-                                            id="chk-ani3"
-                                            type="checkbox"
-                                            class="checkbox_animated"
-                                          />
-                                          Fuel panel
+                                          {{ item.label }}
                                         </label>
                                       </div>
                                     </div>
@@ -581,8 +575,9 @@
                                             type="text"
                                             placeholder="Fuel back"
                                             [value]="c.fuel_back"
-                                            (change)="onChangeInputValue($event, 18)"
-
+                                            (change)="
+                                              onChangeInputValue($event, 18)
+                                            "
                                           />
                                         </div>
                                       </div>
@@ -595,8 +590,9 @@
                                             type="text"
                                             placeholder="No KM back"
                                             [value]="c.no_km_back"
-                                            (change)="onChangeInputValue($event, 19)"
-
+                                            (change)="
+                                              onChangeInputValue($event, 19)
+                                            "
                                           />
                                         </div>
                                       </div>
@@ -694,15 +690,19 @@
                             <a ngbNavLink>Payments</a>
                             <ng-template ngbNavContent>
                               <div class="row g-4">
-                                <div class="col-md-3">
+                                <div class="col-md-6">
                                   <div class="mb-3">
                                     <div class="d-flex">
                                       <input
                                         type="text"
-                                        ng-model="val1"
+                                        ng-model="daily_val1"
                                         class="form-control"
-                                        [value]="c.daily_val1"
-                                        (change)="onChangeInputValue($event, 21)"
+                                        [value]="amount"
+                                        (change)="
+                                        onChangeInputValue($event, 30)
+                                      "
+                                        disabled
+                                      
                                       /><strong
                                         style="color: black"
                                         class="ps-1 pt-3 pe-1"
@@ -710,9 +710,10 @@
                                       ><input
                                         class="form-control"
                                         type="text"
-                                        ng-model="val2"
-                                        [value]="c.daily_val2"
-                                        (change)="onChangeInputValue($event, 22)"
+                                        ng-model="daily_val2"
+                                        [value]="price"
+                                        
+                                     
                                       />
                                       <strong
                                         style="color: black"
@@ -723,8 +724,10 @@
                                         type="text"
                                         ng-model="val1"
                                         class="form-control"
-                                        [value]="c.daily_result"
-                                        (change)="onChangeInputValue($event, 23)"
+                                        [value]="result"
+                                        (change)="
+                                          onChangeInputValue($event, 23)
+                                        "
                                       />
                                     </div>
                                   </div>
@@ -800,48 +803,67 @@
                                       <th scope="col">Discount</th>
                                       <th scope="col">Sum</th>
                                       <th scope="col">Payable</th>
+                                      <th scope="col">Calculate</th>
                                     </tr>
                                   </thead>
                                   <tbody>
                                     <tr>
                                       <td>
-                                        <input
+                                        <input #advance
                                           type="number"
-                                          class="form-control"
-
-                                          [value]="c.advance"
-                                          (change)="onChangeInputValue($event, 26)"
-                                        />
-                                      </td>
-                                      <td>
-                                        <input
-                                          type="number"
-                                          class="form-control"
                                           
-                                          [value]="c.discount"
-                                          (change)="onChangeInputValue($event, 25)"
+                                          class="form-control"
+                                          [value]="advance ? advance : c.advance"
+                                          (chnage)="
+                                            onChangeInputValue($event, 26)
+                                          "
                                         />
                                       </td>
                                       <td>
-                                        <input
+                                        <input #discount
                                           type="number"
                                           class="form-control"
-                                          [value]="c.sum"
-                                          (change)="onChangeInputValue($event, 24)"
+                                          [value]="discount ? discount : c.discount"
+                                          (change)="
+                                            onChangeInputValue($event, 25)
+                                          "
                                         />
                                       </td>
                                       <td>
-                                        <input
+                                        <input #sum
+                                        
                                           type="number"
                                           class="form-control"
-                                          [value]="c.payable"
-                                          (change)="onChangeInputValue($event, 27)"
+                                          [value]="result ? result : c.sum"
+                                          (change)="
+                                            onChangeInputValue($event, 24)
+                                          "
                                         />
+                                      </td>
+                                      <td>
+                                        <input #payable
+                                          type="number"
+                                          class="form-control"
+                                          [value]="payable ? payable: c.payable"
+                                          
+                                          (change)="
+                                            onChangeInputValue($event, 27)
+                                          "
+                                          
+                                        />
+                                      </td>
+                                      <td>
+                                            <button  type="button" class="btn btn-light "
+                                            (click)="calculate()"
+                                            >Calculate</button>
+          
                                       </td>
                                     </tr>
                                   </tbody>
                                 </table>
+                            
                               </div>
+                          
                             </ng-template>
                           </li>
                           <li [ngbNavItem]="3">
@@ -888,7 +910,7 @@
                 </div>
               </div>
               <ng-template #noDataFound>
-                <app-init-contract-form ></app-init-contract-form>
+                <app-init-contract-form></app-init-contract-form>
               </ng-template>
             </form>
           </div>
@@ -897,7 +919,3 @@
     </div>
   </div>
 </div>
-
-
-
-

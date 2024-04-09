@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Contract } from 'src/app/core/models/contract.model';
+import { ContractService } from 'src/app/core/services/Contract.service';
 
 @Component({
   selector: 'app-contract-invoice',
@@ -7,36 +10,30 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContractInvoiceComponent implements OnInit{
 
-  invoice = [
-    {
-       itemDesc: "Brown Dress",
-       subDesc: "aask - Brown Polyester Blend Women's Fit & Flare Dress.",
-       Qty: "3",
-       rate: 75,
-       subTotal: 225.00  
-    },
-    {
-       itemDesc: "Red Shirt",
-       subDesc: "Wild West - Red Cotton Blend Regular Fit Men's Formal Shirt.",
-       Qty: "3",
-       rate: 60,
-       subTotal: 180.00  
-    },
-    {
-       itemDesc: "Flower Dress",
-       subDesc: "Skyblue Flower Printed Sleevless Strappy Dress.",
-       Qty: "10",
-       rate: 22,
-       subTotal: 220.00  
-    },
-    {
-       itemDesc: "Red Skirt",
-       subDesc: "R L F - Red Cotton Blend Women's A-Line Skirt.",
-       Qty: "10",
-       rate: 60,
-       subTotal: 600.00  
+contentToConvert:string = "contentToConvert"
+   contract:Contract;
+   id:string;
+   price:number;
+   constructor(private contractService:ContractService, private router:ActivatedRoute) {
+
+   }
+
+   getContract() {
+
+
+
+      this.id =  this.router.snapshot.params['id'];
+      this.price =  this.router.snapshot.params['price'];
+      this.contractService.getContractById(this.id).subscribe((res:Contract) => {
+        this.contract = res;
+
+        console.log(this.contract);
+      });
     }
- ]
+
+   
   ngOnInit() {
+   this.getContract();
+
   }
 }

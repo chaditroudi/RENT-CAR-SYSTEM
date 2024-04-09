@@ -1,6 +1,9 @@
+import { Car } from "./car.model";
+import { Customer } from "./customer.model";
+
 export interface Contract {
     serial?: number;
-    car: string;
+    car: Car;
     version: number;
     sponsor: string;
     car_out?: Date;
@@ -8,7 +11,7 @@ export interface Contract {
     select_one: string;
     deposit: string;
     location: string;
-    hirer: string;
+    owner: Customer;
     comments?: string;
     daily?: number;
     monthly?: number;
@@ -27,5 +30,9 @@ export interface Contract {
     discount?: number;
     advance?: number;
     payable?: number;
+    status?:string;
+    amount:number;
+
+
   }
   

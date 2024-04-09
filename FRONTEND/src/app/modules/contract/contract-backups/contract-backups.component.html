@@ -13,43 +13,49 @@
         </div>
         <div class="card-body">
           <div class="product-list-custom custom-datatable">
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col">Serial</th>
-                    <th scope="col">Version</th>
-                    <th scope="col">Days</th>
-                    <th scope="col">Brand</th>
-                    <th scope="col">Car</th>
-                    <th scope="col">car Back</th>
-                    <th scope="col">Car out</th>
-                    <th scope="col">Location</th>
-                    <th scope="col">Daily</th>
-                    <th scope="col">Weekly</th>
-                    <th scope="col">Monthly</th>
-                    <th scope="col">Annual</th>
-                  </tr>
-                </thead>
-                <tbody *ngFor="let item of contracts">
-                  <tr>
-                    <td>{{ item.serial }}</td>
-                    <td>{{ item.version }}</td>
-                    <td>{{ item.days}}</td>
-                    <td>{{ item.select_one}}</td>
-                    <td>{{ item.car}}</td>
-                    <td>{{ item.car_back | date:'yyyy-mm-dd'}}</td>
-                    <td>{{ item.car_out | date:'yyyy-mm-dd'}}</td>
-                    <td>{{ item.location}}</td>
-                    <td>{{ item.daily}}</td>
-                    <td>{{ item.weekly}}</td>
-                    <td>{{ item.monthly}}</td>
-                    <td>{{ item.annual}}</td>
-
-                  </tr>
-                </tbody>
-              </table>
+            <div *ngIf="contracts.length > 0; else noData">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Serial</th>
+                      <th scope="col">Version</th>
+                      <th scope="col">Days</th>
+                      <th scope="col">Brand</th>
+                      <th scope="col">Car</th>
+                      <th scope="col">car Back</th>
+                      <th scope="col">Car out</th>
+                      <th scope="col">Location</th>
+                      <th scope="col">Daily</th>
+                      <th scope="col">Weekly</th>
+                      <th scope="col">Monthly</th>
+                      <th scope="col">Annual</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngFor="let item of contracts">
+                    <tr>
+                      <td>{{ item.data?.serial }}</td>
+                      <td>{{ item.data?.version }}</td>
+                      <td>{{ item.data?.days }}</td>
+                      <td>{{ item.data?.select_one }}</td>
+                      <td>{{  item.data?.car }}</td>
+                      <td>{{  item.data?.car_back | date : "yyyy-mm-dd" }}</td>
+                      <td>{{ item.data?.car_out | date : "yyyy-mm-dd" }}</td>
+                      <td>{{ item.data?.location }}</td>
+                      <td>{{ item.data?.daily }}</td>
+                      <td>{{ item.data?.weekly }}</td>
+                      <td>{{ item.data?.monthly }}</td>
+                      <td>{{ item.data?.annual }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
+            <ng-template #noData>
+              <div class="alert alert-light">
+                <p>Backup contract not found.</p>
+              </div>
+            </ng-template>
           </div>
         </div>
       </div>

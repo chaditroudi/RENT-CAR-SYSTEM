@@ -1,3 +1,4 @@
+import { Customer } from './../../../core/models/customer.model';
 import { Component, Input, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -12,6 +13,8 @@ import { ModalComponent } from "src/app/ui/base/modal/modal.component";
 import { CarModalComponent } from "../../cars/car-modal/car-modal.component";
 import { Car } from "src/app/core/models/car.model";
 import { CarService } from "src/app/core/services/car.service";
+import { CustomerModalComponent } from "../../customers/customer-modal/customer-modal.component";
+import { CustomerService } from "src/app/core/services/customer.service";
 
 @Component({
   selector: "app-init-contract-form",
@@ -24,7 +27,14 @@ export class InitContractFormComponent implements OnInit {
   @Input()
   carInfo = [];
 
+  @Input()
+  customerInfo = [];
+
+  customerData = [];
   contractForm: FormGroup;
+
+  car_id:any;
+  customer_id:any
   constructor(
     private router: Router,
     config: NgbModalConfig,
@@ -32,7 +42,8 @@ export class InitContractFormComponent implements OnInit {
     private toastr: ToastService,
     private formBuilder: FormBuilder,
     private contractService: ContractService,
-    private carService:CarService
+    private carService: CarService,
+    private customerService: CustomerService
   ) {
     this.initForm(formBuilder);
     this.modal = new ModalComponent(config, modalService);
@@ -47,8 +58,8 @@ export class InitContractFormComponent implements OnInit {
     });
   }
 
-
   ngOnInit(): void {
+    this.fetchAllCustomers();
     this.loadData();
   }
 
@@ -77,14 +88,14 @@ export class InitContractFormComponent implements OnInit {
   initForm(formBuilder: FormBuilder) {
     this.contractForm = formBuilder.group({
       car: ["", Validators.required],
-      version: [null, Validators.required],
+      version: [1, Validators.required],
       sponsor: ["", Validators.required],
       car_out: [null],
       car_back: [null],
       select_one: ["", Validators.required],
       deposit: ["", Validators.required],
       location: ["", Validators.required],
-      hirer: ["", Validators.required],
+      owner: ["", Validators.required],
       comments: [""],
       daily: [null],
       days: [null],
@@ -108,7 +119,9 @@ export class InitContractFormComponent implements OnInit {
   }
 
   createContract() {
-    console.log(this.contractForm.value);
+
+    this.contractForm.controls["car"].setValue(this.car_id);
+    this.contractForm.controls["owner"].setValue(this.customer_id);
     this.contractService.create(this.contractForm.value).subscribe(
       (response) => {
         console.log(response);
@@ -137,6 +150,62 @@ export class InitContractFormComponent implements OnInit {
       this.contractForm.controls["car"].setValue(
         selectedCar.car + " " + selectedCar.year + " " + selectedCar.plate
       );
+
+      this.contractForm.controls["daily"].setValue(
+        selectedCar.daily
+      );
+      
+      this.contractForm.controls["weekly"].setValue(
+        selectedCar.weekly
+      );
+      
+      this.contractForm.controls["monthly"].setValue(
+        selectedCar.monthly
+      );
+      
+      this.contractForm.controls["annual"].setValue(
+        selectedCar.annual
+      );
+      this.car_id = selectedCar._id;
+
     });
+
+  }
+
+  fetchAllCustomers() {
+    this.customerService.fetchAllCustomers();
+    this.customerService.customers$.subscribe((res) => {
+      this.customerData = res;
+    });
+
+    this.carService.cars$.subscribe((res) => {
+      this.carData = res;
+    });
+  }
+  openCustomerModal() {
+    // this.openSearchModal();
+    const modalRef = this.modalService.open(CustomerModalComponent);
+    modalRef.componentInstance.customerData = this.customerData;
+
+    modalRef.componentInstance.customerSelected.subscribe((selectedCust:Customer) => {
+      console.log("Selected car:", selectedCust);
+      this.contractForm.controls["owner"].setValue(
+        selectedCust.fullName + " " + selectedCust.mobile 
+      );
+
+      this.customer_id = selectedCust._id;
+
+    });
+  }
+
+
+
+
+  // PAYMENTS:
+  onChangePaymentDays(event) {
+
+
+   let days =  this.contractForm.controls["days"].value;
+    this.contractForm.controls["daily_val1"].setValue(days)
   }
 }

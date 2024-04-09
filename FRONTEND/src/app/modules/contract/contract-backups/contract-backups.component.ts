@@ -1,3 +1,4 @@
+import { ContractBackup } from './../../../core/models/contract-backup.model';
 import { ModalComponent } from "src/app/ui/base/modal/modal.component";
 import { Component, OnInit } from "@angular/core";
 import { NgbModal, NgbModalConfig } from "@ng-bootstrap/ng-bootstrap";
@@ -26,10 +27,12 @@ export class ContractBackupsComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.contractService.contracts$.subscribe(data => {
+    this.contractService.getContractsBackup();
+
+    this.contractService.contracts$.subscribe((data) => {
       this.contracts = data;
-    });
-    this.contractService.getContracts();
+    });    
+
   }
 
 

@@ -1,3 +1,4 @@
+import { ContractBackup } from './../models/contract-backup.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Contract } from '../models/contract.model';
@@ -35,6 +36,12 @@ export class ContractService {
 
   
 
+  getContractById(id:string) :Observable<Contract> {
+    const headers = this.headers;
+    
+    return this.http.get<Contract>(`${baseUrl}/contract/${id}` ,{headers});
+
+  }
 
 
 
@@ -47,6 +54,17 @@ export class ContractService {
 
 
   }
+
+
+  backups:any;
+  getContractsBackup() {
+
+    const headers = this.headers;
+    
+    return this.http.get<any[]>(`${baseUrl}/contract/backups-contracts` ,{headers}).subscribe((data) => {
+      this.contractSource.next(data)
+  });
+}
 
 
   get(id: any) :Observable<Object> {

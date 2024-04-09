@@ -1,96 +1,118 @@
 <app-breadcrumb [title]="'Invoice'" [items]="['Apps', 'Ecommerce']" [active_item]="'Invoice'"></app-breadcrumb>
-<div class="container">
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="card">
-        <div class="card-body">
-          <div class="invoice">
-            <div id="print-section">
-              <div>
-                <div class="row">
-                  <div class="col-sm-6">
-                    <div class="media">
-                      <div class="media-center"><img class="media-object img-60" src="assets/images/logo.png" alt="" /></div>
-                      <div class="media-body m-l-20">
-                        <h4 class="media-heading">Go Rent Car</h4>
-                        <p>hdsqsd.in<br /><span>289-335-6503</span></p>
-                      </div>
-                    </div>
-                    <!-- End Info-->
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="text-md-end">
-                      <h3>Invoice #<span class="counter">1069</span></h3>
-                      <p>
-                        Issued: May<span> 27, 2022</span><br />
-                        Payment Due: June <span>27, 2022</span>
-                      </p>
-                    </div>
-                    <!-- End Title-->
-                  </div>
-                </div>
-              </div>
-              <hr />
-              <!-- End InvoiceTop-->
-              <div class="row">
-                
-                
-              <div>
-                <div class="container">
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="card">
-                          <img src="../../../../assets/images/avtar/3.jpg" class="card-img-top" alt="Card 1 Image">
-                          <div class="card-body">
-                            <span class="card-title">Customer passport 125489566</span>
-                            <p class="card-text">This is the content of card 1.</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6 h-100">
-                        <div class="card">
-                          <img src="card2-image.jpg" class="card-img-top" alt="Card 2 Image">
-                          <div class="card-body">
-                            <h5 class="card-title">Card 2</h5>
-                            <p class="card-text">This is the content of card 2.</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="card">
-                          <img src="card3-image.jpg" class="card-img-top" alt="Card 3 Image">
-                          <div class="card-body">
-                            <h5 class="card-title">Card 3</h5>
-                            <p class="card-text">This is the content of card 3.</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                <!-- End Table-->
-                <div class="row">
-                  <div class="col-md-8">
-                    <div>
-                      <p class="legal"><strong>DOHA VISION RENT A CAR </strong>  
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="text-end">
-                        <h6>Customer</h6>
+<div class="container ">
 
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-12 text-center mt-3">
-              <button class="btn btn btn-primary me-2" type="button" appGeneratePdf  contentToConvert="container">Print</button>
-            </div>
-          </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="text-left">
+          <button class="btn btn-primary" appGeneratePdf [contentToConvert]="contentToConvert" >Generate PDF</button>
+
         </div>
       </div>
+      <div id="contentToConvert">
+
+
+  <div class="invoice-container">
+    <div class="invoice-header">
+      <h1>INVOICE</h1>
     </div>
-  </div>
+    <div class="invoice-body">
+      <div class="customer-section">
+        <div class="customer-id">
+          <span>Customer Passport {{contract.owner?.passport_number}}</span>
+        </div>
+        <div class="customer-info">
+         
+
+          <div class="customer-name">
+            <p>MR {{contract.owner?.fullName}}</p>
+            <p>{{contract.owner?.mobile}}</p>
+            <p>{{contract.owner?.QAR_address}}</p>
+          </div>
+          <img src="../../../../assets/images/user.jpg" alt="Customer" class="customer-silhouette">
+        </div>
+      </div>
+      <div class="contract-section">
+        <div class="contract-info">
+          <qr-code value="{{contract.owner?.passport_number}}" size="50" errorCorrectionLevel="M"></qr-code>
+          <div class="contract-details">
+            <p>{{contract.car?.car+' '+contract.car?.year+' '+contract.car?.plate}}</p>
+            <p>{{contract.car_out | date :'yyyy-mm-dd HH:mm'}} -> {{contract.car_back  | date :'yyyy-mm-dd HH:mm'}}</p>
+            <p>Deposit:</p>
+          </div>
+          <img src="../../../../assets/images/invoice/car_invoice.png" alt="Car" class="car-image">
+        </div>
+      </div>
+      <div class="payment-section">
+        <table class="table table-striped payment-table">
+          <tr>
+            <th>Payment</th>
+            <th>{{contract.daily_val1}}</th>
+            <th>x</th>
+            <th>{{price}}</th>
+            <th>=</th>
+            <th>{{contract.daily_val1 * price}}</th>
+          </tr>
+          <tr>
+            <td>Monthly</td>
+            <td colspan="5" class="highlight">1 500,00</td>
+          </tr>
+          <tr>
+            <td>Overtime:</td>
+            <td colspan="5" class="highlight"></td>
+          </tr>
+          <tr>
+            <td>Driver / Petrol:</td>
+            <td colspan="5" class="highlight"></td>
+          </tr>
+          <tr>
+            <td>Fines:</td>
+            <td colspan="5" class="highlight"></td>
+          </tr>
+          <tr>
+            <td>Overdrive / Other:</td>
+            <td colspan="5" class="highlight"></td>
+          </tr>
+          <tr>
+            <td>VAT:</td>
+            <td colspan="5" class="highlight"></td>
+          </tr>
+          <tr class="totals">
+            <td>Sum:</td>
+            <td colspan="5" class="highlight">{{contract.sum}}</td>
+          </tr>
+          <tr class="totals">
+            <td>Discount:</td>
+            <td colspan="5" class="highlight">{{contract.discount}}</td>
+          </tr>
+          <tr class="totals">
+            <td>Advance:</td>
+            <td colspan="5" class="highlight">{{contract.advance}}</td>
+          </tr>
+          <tr class="totals">
+            <td>Payable:</td>
+            <td colspan="5" class="highlight">{{contract.payable}}</td>
+          </tr>
+        </table>
+      </div>
+    
+      <div class="card-footer">
+        <div class="invoice-footer">
+          <p style="text-align: left;">DHOA VISION RENT A CAR</p>
+          <p style="text-align: right;">Customer</p>
+        
+      </div>
+    </div>
+    </div>
+   
+    
+
+  
+      </div>
+    </div>
+ 
+
+
+
 </div>
+</div>
+

@@ -19,6 +19,7 @@ import { PermissionsDetailsComponent } from "./permissions/permissions-details/p
 import { InitContractFormComponent } from "./contract/init-contract-form/init-contract-form.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { CarModalComponent } from "./cars/car-modal/car-modal.component";
+import { CustomerModalComponent } from './customers/customer-modal/customer-modal.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,9 @@ import { CarModalComponent } from "./cars/car-modal/car-modal.component";
     PermissionsDetailsComponent,
     CarModalComponent,
     PermissionUpdateComponent,
+    CustomerModalComponent,
+    
+    
    // InitContractFormComponent,
   ],
   imports: [

@@ -1,3 +1,4 @@
+import { QrCodeModule } from 'ng-qrcode';
 import { ContractRoutingModule } from "./contract-routing.module";
 import { NgxPaginationModule } from "ngx-pagination";
 import { SharedModule } from "./../../shared/shared.module";
@@ -7,10 +8,10 @@ import { CarDetailsComponent } from "./../cars/car-details/car-details.component
 import { CommonModule } from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
 import { ToastrModule } from "ngx-toastr";
+
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgModule } from "@angular/core";
-import { BreadcrumbComponent } from "src/app/shared/components/breadcrumb/breadcrumb.component";
 import { BrowserModule } from "@angular/platform-browser";
 import { ContractDetailsComponent } from "./contract-details/contract-details.component";
 import { ContractBackupsComponent } from "./contract-backups/contract-backups.component";
@@ -24,12 +25,13 @@ import { ContractBackupsComponent } from "./contract-backups/contract-backups.co
   ],
   imports: [
     HttpClientModule,
+    QrCodeModule,
     ToastrModule,
     NgbModule,
     SharedModule,
     NgxPaginationModule,
     CommonModule,
-
+    FormsModule,
     ContractRoutingModule,
   ],
 })

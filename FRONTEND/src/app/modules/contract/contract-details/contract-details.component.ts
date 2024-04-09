@@ -1,6 +1,7 @@
 import { ContractService } from "./../../../core/services/Contract.service";
 import {
   Component,
+  ElementRef,
   OnChanges,
   OnInit,
   SimpleChanges,
@@ -20,28 +21,91 @@ import { ConfirmationModalComponent } from "src/app/shared/components/confirmati
 import { Contract } from "src/app/core/models/contract.model";
 import { CarService } from "src/app/core/services/car.service";
 import { Car } from "src/app/core/models/car.model";
+import { createUpdatedContract } from "src/app/core/models/contract-update.model";
 import { CarModalComponent } from "../../cars/car-modal/car-modal.component";
 import { switchMap } from "rxjs";
+import { DateService } from "src/app/shared/services/date.service";
+import { SearchComponent } from "src/app/shared/components/header/elements/search/search.component";
+import { CustomerModalComponent } from "../../customers/customer-modal/customer-modal.component";
+import { CustomerService } from "src/app/core/services/customer.service";
+import { Customer } from "src/app/core/models/customer.model";
 
 @Component({
   selector: "app-contract-details",
   templateUrl: "./contract-details.component.html",
   styleUrls: ["./contract-details.component.scss"],
 })
-export class ContractDetailsComponent implements OnInit {
+export class ContractDetailsComponent implements OnChanges, OnInit {
   public ContractData: any;
 
   formData = [];
 
+  dateBC: string;
+
+  features = [];
+  status = "Contract is Open";
   modal: ModalComponent;
 
   ContractForm: FormGroup;
   carData = [];
+  customerData = [];
+  inputsValue: string[] = Array(33).fill("");
+  selectedCarData: string;
+  selectedCustomerData: string;
 
-  inputsValue: string[] = Array(25).fill("");
+  isDisabled: boolean = false;
+
+  etatForm = true;
+  buttonAdd = "add new contract";
+
+  Contract: any;
+  newContract: Contract;
+
+  carObject: Car;
+  chossedCar: Car;
+  car_id: any;
+  selectedRadioValue = "";
+
+  checkboxItems = [
+    { id: "chk-ani", label: "Spare wheel", checked: false },
+    { id: "chk-ani1", label: "Wheel cover", checked: false },
+    { id: "chk-ani2", label: "Tools & Jack", checked: false },
+    { id: "chk-ani3", label: "Radio / Tape", checked: false },
+    { id: "chk-ani4", label: "Fire Extinguisher", checked: false },
+    { id: "chk-ani5", label: "First AID box", checked: false },
+    { id: "chk-ani6", label: "Lights", checked: false },
+    { id: "chk-ani7", label: "GPS", checked: false },
+    { id: "chk-ani8", label: "Heater / AC", checked: false },
+    { id: "chk-ani9", label: "Fuel panel", checked: false },
+  ];
+  selectedItems: string[] = [];
+
+  onCheckboxChange() {
+    this.selectedItems = this.checkboxItems
+      .filter((item) => item.checked)
+      .map((item) => item.label);
+
+    console.log(this.selectedItems);
+  }
+
+  onCarBackEvent(checked) {
+    this.isDisabled = checked;
+
+    if (this.isDisabled) {
+      this.status = "Contract is Closed";
+    } else {
+      this.status = "Contract is Open";
+    }
+  }
 
   ngOnInit(): void {
     this.loadData();
+    this.fetchAllCustomers();
+    this.fetchAllCars();
+  }
+  ngOnChanges(): void {
+    this.loadData();
+    this.fetchAllCustomers();
     this.fetchAllCars();
   }
 
@@ -52,14 +116,25 @@ export class ContractDetailsComponent implements OnInit {
     private modalService: NgbModal,
     private readonly contractService: ContractService,
     private toastr: ToastService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private customerService: CustomerService,
+    private dateService: DateService
   ) {
     this.modal = new ModalComponent(config, modalService);
     this.initForm(formBuilder);
   }
 
-  etatForm = true;
-  buttonAdd = "add new contract";
+  openSearchModal() {
+    const modalRef = this.modalService.open(SearchComponent);
+    modalRef.result.then(
+      (result) => {
+        console.log(result);
+      },
+      (reason) => {
+        console.log(reason);
+      }
+    );
+  }
 
   resetForm() {
     if (this.etatForm) {
@@ -78,7 +153,7 @@ export class ContractDetailsComponent implements OnInit {
 
   initForm(formBuilder: FormBuilder) {
     this.ContractForm = formBuilder.group({
-      serial: [null], // No need for validators as it's optional
+      serial: [null],
       version: [null, Validators.required],
       sponsor: ["", Validators.required],
       car: [""],
@@ -94,10 +169,10 @@ export class ContractDetailsComponent implements OnInit {
       weekly: [null],
       annual: [null],
       fuel_out: [""],
+      days: [""],
       no_km_out: [""],
       fuel_back: ["", Validators.required],
       no_km_back: ["", Validators.required],
-      features: [[]],
       daily_val1: [null],
       daily_val2: [null],
       daily_result: [null],
@@ -118,9 +193,6 @@ export class ContractDetailsComponent implements OnInit {
     );
   }
 
-  Contract: any;
-  newContract: Contract;
-
   getContract(ContractId: number) {
     //current Contract:
     return this.contractService.get(ContractId).subscribe((res) => {
@@ -129,79 +201,41 @@ export class ContractDetailsComponent implements OnInit {
     });
   }
 
-  updateContract(ContractId: number) {
-    let newContract = {};
+  updateContract(contractId: number) {
     this.contractService
-      .get(ContractId)
+      .get(contractId)
       .pipe(
         switchMap((res: Contract) => {
-          console.log("res",res);
+          const updatedContract = createUpdatedContract(
+            this.inputsValue,
+            this.selectedCar && this.selectedCar._id
+              ? this.selectedCar._id
+              : res.car,
+            this.selectedCus && this.selectedCus._id
+              ? this.selectedCus._id
+              : res.owner,
+            this.selectedItems,
+            this.status,
 
-          newContract = {
-            serial: this.inputsValue[0] || res.serial,
-            version: this.inputsValue[1] || res.version,
+            res
+          );
 
-            sponsor: this.inputsValue[2] || res.sponsor,
-            car_out: this.inputsValue[3] || res.car_out,
-            days: this.inputsValue[4] || res.days,
-            car_back: this.inputsValue[5] || res.car_back,
-
-            car: this.inputsValue[6] || res.car,
-
-            select_one: this.inputsValue[7] || res.select_one,
-            location: this.inputsValue[8] || res.location,
-
-         //   deposit: this.inputsValue[8] || res.deposit,
-            hirer: this.inputsValue[10] || res.hirer,
-            comments: this.inputsValue[11] || res.comments,
-            daily: this.inputsValue[12] || res.daily,
-            weekly: this.inputsValue[13] || res.weekly,
-            monthly: this.inputsValue[14] || res.monthly,
-            annual: this.inputsValue[15] ||res.annual,
-            fuel_out: this.inputsValue[16] || res.fuel_out,
-            no_km_out: this.inputsValue[17] || res.no_km_out,
-            fuel_back: this.inputsValue[18] || res.fuel_back,
-            no_km_back: this.inputsValue[19] || res.no_km_back,
-            // features: this.inputsValue[20]
-            //   ? this.inputsValue[19].split(",")
-            //   : res.features,
-            daily_val1: this.inputsValue[21] ||res.daily_val1,
-             
-            daily_val2: this.inputsValue[22]
-              || res.daily_val2,
-            daily_result: this.inputsValue[23]
-              
-              || res.daily_result,
-            sum: this.inputsValue[24]
-              || res.sum,
-            discount: this.inputsValue[25]
-              || res.discount,
-            advance: this.inputsValue[26]
-              ||  res.advance,
-            payable: this.inputsValue[27]
-              || res.payable,
-          };
-
-          console.log("hiiiiiiiii", newContract);
-          return this.contractService.update(ContractId, newContract);
+          return this.contractService.update(contractId, updatedContract);
         })
       )
       .subscribe(
         (response) => {
-          console.log(response);
           if (response) {
             this.toastr.showSuccess("Contract updated successfully");
           } else {
             this.toastr.showError("Error in updating the Contract details");
           }
         },
-        (err) => {
-          console.log(err);
+        (error) => {
+          console.error("Error in updating the Contract details:", error);
           this.toastr.showError("Error in updating the Contract details");
         }
       );
-
-    console.log("newcontract", this.newContract);
   }
 
   deleteContract(ContractId: number): void {
@@ -216,30 +250,103 @@ export class ContractDetailsComponent implements OnInit {
     );
   }
 
-  chossedCar: Car;
+  async chooseCar(carItem: Car) {
+    this.selectedCarData =
+      this.selectedCar.car +
+      " " +
+      this.selectedCar.year +
+      " " +
+      this.selectedCar.plate;
 
-  chooseCar(carItem: Car) {
-    this.chossedCar = carItem;
-
-    const dataCar = carItem.car + " " + carItem.year + " " + carItem.plate;
-    console.log("car data", dataCar);
-    this.ContractForm.controls["car"].setValue(dataCar);
+    console.log("car id ", this.selectedCar._id);
   }
 
-  fetchAllCars() {
+  async chooseCustomer(cus: Customer) {
+    this.selectedCustomerData = cus.fullName + " " + cus.mobile;
+
+    console.log("customerrrrrrr", this.selectedCustomerData);
+
+    this.ContractForm.controls["owner"].setValue(this.selectedCustomerData);
+  }
+
+  async fetchAllCars() {
     this.carService.getCars();
 
     this.carService.cars$.subscribe((res) => {
       this.carData = res;
     });
   }
-  loadData() {
+  async fetchAllCustomers() {
+    this.customerService.fetchAllCustomers();
+    this.customerService.customers$.subscribe((res) => {
+      this.customerData = res;
+    });
+
+    this.carService.cars$.subscribe((res) => {
+      this.carData = res;
+    });
+  }
+  async loadData() {
     this.contractService.getContracts();
     this.contractService.contracts$.subscribe((res) => {
       this.formData = res;
 
       console.log(this.formData);
     });
+    [];
+  }
+
+  amount: number = 0;
+  price: number = 0;
+  result: number = 0;
+  advance: number = 0;
+  payable: number = 0;
+  discount: number = 0;
+
+  async onChangeRadioValue(event: any, days, price) {
+    let array = [];
+
+    this.selectedRadioValue = event.target.value;
+
+    let res = this.dateService.convertDaysToMWY(days, this.selectedRadioValue);
+
+    if (this.selectedRadioValue == "daily") {
+      this.amount = days;
+      this.price = price;
+    } else if (this.selectedRadioValue == "weekly") {
+      this.amount = res;
+      this.price = price;
+    } else if (this.selectedRadioValue == "monthly") {
+      console.log("res", res);
+
+      this.amount = res;
+ 
+      this.price = price;
+    } else if (this.selectedRadioValue == "annual") {
+      this.amount = res;
+      this.price = price;
+    }
+
+    this.result = this.amount * this.price;
+    this.payable = this.result - this.advance - this.discount;
+  }
+
+  @ViewChild("payable") inputpayable: ElementRef;
+  @ViewChild("advance") inputadv: ElementRef;
+  @ViewChild("discount") inputdis: ElementRef;
+  @ViewChild("sum") inputsum: ElementRef;
+
+  calculate() {
+    if (this.inputsValue[26] == null || this.inputsValue[25] === null) {
+      this.inputpayable.nativeElement.value = this.result;
+    }
+    this.inputpayable.nativeElement.value =
+      this.result -
+      this.inputadv.nativeElement.value -
+      this.inputdis.nativeElement.value;
+
+    this.inputsValue[27] = this.inputpayable.nativeElement.value;
+    this.inputsValue[24] = this.inputsum.nativeElement.value;
   }
 
   @ViewChild("confirmationModal")
@@ -254,14 +361,14 @@ export class ContractDetailsComponent implements OnInit {
     return await this.modalComponent.open();
   }
 
-  getConfirmationValue(value: any, ContractId: number) {
+  async getConfirmationValue(value: any, ContractId: number) {
     if (value == "Yes") {
       this.deleteContract(ContractId);
       console.log("first");
     }
   }
 
-  open() {
+  async open() {
     this.openModal();
   }
   public active1 = 1;
@@ -286,15 +393,38 @@ export class ContractDetailsComponent implements OnInit {
     this.router.navigate(["/modules/customers/customers-list"]);
   }
 
-  openCarModal() {
+  selectedCar: Car;
+  selectedCus: Customer;
+
+  async openCarModal() {
+    // this.openSearchModal();
     const modalRef = this.modalService.open(CarModalComponent);
     modalRef.componentInstance.carData = this.carData;
 
     modalRef.componentInstance.carSelected.subscribe((selectedCar: Car) => {
-      console.log("Selected car:", selectedCar);
-      this.ContractForm.controls["car"].setValue(
-        selectedCar.car + " " + selectedCar.year + " " + selectedCar.plate
-      );
+      console.log(selectedCar);
+      this.selectedCar = selectedCar;
+      this.chooseCar(this.selectedCar);
     });
+  }
+  async openCustomerModal() {
+    // this.openSearchModal();
+    const modalRef = this.modalService.open(CustomerModalComponent);
+    modalRef.componentInstance.customerData = this.customerData;
+
+    modalRef.componentInstance.customerSelected.subscribe(
+      (selectedCust: Customer) => {
+        this.selectedCus = selectedCust;
+        this.chooseCustomer(this.selectedCus);
+      }
+    );
+  }
+
+
+
+
+  goToInvoice(id:string) {
+
+    return this.router.navigate(["/modules/contracts/contract-invoice",id,this.price]);
   }
 }

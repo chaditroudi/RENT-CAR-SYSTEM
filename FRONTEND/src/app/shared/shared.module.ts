@@ -36,6 +36,7 @@ import {
 } from "../ui/base/modal/modal.component";
 import { GeneratePdfDirective } from "./directives/generate-pdf.directive";
 import { ConfirmationModalComponent } from "./components/confirmation-modal/confirmation-modal.component";
+import { DecimalFormatDirective } from './directives/decimal-format.directive';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,7 @@ import { ConfirmationModalComponent } from "./components/confirmation-modal/conf
     FullComponent,
     LoaderComponent,
     TapToTopComponent,
-    SearchComponent,
+     SearchComponent,
     LanguagesComponent,
     NotificationComponent,
     BookmarkComponent,
@@ -59,6 +60,7 @@ import { ConfirmationModalComponent } from "./components/confirmation-modal/conf
     SvgIconComponent,
     GeneratePdfDirective,
     ConfirmationModalComponent,
+    DecimalFormatDirective,
   ],
   imports: [
     CommonModule,
@@ -77,6 +79,9 @@ import { ConfirmationModalComponent } from "./components/confirmation-modal/conf
     ReactiveFormsModule,
     TranslateModule,
     ModalComponent,
+    SearchComponent,
+    DecimalFormatDirective,
+
     LoaderComponent,
     BreadcrumbComponent,
     FeatherIconsComponent,
