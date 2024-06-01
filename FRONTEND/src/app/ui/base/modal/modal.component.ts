@@ -48,7 +48,6 @@ export class ModalComponent implements OnInit {
 
   // OPEN MODAL :
   open(content) {
-    console.log("content modal",content)
     this.modalService.open(content,{ariaLabelledBy:'modal-basic-title'}).result.then((result)=> {
       this.closeRes = `Close with ${result}`;
 

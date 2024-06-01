@@ -6,21 +6,21 @@
   font-size: 15px;
   line-height: 25px;
 }
-.email-wrap {   
+.email-wrap {
   // margin-bottom:30px;
   .row {
     .col-xl-3 {
-      &+.col-xl-3 {
-        padding-right: 0;
+      & + .col-xl-3 {
+        // padding-right: 0;
       }
     }
     .col-xl-6 {
-      padding-left: 0;
+      // padding-left: 0;
     }
   }
   .dropdown {
     .dropdown-toggle {
-      background-color: rgba(115,102,255,0.08);
+      background-color: rgba(115, 102, 255, 0.08);
       color: $primary-color;
       border-radius: 10px;
       padding: 5px 10px;
@@ -47,8 +47,8 @@
       }
     }
     .dropdown-menu {
-      -webkit-box-shadow: 0 0 20px rgba(89,102,122,0.1);
-      box-shadow: 0 0 20px rgba(89,102,122,0.1);
+      -webkit-box-shadow: 0 0 20px rgba(89, 102, 122, 0.1);
+      box-shadow: 0 0 20px rgba(89, 102, 122, 0.1);
       border: none;
       padding: 0;
       .dropdown-item {
@@ -70,7 +70,7 @@
       border: 2px solid $light-gray;
     }
     .main-menu {
-      >li {
+      > li {
         width: 100%;
         text-align: left;
         a {
@@ -80,11 +80,11 @@
           i {
             margin-right: 10px;
           }
-          &.active>a {
+          &.active > a {
             color: $black;
           }
           &:hover {
-            background-color:#f5f6f9;
+            background-color: #f5f6f9;
             text-decoration: none;
           }
         }
@@ -121,9 +121,9 @@
     }
   }
 
-  .email-right-aside {   
+  .email-right-aside {
     .email-body {
-      .pr-0{
+      .pr-0 {
         @media (min-width: 1200px) {
           padding-right: 0;
           [dir="rtl"] & {
@@ -131,9 +131,8 @@
             padding-left: 0;
           }
         }
-
       }
-      .pl-0{
+      .pl-0 {
         @media (min-width: 1200px) {
           padding-left: 0;
           [dir="rtl"] & {
@@ -204,7 +203,7 @@
     padding: 20px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     line-height: 49px;
-    i{
+    i {
       cursor: pointer;
     }
     h5 {
@@ -233,7 +232,7 @@
       float: right;
     }
     p {
-      &+p {
+      & + p {
         margin-bottom: 20px;
       }
     }
@@ -275,7 +274,6 @@
           padding-right: 13px;
         }
       }
-
     }
 
     .email-compose {

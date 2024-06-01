@@ -233,3 +233,69 @@ ngx-dropzone-label {
     list-style: none;
   }
 }
+
+.accordion-button:not(.collapsed) {
+  color: $primary-color;
+}
+
+ngb-datepicker {
+  ngb-datepicker-navigation-select {
+    select {
+      background-color: transparent !important;
+    }
+  }
+  .ngb-dp-header {
+    background-color: transparent;
+    padding-top: 15px;
+    .ngb-dp-arrow-btn {
+      background-color: $primary-color;
+      color: $white;
+      padding: 0px 10px;
+    }
+  }
+  .ngb-dp-weekday {
+    color: $primary-color;
+  }
+  .ngb-dp-content {
+    .ngb-dp-week {
+      color: $dark-small-font-color;
+      .btn-light {
+        background-color: transparent !important;
+        border-color: $dark-card-border !important;
+        color: rgba(82, 82, 108, 0.8) !important;
+        &:hover {
+          background-color: $primary-color !important;
+          border-color: $primary-color !important;
+          color: $white !important;
+          &.text-muted {
+            color: $white !important;
+          }
+        }
+        &.text-white {
+          background-color: $primary-color !important;
+          border: 1px solid $primary-color !important;
+          color: $white !important;
+        }
+      }
+    }
+  }
+  .ngb-dp-weekdays {
+    background-color: transparent;
+  }
+}
+.ngb-dp-month-name {
+  background-color: $dark-card-background;
+  color: $dark-all-font-color;
+}
+
+.ngb-dp-months {
+  padding: 15px;
+}
+
+.digits {
+  .input-group {
+    .btn {
+      z-index: 0 !important;
+    }
+  }
+}

@@ -5,6 +5,8 @@ const { autoIncrement } = require("../utils/auto-increment");
 exports.createCar = async (req, res) => {
   try {
 
+    const autoInc = await autoIncrement(Car,'code');
+
 
     const{car,code,plate} = req.body
 
@@ -17,21 +19,21 @@ exports.createCar = async (req, res) => {
       });
     }
 
-    // autoinc
-    const autoInc= await autoIncrement(Car);
 
-
+    
     const newcar = new Car({
-      ...req.body,serial:autoInc
+      ...req.body,code:autoInc,createdBy:req.user.email,branch_id:req.user.branch_id
     });
+    
 
-    console.log("auto inc", autoInc);
+
     const result = await newcar.save();
 
     return res.status(201).json(result);
   } catch (err) {
     return res.status(400).json({ status: 400, message: err.message });
   }
+
 };
 
 exports.deleteCar = async (req, res) => {
@@ -70,7 +72,11 @@ exports.getCarById = async (req, res) => {
   };
 
 exports.updateCar = async (req, res) => {
-  await Car.findByIdAndUpdate(req.params.id, {$set: req.body})
+
+  
+  
+  const updateCar = {...req.body,updatedBy:req.user.email,branch_id:req.user.branch_id}
+  await Car.findByIdAndUpdate(req.params.id, {$set: updateCar})
   .then((car) => {
     if(car) {
       return res.status(200).json({
@@ -93,6 +99,27 @@ exports.updateCar = async (req, res) => {
 exports.getAllCars = async (req, res) => {
   try {
     const cars= await Car.find({});
+    return res.status(200).json(cars);
+  } catch (error) {
+    return res.status(400).json({ status: 400, message: error.message });
+  }
+}
+
+
+exports.getAllCarsByBranch = async (req, res) => {
+  try {
+    const cars= await Car.find({branch_id: req.user.branch_id});
+    console.log(cars)
+    return res.status(200).json(cars);
+  } catch (error) {
+    return res.status(400).json({ status: 400, message: error.message });
+  }
+}
+
+
+exports.totalCar = async (req, res) => {
+  try {
+    const cars= await Car.coun;
     return res.status(200).json(cars);
   } catch (error) {
     return res.status(400).json({ status: 400, message: error.message });

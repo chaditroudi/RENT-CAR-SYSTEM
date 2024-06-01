@@ -1,10 +1,10 @@
 export interface Car {
-    _id : number;
+    _id : string;
     code: number;
     year: number;
     plate:number,
     car: string;
-    
+    rented:boolean;
     insurance: string;
     registration: string;
     engine_no: string;
@@ -12,7 +12,7 @@ export interface Car {
     fuel: string;
     comment: string;
     out_of_service: boolean;
-    petrol_charge: number;
+    petrol_charge: string;
     daily: string;
     weekly: string;
     monthly: string;
@@ -30,4 +30,5 @@ export interface Car {
     owner_name:string,
     owner_id:number,
     nationality:string,
+    branch_id:string
 }

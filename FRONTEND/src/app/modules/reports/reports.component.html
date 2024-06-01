@@ -1,0 +1,273 @@
+<app-breadcrumb
+  [title]="'Reports Page'"
+  [items]="['Forms', 'Form Layout']"
+  [active_item]="'Contracts Page'"
+></app-breadcrumb>
+
+<div class="md-sidebar">
+
+  <a class="btn btn-primary email-aside-toggle md-sidebar-toggle">Reports</a>
+  <div class="md-sidebar-aside job-sidebar">
+    <div
+      class="default-according style-1 faq-accordion job-accordion"
+      id="accordionoc"
+    >
+      <div class="accordion">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <button
+                class="btn btn-link"
+                (click)="isFilter = !isFilter"
+                [attr.aria-expanded]="!isFilter"
+                aria-controls="collapse"
+              >
+                Reports by date
+              </button>
+            </h5>
+          </div>
+          <div class="collapse show" id="collapseicon" [ngbCollapse]="isFilter">
+            <div class="card-body filter-cards-view animate-chk">
+
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-header">
+                      <div>
+
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label for="startDate">Start Date:</label>
+                            <input
+                              type="date"
+                              class="form-control"
+                              id="startDate"
+                              [(ngModel)]="startDate"
+                            />
+                          </div>
+                          <div class="col-md-6">
+                            <label for="endDate">End Date:</label>
+                            <input
+                              type="date"
+                              class="form-control"
+                              id="endDate"
+                              [(ngModel)]="endDate"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                      <div class="row g-4">
+                        <div class="col-md-3">
+                          <div class="p-2">
+                            <div class="mb-3">
+                              <button
+                                class="btn btn-dark w-100"
+                                (click)="fetchWeeklyReports()"
+                              >
+                                Weekly
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="p-2">
+                            <div class="mb-3">
+                              <button
+                                class="btn btn-dark w-100"
+                                (click)="fetchMonthlyReports()"
+                              >
+                                Monthly
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="p-2">
+                            <div class="mb-3">
+                              <button
+                                class="btn btn-dark w-100"
+                                (click)="fetchYearlyReports()"
+                              >
+                                Annual
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="card shadow mb-4">
+                            <div class="card-body p-4">
+                              <h4 class="text-primary">Report Weekly:</h4>
+                              <div
+                                id="echarts-container-weekly"
+                                #weeklyChartContainer
+                                class="chart-container"
+                              ></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="card shadow mb-4">
+                            <div class="card-body p-4">
+                              <h4 class="text-primary">Report Monthly:</h4>
+                              <div
+                                id="echarts-container-monthly"
+                                #monthlyChartContainer
+                                class="chart-container"
+                              ></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="card shadow mb-4">
+                            <div class="card-body p-4">
+                              <h4 class="text-primary">Report Yearly:</h4>
+                              <div
+                                id="echarts-container-yearly"
+                                #yearlyChartContainer
+                                class="chart-container"
+                              ></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+         
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="contractChart" style="width: 800px; height: 400px;"></div>
+
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="text-primary">Rented Cars</h5>
+          <div class="text-end">
+            <button
+              appGeneratePdf
+              printRented="printRented"
+              [dataR]="carsRented"
+              class="btn btn-info"
+            >
+              <i class="icon-printer mb-3"></i>
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="product-list-custom custom-datatable">
+              <div *ngIf="carsRented.length > 0; else noData">
+                <div id="printRented">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Contrac</th>
+                          <th scope="col">Car</th>
+                          <th scope="col">Year</th>
+                          <th scope="col">Plate</th>
+                          <th scope="col">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody *ngFor="let item of carsRented">
+                        <tr>
+                          <td>{{ item.code }}</td>
+                          <td>{{ item.car }}</td>
+                          <td>{{ item.year }}</td>
+                          <td>{{ item.plate }}</td>
+                          <td>
+                            <a (click)="goToDetails()">Details</a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <ng-template #noData>
+                <div class="alert alert-light">
+                  <p>Cars rented not found.</p>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="text-success">Available Cars</h5>
+          <div class="text-end">
+            <button
+              appGeneratePdf
+              printA="printA"
+              [dataA]="carsA"
+              class="btn btn-info"
+            >
+              <i class="icon-printer mb-3"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="product-list-custom custom-datatable">
+            <div *ngIf="carsA.length > 0; else noData">
+              <div id="printA">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Serial</th>
+                        <th scope="col">Version</th>
+                        <th scope="col">Days</th>
+                        <th scope="col">Car</th>
+                        <th scope="col">Daily</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngFor="let item of carsA">
+                      <tr>
+                        <td>{{ item.code }}</td>
+                        <td>{{ item.car }}</td>
+                        <td>{{ item.year }}</td>
+                        <td>{{ item.plate }}</td>
+                        <td>{{ item.daily }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <ng-template #noData>
+              <div class="alert alert-light">
+                <p>Cars rented not found.</p>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>

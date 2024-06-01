@@ -1,20 +1,35 @@
-@import "../../../../assets/scss/utils/variables.scss";
-h1,h2,h3,h4,h5,h6,label {
-    color:black;
-}
-span {
-    color: $primary-color;
-}
 
-.comments ,.select {
-    box-shadow: none;
-    border-color: #efefef;
-    background-color: #fff;
-    font-size: 14px;
-    color: #898989;
-    padding: 12px 10px;
-    box-shadow: none;
-}
-hr {
-    color: $dark-border-color;
-}
+  
+  .details-container {
+    background-color: transparent;
+    border-radius: 8px;
+  }
+  
+  .list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .list-group-item:last-child {
+    border-bottom: none;
+  }
+  
+  .detail-item {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .detail-label {
+    font-weight: bold;
+    margin-right: 1rem;
+  }
+  
+  .detail-value {
+    font-weight: normal;
+  }
+  

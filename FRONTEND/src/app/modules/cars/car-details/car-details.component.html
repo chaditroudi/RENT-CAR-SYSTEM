@@ -3,6 +3,10 @@
   [items]="['Forms', 'Form Layout']"
   [active_item]="'Car Definition'"
 ></app-breadcrumb>
+
+
+<app-loading-spinner [loading]="loading"></app-loading-spinner>
+<div *ngIf="!loading">
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-12 box-col-12">
@@ -67,30 +71,91 @@
     <div class="col-md-12">
       <div class="row">
         <div class="col-xl-12">
-          <div class="card">
+          <div class="card" *ngIf="formData.length > 0; else noDataFound">
+    
+            <!-- <div class="card-header">
+              <div class="row">
+                <div *ngIf="filteredData.length > 0">
+
+                <div class="col-md-12">
+                  
+                  <div class="text-start">
+
+                    <app-search (searchChange)="updateFilteredData($event)"></app-search>
+                  </div>
+                </div>
+                </div>
+                <div class="text-end">
+                  <div *ngIf="filteredData.length === 0">
+
+                    <div class="text-end">
+                      <button (click)="modal.open(content)" class="btn btn-success">
+                      Add car
+                      </button>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-md-6">
+                  
+          
+                </div>
+              </div>
+            </div> -->
+
             <div class="card-header">
-              <li class="text-end">
-                <button class="btn btn-success" (click)="modal.open(content)">
-                  Add new car
-                </button>
-              </li>
+              <div class="text-end">
+                <app-search (searchChange)="updateFilteredData($event)"></app-search>
+
+              </div>
             </div>
 
             <div class="card-body">
               <form [formGroup]="carForm" class="theme-form mega-form">
-                <div *ngIf="formData.length > 0; else noDataFound">
-                  <div
-                    *ngFor="
-                      let c of formData
-                        | paginate : { itemsPerPage: 1, currentPage: p }
-                    "
-                  >
+                
+                <div *ngIf="filteredData.length > 0; else noDataFound">
+                  <div *ngFor="let c of filteredData | paginate: { itemsPerPage: 1, currentPage: currentPage, totalItems: filteredData.length, id: paginationId }">
+                    <div class="d-flex flex-wrap justify-content-between">
+
+                    <span class="text-dark" *ngIf="c.createdBy"
+              >added by : {{ c.createdBy }}</span>
+            /
+            <span class="text-dark" *ngIf="c.updatedBy">
+              upateed by : {{ c.updatedBy }}</span>
+              </div>
+                    <nav>
+                      <div class="row">
+                        <div class="m-t-15 btn-showcase">
+                          <ul>
+                            <li>
+                              <pagination-controls
+                              class="custom-pagination"
+                              (pageChange)="pageChanged($event)"
+                              (pageBoundsCorrection)="pageChanged($event)"
+                              maxSize="5"
+                              directionLinks="true"
+                              autoHide="true"
+                              responsive="true"
+                              previousLabel="Previous"
+                              nextLabel="Next"
+                              screenReaderPaginationLabel="Pagination"
+                              screenReaderPageLabel="page"
+                              screenReaderCurrentLabel="You're on page"
+                              [id]="paginationId"
+                            >
+                            </pagination-controls>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </nav>
                     <div>
                       <div class="row">
                         <div class="col-md-12">
                           <ul class="action">
                             <li class="plus">
-                              <a href="#"><i class="icon-plus-alt"></i></a>
+                           
+                              <a (click)="modal.open(content)"><i class="icon-plus"></i></a>
                             </li>
                             <li class="edit">
                               <a (click)="updateCar(c._id)"
@@ -148,7 +213,6 @@
                                 [value]="c.car"
                                 (change)="onChangeInputValue($event, 1)"
                               />
-                              />
                             </div>
                           </div>
                         </div>
@@ -164,7 +228,6 @@
                                 [value]="c.year"
                                 (change)="onChangeInputValue($event, 2)"
                               />
-                              />
                             </div>
                           </div>
                           <div class="col-md-6">
@@ -176,20 +239,6 @@
                                 placeholder="Enter Plate"
                                 [value]="c.plate"
                                 (change)="onChangeInputValue($event, 3)"
-                              />
-
-                              />
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="mb-3">
-                              <label class="col-form-label">Code</label>
-                              <input
-                                class="form-control"
-                                type="text"
-                                placeholder="Car code"
-                                [value]="c.code"
-                                (change)="onChangeInputValue($event, 0)"
                               />
                             </div>
                           </div>
@@ -207,7 +256,6 @@
                                 placeholder="Daily"
                                 (change)="onChangeInputValue($event, 4)"
                                 [value]="c.daily"
-                                appDecimalFormat
                               />
                             </div>
                           </div>
@@ -221,7 +269,6 @@
                                 placeholder="Weekly"
                                 (change)="onChangeInputValue($event, 5)"
                                 [value]="c.weekly"
-                                appDecimalFormat
                               />
                             </div>
                           </div>
@@ -234,7 +281,6 @@
                                 placeholder="Monthly"
                                 (change)="onChangeInputValue($event, 6)"
                                 [value]="c.monthly"
-                                appDecimalFormat
                               />
                             </div>
                           </div>
@@ -247,7 +293,6 @@
                                 placeholder="Annual"
                                 (change)="onChangeInputValue($event, 7)"
                                 [value]="c.annual"
-                                appDecimalFormat
                               />
                             </div>
                           </div>
@@ -263,7 +308,7 @@
                                 class="form-control"
                                 type="text"
                                 placeholder="Current"
-                                (change)="onChangeInputValue($event, 8)"
+                                (change)="onChangeInputValue($event, 30)"
                                 [value]="c.current"
                               />
                             </div>
@@ -377,8 +422,6 @@
                               ></textarea>
                             </div>
                           </div>
-
-                          chadi
                         </div>
                       </div>
                     </div>
@@ -388,7 +431,9 @@
                         <div class="col-md-12">
                           <div class="card-header">
                             <hr class="mt-4 mb-4" />
-                            <h6>Caracteristics of the car</h6>
+                            <div class="mb-3">
+                              <h6>Caracteristics of the car</h6>
+                            </div>
                           </div>
                           <div class="table-responsive">
                             <table class="table table-responsive">
@@ -530,152 +575,136 @@
                       </div>
                     </div>
 
-                    <div class="card-footer text-end">
-                      <nav>
-                        <div class="row">
-                          <div class="m-t-15 btn-showcase">
-                            <ul>
-                              <li>
-                                <pagination-controls
-                                  class="custom-pagination"
-                                  (pageChange)="p = $event"
-                                  (pageBoundsCorrection)="pageChanged($event)"
-                                  maxSize="10"
-                                  directionLinks="true"
-                                  autoHide="true"
-                                  responsive="true"
-                                  previousLabel="Previous"
-                                  nextLabel="Next"
-                                  screenReaderPaginationLabel="Pagination"
-                                  screenReaderPageLabel="page"
-                                  screenReaderCurrentLabel="You're on page"
-                                >
-                                </pagination-controls>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </nav>
-                    </div>
+                    <!-- <div class="card-footer text-end">
+                      <div class="text-start p-8">
+                        <span class="text-primary" *ngIf="c.createdBy"
+                          >added by : {{ c.createdBy }}</span
+                        ><br/>
+                        <span class="text-primary" *ngIf="c.updatedBy"
+                          >upateed by : {{ c.updatedBy }}</span
+                        >
+                      </div> -->
+                    <!-- </div> -->
                   </div>
                 </div>
-
-                <ng-template #noDataFound>
-                  <app-init-car-form></app-init-car-form>
-                </ng-template>
+                
+          
               </form>
             </div>
+            
+           
+            
           </div>
         </div>
       </div>
     </div>
   </div>
-
-  <!-- 
-Modal add car -->
-
-  <div class="card-body">
-    <ng-template #content let-modal>
-      <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Add new car</h4>
-        <button
-          type="button"
-          class="btn-close"
-          aria-label="Close"
-          (click)="modal.dismiss('Cross click')"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <form
-          [formGroup]="carForm"
-          (ngSubmit)="createCar()"
-          class="theme-form mega-form"
-        >
-          <h6>Car definition</h6>
-          <span> </span>
-          <div class="row g-2">
-            <div class="col-md-6">
-              <div class="mb-3">
-                <label class="col-form-label">Code</label>
-                <input
-                  class="form-control"
-                  type="text"
-                  placeholder="Car code"
-                  formControlName="code"
-                />
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <div class="mb-3">
-                <label class="col-form-label">Car</label>
-                <input
-                  class="form-control"
-                  type="text"
-                  placeholder="Car name"
-                  formControlName="car"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div class="row g-2">
-            <div class="col-md-6">
-              <div class="mb-3">
-                <label class="col-form-label">Year</label>
-                <input
-                  class="form-control"
-                  type="text"
-                  placeholder="Enter year"
-                  formControlName="year"
-                />
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <div class="mb-3">
-                <label class="col-form-label">Plate</label>
-                <input
-                  class="form-control"
-                  type="text"
-                  placeholder="Enter Plate"
-                  formControlName="plate"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="row g-2">
-            <div class="col-md-6">
-              <div class="mb-3">
-                <label class="col-form-label">Car Price<(QAR)</label>
-                <input
-                  class="form-control"
-                  type="text"
-                  placeholder="Enter car price in QAR"
-                />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="mb-3">
-                <label class="col-form-label">Purchase Date</label>
-                <input class="form-control" type="date" />
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="submit"
-              class="btn btn-outline-dark"
-              (click)="modal.close('Save click')"
-            >
-              Add this car
+  <ng-template #noDataFound>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <span>No Car added yet .</span>
+            <button class="btn btn-primary" (click)="modal.open(content)" >
+              Add Car
             </button>
           </div>
-        </form>
+        </div>
       </div>
-    </ng-template>
-  </div>
+    </div>
+  </ng-template>
+
+ 
+
+
 </div>
 
-<!-- 
-confirmation modal : -->
+<div class="card-body">
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Add new car</h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <form
+        [formGroup]="carForm"
+        (ngSubmit)="createCar()"
+        class="theme-form mega-form"
+      >
+        <h6>Car definition</h6>
+        <span> </span>
+        <div class="row g-2">
+          <div class="col-md-12">
+            <div class="mb-3">
+              <label class="col-form-label">Car</label>
+              <input
+                class="form-control"
+                type="text"
+                placeholder="Car name"
+                formControlName="car"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-2">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="col-form-label">Year</label>
+              <input
+                class="form-control"
+                type="text"
+                placeholder="Enter year"
+                formControlName="year"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="col-form-label">Plate</label>
+              <input
+                class="form-control"
+                type="text"
+                placeholder="Enter Plate"
+                formControlName="plate"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row g-2">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="col-form-label">Car Price<(QAR)</label>
+              <input
+                class="form-control"
+                type="text"
+                placeholder="Enter car price in QAR"
+              />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="col-form-label">Purchase Date</label>
+              <input class="form-control" type="date" />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="submit"
+            class="btn btn-outline-dark"
+            (click)="modal.close('Save click')"
+          >
+            Add this car
+          </button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</div></div>

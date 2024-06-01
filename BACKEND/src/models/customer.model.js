@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const customerSchema = new Schema({
   passport_number: { type: Number, required: true, unique: true },
-  code:{type:Number,default:3000},
+  code:{type:Number},
   id_number: { type: Number, required: true, unique: true },
   title: { type: String, required: true },
   fullName: { type: String, required: true },
@@ -22,11 +22,14 @@ const customerSchema = new Schema({
     email: { type: String },
     QAR_address: { type: String },
     permanent_address: { type: String },
+    files:[String],
   
     person_name: { type: String },
     mobile: { type: String },
     home_country: { type: String },
-    nationality: { type: String }
+    nationality: { type: String },
+    branch_id: { type: Schema.Types.ObjectId, ref: 'Branch' }
+
 }, { timestamps: true });
 
 

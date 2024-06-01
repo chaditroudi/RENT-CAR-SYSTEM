@@ -1,3 +1,5 @@
+import { LoadingSpinnerModule } from './../ui/base/loading-spinner/loading-spinner.module';
+import { ReportsComponent } from './reports/reports.component';
 import { PermissionUpdateComponent } from "./permissions/permission-update/permission-update.component";
 import { IndexRoutingModule } from "./index-routing.module";
 import { NgxPaginationModule } from "ngx-pagination";
@@ -16,10 +18,21 @@ import { ToastrModule } from "ngx-toastr";
 import { InitCarFormComponent } from "./cars/init-car-form/init-car-form.component";
 import { CustomerUpdateComponent } from "./customers/customer-update/customer-update.component";
 import { PermissionsDetailsComponent } from "./permissions/permissions-details/permissions-details.component";
-import { InitContractFormComponent } from "./contract/init-contract-form/init-contract-form.component";
+import { NgxDropzoneModule } from 'ngx-dropzone';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { CarModalComponent } from "./cars/car-modal/car-modal.component";
-import { CustomerModalComponent } from './customers/customer-modal/customer-modal.component';
+import { CustomerModalComponent } from "./customers/customer-modal/customer-modal.component";
+import { MainComponent } from "./dashboard/main/main.component";
+import { ChartBoxComponent } from "./dashboard/chart-box/chart-box.component";
+import { FilterPipe } from "../shared/pipe/filter.pipe";
+import { NotificationsListComponent } from './notifications/notifications-list/notifications-list.component';
+import { UserAddComponent } from './users/user-add/user-add.component';
+import { UsersListComponent } from './users/users-list/users-list.component';
+import { UserUpdateComponent } from './users/user-update/user-update.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { BranchsListComponent } from './branchs/branchs-list-user/branchs-list.component';
+import { BranchListAdminComponent } from './branchs/branch-list-admin/branch-list-admin.component';
+import { CustomerDetailsComponent } from './customers/customer-details/customer-details.component';
 
 @NgModule({
   declarations: [
@@ -27,24 +40,41 @@ import { CustomerModalComponent } from './customers/customer-modal/customer-moda
     CarsListComponent,
     //ContractDetailsComponent,
     CustomersListComponent,
+
     CustomerAddComponent,
+
     CustomerUpdateComponent,
-   // ContractInvoiceComponent,
+    // ContractInvoiceComponent,
     InitCarFormComponent,
 
+    MainComponent,
     CustomerUpdateComponent,
     PermissionsDetailsComponent,
     CarModalComponent,
     PermissionUpdateComponent,
     CustomerModalComponent,
+    ReportsComponent,
     
-    
-   // InitContractFormComponent,
+    UserAddComponent,
+    MainComponent,
+    ChartBoxComponent,
+
+    FilterPipe,
+      NotificationsListComponent,
+      UserAddComponent,
+      UsersListComponent,
+      UserUpdateComponent,
+      BranchListAdminComponent,
+      CustomerDetailsComponent,
   ],
   imports: [
     CommonModule,
     SharedModule,
     HttpClientModule,
+    NgSelectModule,
+    NgxDropzoneModule,
+
+    LoadingSpinnerModule,
     ToastrModule,
     NgbModule,
 

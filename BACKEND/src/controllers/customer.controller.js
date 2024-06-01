@@ -1,18 +1,29 @@
 const Customer = require('../models/customer.model');
+const { autoIncrementCodeCustomer } = require('../utils/auto-increment');
 
 // Create a new customer
 exports.createCustomer = async (req, res) => {
   try {
-    const newCustomer = new Customer(req.body);
-    console.log("hii")
+
+    const autoInc = await autoIncrementCodeCustomer(Customer, "code");
+
+    let nameArray = [];
+
+   
+    for(i = 0 ; i<req.files.length;i++) {
+      nameArray.push(req.files[i].filename);
+    }
+    console.log(nameArray)
+    
+    const newCustomer = new Customer({...req.body,code:autoInc,files:nameArray,branch_id:req.user.branch_id});
 
     
 
     const savedCustomer = await newCustomer.save();
 
-    res.status(201).json(savedCustomer);
+    return res.status(201).json(savedCustomer);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    //console.log(error);
   }
 };
 
@@ -61,3 +72,19 @@ exports.deleteCustomer = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+
+
+exports.getAllCustomersByBranch = async (req, res) => {
+  try {
+
+      const cars= await Customer.find({branch_id: req.user.branch_id});
+      console.log(cars)
+    
+    
+    return res.status(200).json(cars);
+  } catch (error) {
+    return res.status(400).json({ status: 400, message: error.message });
+  }
+}

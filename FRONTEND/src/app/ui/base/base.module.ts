@@ -10,7 +10,7 @@ import { PaginationComponent } from './pagination/pagination.component';
 @NgModule({
   declarations: [
     
-    PaginationComponent
+    PaginationComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, NgbModule],
 })

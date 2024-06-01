@@ -16,13 +16,18 @@ const carSchema = new Schema({
     current:Number,
     insurance: Date,
     registration: Date,
-
+    createdBy:{
+        type:String
+      },
+      updatedBy:{
+        type:String
+      },
     engine_no: String,
     chassis_no: String,
     fuel: String,
     comment: String,
     out_of_service: Boolean,
-    petrol_charge: Number,
+    petrol_charge: String,
     daily: Number,
     weekly: Number,
     monthly: Number,
@@ -35,10 +40,17 @@ const carSchema = new Schema({
     seats:Number,
     cylinders:Number,
     insurance_company:String,
-    type_of_insurance:String,
+
     owner_name:String,
     owner_id:Number,
+    
     nationality:String,
+
+    rented:Boolean,
+    branch_id: { type: Schema.Types.ObjectId, ref: 'Branch' }
+
+
+
 
 
 });

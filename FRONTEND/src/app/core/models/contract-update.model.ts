@@ -1,15 +1,17 @@
+import { Features } from 'src/app/core/models/contract.model';
 import { Contract } from "./contract.model";
 
 export function createUpdatedContract(
     inputsValue: string[],
     carId: any,
     customerId:any,
-    selectedItems: string[],
+    selectedItems: any[],
+    selectedItemsBack:any[],
     status: string,
+    status_contract: string,
     res: any
   ): Contract {
 
-    console.log("STATUS",status);
     return {
       serial: inputsValue[0] || res.serial,
       version: inputsValue[1] || res.version,
@@ -33,6 +35,7 @@ export function createUpdatedContract(
       fuel_back: inputsValue[18] || res.fuel_back,
       no_km_back: inputsValue[19] || res.no_km_back,
       features: selectedItems,
+      features_back:selectedItemsBack,
       daily_val1: inputsValue[21] || res.daily_val1,
       daily_val2: inputsValue[22] || res.daily_val2,
       daily_result: inputsValue[23] || res.daily_result,
@@ -42,6 +45,7 @@ export function createUpdatedContract(
       advance: inputsValue[26] || res.advance,
       payable: inputsValue[27] || res.payable,
       amount: inputsValue[33] || res.amount,
+      status_contract:status_contract
       
     };
   }

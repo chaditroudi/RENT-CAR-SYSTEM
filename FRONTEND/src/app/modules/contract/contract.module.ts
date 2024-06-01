@@ -1,3 +1,4 @@
+import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { QrCodeModule } from 'ng-qrcode';
 import { ContractRoutingModule } from "./contract-routing.module";
 import { NgxPaginationModule } from "ngx-pagination";
@@ -15,6 +16,8 @@ import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { ContractDetailsComponent } from "./contract-details/contract-details.component";
 import { ContractBackupsComponent } from "./contract-backups/contract-backups.component";
+import { AuthGuard } from 'src/app/core/guards';
+import { DrawingComponent } from 'src/app/lib/drawing/drawing.component';
 
 @NgModule({
   declarations: [
@@ -22,17 +25,23 @@ import { ContractBackupsComponent } from "./contract-backups/contract-backups.co
     ContractInvoiceComponent,
     InitContractFormComponent,
     ContractBackupsComponent,
+    DrawingComponent
   ],
   imports: [
     HttpClientModule,
     QrCodeModule,
     ToastrModule,
+    GooglePlaceModule,
     NgbModule,
     SharedModule,
     NgxPaginationModule,
+    
     CommonModule,
     FormsModule,
     ContractRoutingModule,
   ],
+  providers:[
+    AuthGuard
+  ]
 })
 export class ContractModule {}

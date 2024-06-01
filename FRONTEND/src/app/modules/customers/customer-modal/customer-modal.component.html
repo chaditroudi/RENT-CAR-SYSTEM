@@ -10,22 +10,23 @@
     </div>
     <div class="modal-body">
       <form class="theme-form mega-form">
-        <div class="col-sm-12">
+        <div class="col-md-12">
           <div class="card">
 
-            <!-- <div class="card-header">
-              <app-search></app-search>
-            </div> -->
+            <div class="card-header">
+              <input type="text" class="form-control" [(ngModel)]="searchQuery" placeholder="Search...">
+
+
+            </div>
             <div class="card-block row">
               <div class="col-sm-12 col-lg-12 col-xl-12">
                 <div
                   class="card-body pt-0 campaign-table click-drag-handler scroll-demo p-0"
                 >
                   <div class="recent-table table-responsive currency-table">
-                      <div *ngIf="customerInfo.length > 0" >
 
 
-                    <table class="table">
+                    <table class="table table-striped">
                         <thead>
                             <tr>
                               <th scope="col">Code</th>
@@ -44,7 +45,7 @@
                             </tr>
                           </thead>
                           <tbody  >
-                            <tr *ngFor="let customer of customerInfo">
+                            <tr *ngFor="let customer of customerInfo | filter: searchQuery: ['code','passport_number','date_birth','issued_by','passport_expiry', 'fullName', 'license_number','mobile','issued_on']">
                               <th scope="row">{{customer.code}}</th>
                               <td>{{customer.passport_number}}</td>
                               <td>{{customer.id_number}}</td>
@@ -74,7 +75,6 @@
 
               </div>
                 </div>
-              </div>
             </div>
           </div>
         </div>

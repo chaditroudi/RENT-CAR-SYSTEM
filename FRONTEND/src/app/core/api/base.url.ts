@@ -1,7 +1,13 @@
 import { HttpHeaders } from "@angular/common/http";
 
-export const baseUrl = 'http://localhost:5000/api';
+import { environment } from '../../../environments/environment';
 
+
+//export const baseUrl = 'http://localhost:3200/api';
+
+
+
+export  const baseUrl= environment.API_URL;
 
 export   const httpOptions = {
     headers: new HttpHeaders({
@@ -9,3 +15,4 @@ export   const httpOptions = {
     })
   };
   
+	

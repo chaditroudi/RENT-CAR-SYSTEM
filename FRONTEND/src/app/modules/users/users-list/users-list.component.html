@@ -1,0 +1,96 @@
+<app-breadcrumb
+  [title]="'Customers Page'"
+  [items]="['Forms', 'Form Layout']"
+  [active_item]="'Customers Page'"
+></app-breadcrumb>
+
+<div class="container">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12 col-xl-12">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+        
+      
+                <div class="row">
+                  <div class="col-md-6">
+                    
+<app-search  ></app-search>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="text-end">
+                  
+                      <button class="btn btn-primary" (click)="goToListCus()">
+                        Add User
+                      </button>
+                    </div>
+                  </div>
+                </div>
+               
+              </div>
+              
+
+              <div class="card-body">
+                
+          
+                <div *ngIf="customers.length > 0; else noData">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Email</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Role</th>
+                          <th scope="col">Administration</th>
+                          <th scope="col">Actions</th>"
+                         
+                        </tr>
+                      </thead>
+                      <tbody>
+                    
+                        <tr *ngFor="let customer of customers| filter: searchQuery: ['email','name','role','administration']">
+
+                          <th scope="row">{{ customer.name }}</th>
+                          <td>{{ customer.email }}</td>
+                          <td>{{ customer.role }}</td>
+                          <td>{{ customer.administration }}</td>
+                         
+                          <td>
+                            <ul class="action">
+                              <li class="edit">
+                                <a (click)="goToUser(customer._id)"
+                                  ><i class="icon-pencil-alt"></i
+                                ></a>
+                              </li>
+                              <li class="delete">
+                                <a (click)="deleteCustomer(customer._id)"
+                                  ><i class="icon-trash mb-3"></i
+                                ></a>
+                              </li>
+                              <!-- <li class="information">
+                                <a routerLink="/cars/car-details"
+                                  ><i class="icon-menu mb-3"></i
+                                ></a>
+                              </li> -->
+                            </ul>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <ng-template #noData>
+                  <div class="alert alert-light">
+                    <p>Customer not found.</p>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,51 @@
+<div class="drawing-container">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div style="text-align: center;">
+        <canvas #backgroundCanvas width="800" height="400" style="border: 1px solid black;"></canvas>
+        <canvas #drawingCanvas width="800" height="400" style="border: 1px solid black; margin-top: 10px;"></canvas>
+      
+      </div>
+        <div class="preferences-tab">
+        <h3>Preferences</h3>
+        <div style="margin-top: 10px;">
+          <label for="colorPicker">Select Brush Color:</label>
+          <input id="colorPicker" type="color" (change)="setColor($event.target.value)" value="#ff0000">
+        </div>
+        
+        <div>
+          
+          <label>Brush Size:</label>
+          <input type="range" min="1" max="20" [(ngModel)]="brushSize" (input)="setBrushSize($event.target.value)">
+          {{ brushSize }}
+        </div>
+        <div>
+          <label>Brush Shape:</label>
+          <select [(ngModel)]="brushShape" (change)="setBrushShape($event.target.value)">
+            <option value="round">Round</option>
+            <option value="square">Square</option>
+          </select>
+        </div>
+        <div>
+          <label>Opacity:</label>
+          <input type="range" min="0" max="1" step="0.1" [(ngModel)]="opacity" (input)="setOpacity($event.target.value)">
+          {{ opacity }}
+        </div>
+        <div>
+          <button (click)="zoomIn()">Zoom In</button>
+          <button (click)="zoomOut()">Zoom Out</button>
+        </div>
+        <div>
+          <button (click)="toggleEraser()">
+            {{ isErasing ? 'Disable Eraser' : 'Enable Eraser' }}
+          </button>
+          <button (click)="resetDrawing()" style="margin-top: 10px;">Reset Drawing</button>
+
+        </div>
+        <div>
+          <button (click)="saveImage()">Save Image</button>
+        </div>
+      </div>
+  </div>
+  
+</div>

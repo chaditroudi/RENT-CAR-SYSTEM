@@ -1,0 +1,16 @@
+.card-clickable {
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+    text-align: center;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    margin-bottom: 20px;
+}
+.card-clickable:hover {
+    transform: scale(1.05);
+    background-color: #f8f9fa;
+}
+.card-body {
+    padding: 20px;
+}
+

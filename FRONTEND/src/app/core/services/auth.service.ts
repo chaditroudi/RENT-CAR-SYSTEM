@@ -1,85 +1,110 @@
-import { User } from './../models/user.model';
-import { baseUrl, httpOptions } from './../api/base.url';
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { StorageService } from './storage.service';
-
-
-
-
-
-
+import { User } from "./../models/user.model";
+import { baseUrl, httpOptions } from "./../api/base.url";
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { map, shareReplay, tap } from "rxjs/operators";
+import { StorageService } from "./storage.service";
 
 interface AuthResponse {
-  accessToken:string,
-  expDate:string,
-  email:string,
-  name:string,
-  role:number,
-  msg:string,
-  password:string,
-  permission:{
-    
-  }
-  }
+  accessToken: string;
+  expDate: string;
+  email: string;
+  name: string;
+  role: number;
+  msg: string;
+  password: string;
+  success:boolean;
+  data:any;
+  permission: {};
+}
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class AuthService {
 
-
-
-  private user:User;
-  constructor
-  (
+  private user: User;
+  role =0;
+  accessToken: any;
+  constructor(
     private router: Router,
     private http: HttpClient,
-    private readonly userMangementService :StorageService
-  ) { }
-
-    login(email: string, password: string) {
+    private storageService: StorageService
+  ) {
     
-
+    if(storageService.getCurrentUser() && this.storageService !==undefined) {
+      this.role = JSON.parse(storageService.getCurrentUser()).data.role;
       
-      return this.http.post<AuthResponse>(`${baseUrl}/auth/login`, {"email": email, "password": password}, httpOptions)
-      .pipe(tap((res)=> {
+    }
+  }
 
-       
 
-        this.userMangementService.setToken(res.accessToken,res.expDate);
-       return this.userMangementService.setCurrentUser(res);
+  login(email: string, password: string): Observable<AuthResponse> {
+    return this.http
+      .post<AuthResponse>(
+        `${baseUrl}/auth/login`,
+        { email: email, password: password },
+        httpOptions
+      )
+      .pipe(
+        tap((res) => {
 
-      
+          if(res.success) {
 
+            (this.storageService);
+            this.storageService.setToken(res.accessToken);
+            this.storageService.setCurrentUser(res);
+            this.storageService.storeUserRole(res.data.role);
+          }
+
+          
         
-      }))
-       
-    }
+        }),
+        shareReplay() 
+      );
+  }
 
-    isLoggedIn() {
-      const user = JSON.parse(localStorage.getItem('user')!) as User;
-      const accessToken = JSON.parse(sessionStorage.getItem('accessToken'));
-      const expDate = JSON.parse(sessionStorage.getItem('expiration'));
-      if (user) {
-        const token = accessToken;
-        const sExpDate = expDate;
-        console.log(sExpDate)
-        if (token && sExpDate && new Date().toLocaleString() < new Date(sExpDate).toLocaleString())
-        {
-          return true;
-        }
-      }
-      return false;
-    }
+  // isLoggedIn() {
+  //   const user = JSON.parse(localStorage.getItem("user")!) as User;
+  //   const accessToken = JSON.parse(sessionStorage.getItem("accessToken"));
+  //   // const expDate = JSON.parse(sessionStorage.getItem('expiration'));
+  //   if (user) {
+  //     const token = accessToken;
+  //     //    const sExpDate = expDate;
+  //     //  (new Date(sExpDate))
+  //     if (token) {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
 
- 
 
-    logout() {
-      localStorage.removeItem('user');
-      this.router.navigate(['account/login']);
-    }
+  
+  getHeaders():HttpHeaders{
+    this.accessToken = JSON.parse(this.storageService.getCurrentUser()).accessToken;
+
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.accessToken}`
+    })
+  }
+
+  updateBranch(branchData: any) {
+    const headers = this.getHeaders();
+    return this.http.put<any>(
+      
+      `${baseUrl}/auth/update-branch`,
+
+      branchData, { headers });
+  }
+
+  logout() {
+    localStorage.removeItem("user");
+    localStorage.removeItem("user_connected");
+
+    this.router.navigate(["account/login"]);
+  }
 }

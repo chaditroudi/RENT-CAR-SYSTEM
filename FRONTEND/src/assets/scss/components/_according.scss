@@ -79,6 +79,10 @@
     }
   }
 }
+.accordion-button:not(.collapsed)::after {
+  background-image: none;
+  transform: none;
+}
 /**=====================
      24. According CSS Ends
 ==========================**/

@@ -1,3 +1,4 @@
+import { LoadingService } from './../../../shared/services/loading.service';
 import { CarService } from "./../../../core/services/car.service";
 import {
   Component,
@@ -15,6 +16,7 @@ import { ToastService } from "src/app/shared/services/toast.service";
 import { ConfirmationModalComponent } from "src/app/shared/components/confirmation-modal/confirmation-modal.component";
 import { Car } from "src/app/core/models/car.model";
 import { switchMap } from "rxjs";
+import { StorageService } from "src/app/core/services/storage.service";
 
 @Component({
   selector: "app-car-details",
@@ -25,15 +27,24 @@ export class CarDetailsComponent implements OnInit, OnChanges {
   public carData: any;
 
   formData = [];
+  filteredData=[];
+  currentPage: number = 1;
+  pageSize: number = 10;
+  paginationId: string = 'carPagination';
 
   modal: ModalComponent;
 
   carForm: FormGroup;
+  inputsValue: string[] = Array(30).fill("");
 
-  inputsValue: string[] = Array(28).fill("");
+
+  loading: boolean = false;
+
 
   ngOnInit(): void {
     this.loadData();
+
+
   }
 
   constructor(
@@ -42,7 +53,10 @@ export class CarDetailsComponent implements OnInit, OnChanges {
     private modalService: NgbModal,
     private readonly carService: CarService,
     private toastr: ToastService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private storageService:StorageService
+    ,
+    private loadingService:LoadingService
   ) {
     this.modal = new ModalComponent(config, modalService);
 
@@ -84,7 +98,7 @@ export class CarDetailsComponent implements OnInit, OnChanges {
   createCar() {
     this.carService.create(this.carForm.value).subscribe(
       (response) => {
-        console.log(response);
+        (response);
 
         if (this.carForm.valid) {
           this.toastr.showSuccess("car added successfully");
@@ -95,7 +109,7 @@ export class CarDetailsComponent implements OnInit, OnChanges {
         }
       },
       (err) => {
-        console.log(err);
+        (err);
       }
     );
   }
@@ -105,7 +119,7 @@ export class CarDetailsComponent implements OnInit, OnChanges {
 
     this.inputsValue[index] = target.value;
 
-    console.log(
+    (
       `inputValue: ${index + 1}  changed to : ${this.inputsValue[index]}`
     );
   }
@@ -116,7 +130,7 @@ export class CarDetailsComponent implements OnInit, OnChanges {
     //current car:
     return this.carService.get(carId).subscribe((res) => {
       this.car = res;
-      console.log(res);
+      (res);
     });
   }
   updateCar(carId: number) {
@@ -125,9 +139,6 @@ export class CarDetailsComponent implements OnInit, OnChanges {
     this.carService.get(carId).pipe(
       switchMap((res: Car) => {
         this.car = res;
-        console.log(res.code);
-        console.log(this.getCar(carId));
-        console.log(this.car);
         newCar = {
           code: this.inputsValue[0] ? this.inputsValue[0] : res.code,
           car: this.inputsValue[1] || res.car,
@@ -137,7 +148,7 @@ export class CarDetailsComponent implements OnInit, OnChanges {
           weekly: this.inputsValue[5] || res.weekly,
           monthly: this.inputsValue[6] || res.monthly,
           annual: this.inputsValue[7] || res.annual,
-          current: this.inputsValue[8] || res.current,
+          current: this.inputsValue[30] || res.current,
           next_service: this.inputsValue[9] || res.next_service,
           insurance: this.inputsValue[10] || res.insurance,
           registration: this.inputsValue[11] || res.registration,
@@ -159,31 +170,38 @@ export class CarDetailsComponent implements OnInit, OnChanges {
 
         };
   
-        console.log("new data", newCar);
         return this.carService.update(carId, newCar);
       })
     ).subscribe(
       (response) => {
-        console.log(response);
+        (response);
         if (response) {
-          const index = this.formData.findIndex((car: Car) => car._id === carId);
-          if (index !== -1) {
-            this.formData[index] = { ...this.formData[index], ...newCar };
-          }
+          // const index = this.formData.findIndex((car: Car) => parseInt(car._id) === carId);
+          // if (index !== -1) {
+          //   this.formData[index] = { ...this.formData[index], ...newCar };
+          // }
+          this.loadData();
           this.toastr.showSuccess("Car updated successfully");
         } else {
           this.toastr.showError("Error in updating the car details");
         }
       },
       (err) => {
-        console.log(err);
+        (err);
       }
     );
+
+
   }
 
+  
+
   deleteCar(carId: number): void {
+
+  
     this.carService.delete(carId).subscribe(
       () => {
+        this.loadData();
         this.toastr.showSuccess("Car deleted successfully");
       },
       (err) => {
@@ -191,20 +209,55 @@ export class CarDetailsComponent implements OnInit, OnChanges {
         this.toastr.showError("Error in deleting the car");
       }
     );
+  
   }
+  // loadData() {
+  //   this.carService.getCars();
 
+  //   this.carService.cars$.subscribe((res) => {
+  //     this.carData = res;
+
+  //     this.formData = this.carData;
+
+  //     this.filteredData = [...this.formData]
+
+  //   });
+  // }
   loadData() {
-    this.carService.getCars();
+    this.loading = true;
 
-    this.carService.cars$.subscribe((res) => {
-      this.carData = res;
+    if(this.storageService.getRole() == 1) {
+      this.carService.getCars();
 
-      this.formData = this.carData;
+      this.carService.cars$.subscribe((res) => {
+        this.carData = res;
+  
+        this.formData = this.carData;
+  
+        this.filteredData = [...this.formData]
+        this.loading = false;
+      this.loadingService.hide();
+  
+      });
+    }
+    else if(this.storageService.getRole() == 2 || this.storageService.getRole() == 3) {
 
-      console.log(this.carData);
+      this.carService.getCarsByBranch();
 
-      // this.updateFormData();
-    });
+      this.carService.cars$.subscribe((res) => {
+        this.carData = res;
+
+  
+        this.formData = this.carData;
+  
+        this.filteredData = [...this.formData]
+        this.loading = false;
+        this.loadingService.hide();
+    
+  
+      });
+    }
+  
   }
 
   @ViewChild("confirmationModal")
@@ -222,7 +275,7 @@ export class CarDetailsComponent implements OnInit, OnChanges {
   getConfirmationValue(value: any, carId: number) {
     if (value == "Yes") {
       this.deleteCar(carId);
-      console.log("first");
+      ("first");
     }
   }
 
@@ -231,6 +284,41 @@ export class CarDetailsComponent implements OnInit, OnChanges {
   }
 
 
+  updateFilteredData(searchQuery: string) {
+    
+    if (searchQuery.trim() === '') {
+      this.filteredData = this.formData; // If search query is empty, show all data
+    } else {
+    
+      const searchTerms = searchQuery.trim().toLowerCase().split(' ');
+      this.filteredData = this.formData.filter(car =>
+     
+        searchTerms.every(term =>
+          Object.values(car).some(value =>
+            value && value.toString().toLowerCase().includes(term)
+          )
+        )
+        
+      );   
 
-  // open car
+    }
+    this.currentPage = 1; 
+  }
+
+  pageChanged(event: number) {
+    // Update current page when pagination changes
+    this.currentPage = event;
+  }
+
+
+
+
+
+  onSearchChange(query: string) {
+    this.filteredData = this.formData.filter(item =>
+      item.car.toLowerCase().includes(query.toLowerCase()) ||  item.plate.toLowerCase().includes(query.toLowerCase())
+    );
+
+
+}
 }

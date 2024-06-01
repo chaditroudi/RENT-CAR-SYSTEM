@@ -38,7 +38,6 @@ export class DateService {
     }
     else if(type === 'weekly') {
 
-      console.log("week",weekly)
       return weekly;
     }
     else {

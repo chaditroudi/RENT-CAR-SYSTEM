@@ -38,13 +38,11 @@ export class PermissionUpdateComponent implements OnInit {
   
 
   updatePermission(permission:Permission) {
-    console.log("Hello permission")
-    console.log(permission)
+    (permission)
     if (permission) {
       this.permissionService.updatepermission(permission)
         .subscribe(updatePermission => {
-          console.log('Permission updated successfully:', updatePermission);
-        }, error => console.log(error));
+        }, error => (error));
     }
   }
   id:string;
@@ -59,7 +57,7 @@ export class PermissionUpdateComponent implements OnInit {
       this.permissionService.getpermissionById(this.id).subscribe(res => {
         this.permission = res;
 
-        console.log(res)
+        (res)
         
       });
     });

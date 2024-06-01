@@ -1,0 +1,67 @@
+<div class="container-fluid">
+  <div class="page-title">
+    <div class="row">
+      <div class="col-6">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="email-right-aside bookmark-tabcontent contacts-tabs">
+        <div class="card email-body radius-left">
+          <div class="ps-0">
+            <div class="tab-content">
+              <div
+                class="tab-pane fade active show"
+                id="pills-personal"
+                role="tabpanel"
+                aria-labelledby="pills-personal-tab"
+              >
+                <div class="card mb-0">
+                  <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5>Notifications</h5>
+                    <span class="f-14 pull-right mt-0">{{ notifications.length }} Notifications</span>
+                  </div>
+
+                  <div class="card-body p-0">
+                    <div class="list-persons" id="addcon">
+                      <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <div *ngFor="let notification of notifications">
+                          <div class="media p-3">
+                            <img
+                              class="img-50 img-fluid m-r-20 rounded-circle"
+                              src="assets/images/cars/oil.png"
+                              alt="Notification image"
+                            />
+                            <div class="media-body">
+                              <div class="d-flex justify-content-between">
+                                <h6>
+                                  {{ notification.title }}
+                                </h6>
+                                <div class="close-circle">
+                                  <a (click)="deleteNotification(notification._id)"><i class="fa fa-close"></i></a>
+                                </div>
+                              </div>
+                              <p class="email_add_0">
+                                {{ notification.date | date }}
+                              </p>
+                              <i [ngClass]="{ 'fa fa-check text-success': notification.isRead, 'unread': !notification.isRead }"></i>
+                            </div>
+                          </div>
+                          <hr class="m-0">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

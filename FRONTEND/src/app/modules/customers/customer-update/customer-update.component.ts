@@ -61,7 +61,7 @@ export class CustomerUpdateComponent implements OnInit {
       this.customerService.getCustomerById(this.customerId).subscribe(res => {
         this.customer = res;
 
-        console.log(this.customer)
+        (this.customer)
         
       });
     });
@@ -77,9 +77,7 @@ export class CustomerUpdateComponent implements OnInit {
     if (this.customer && this.customerId) {
       this.customerService.updateCustomer(this.customer)
         .subscribe(updatedCustomer => {
-          // Handle successful update (e.g., show success message, navigate back to customer list)
-          console.log('Customer updated successfully:', updatedCustomer);
-       //   this.router.navigate(['/customers']); // Replace with your desired route after update
+      
         }, error => this.errorMessage = error.message);
     }
   }

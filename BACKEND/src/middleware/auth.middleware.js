@@ -16,7 +16,7 @@ const verifyToken = async(req, res, next) => {
         const decodedData = jwt.verify(bearerToken, "secret");
 
         req.user = decodedData;
-        console.log(req.user);
+        console.log("decoeded",decodedData)
         
     } catch (error) {
         return res.status(400).json({

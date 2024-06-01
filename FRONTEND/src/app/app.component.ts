@@ -1,11 +1,13 @@
 import { Component, PLATFORM_ID, Inject } from '@angular/core';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { map, delay, withLatestFrom } from 'rxjs/operators';
+import { fadeInAnimation } from './shared/data/router-animation/router-animation';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  
 })
 export class AppComponent {
   

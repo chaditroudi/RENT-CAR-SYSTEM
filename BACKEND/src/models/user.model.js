@@ -9,7 +9,6 @@ const userSchema = new mongoose.Schema({
     },
     password: {
       type: String,
-      required: true
     },
     name: {
       type: String
@@ -26,8 +25,19 @@ const userSchema = new mongoose.Schema({
       type:String,
     },
     expDate:{
-      type:String
-    }
+      type:Date
+
+    },
+    isAdmin:{
+      type:Boolean
+    },
+    administration:{
+      type:String,
+    },
+    branch_id: { type: Schema.Types.ObjectId, ref: 'Branch' }
+
+    
+
 })
 
 module.exports = mongoose.model('User', userSchema);
