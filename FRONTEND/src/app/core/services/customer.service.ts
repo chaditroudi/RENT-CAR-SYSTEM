@@ -59,10 +59,10 @@ export class CustomerService {
     return this.http.get<any>(`${baseUrl}/customer/${id}`,{headers});
   }
 
-  updateCustomer(customer: Customer): Observable<Customer> {
+  updateCustomer(customerId:string,customer: Customer): Observable<Customer> {
     const headers =this.getHeaders();
 
-    return this.http.put<Customer>(`${baseUrl}/customer/${customer._id}`, customer,{headers})
+    return this.http.put<Customer>(`${baseUrl}/customer/${customerId}`, customer,{headers})
       .pipe(
         map(updatedCustomer => {
           return updatedCustomer;

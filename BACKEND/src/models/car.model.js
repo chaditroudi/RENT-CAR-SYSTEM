@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-var AutoIncrement = require('mongoose-sequence')(mongoose);
+// var AutoIncrement = require('mongoose-sequence')(mongoose);
 
 // Create a schema for the data
 const carSchema = new Schema({
@@ -55,7 +55,7 @@ const carSchema = new Schema({
 
 });
 
-carSchema.plugin(AutoIncrement, {id:'serial_seq',inc_field: 'serial'});
+// carSchema.plugin(AutoIncrement, {id:'serial_seq',inc_field: 'serial'});
 
 // Create a model using the schema
 const car = mongoose.model('Car', carSchema);

@@ -46,6 +46,11 @@ export class LoginComponent implements OnInit {
 
         this.navService.updateMenuItems(this.role);
 
+
+        if(res.success === false) {
+          this.toastr.showError(res.msg);
+          return;
+        }
         if (res.success ) {
           this.toastr.showSuccess(res.msg);
           res.data.role == 1 ? this.router.navigate(["/modules/dashboard"]) :
