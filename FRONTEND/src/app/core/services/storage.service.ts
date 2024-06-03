@@ -65,5 +65,8 @@ export class StorageService {
   getBranchName() {
     return JSON.parse(this.getCurrentUser()).branch_name;
   }
+  getOffice() {
+    return JSON.parse(this.getCurrentUser()).administration;
+  }
 }
 

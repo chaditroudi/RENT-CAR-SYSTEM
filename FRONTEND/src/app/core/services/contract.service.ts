@@ -89,6 +89,7 @@ export class ContractService {
     const headers = this.getHeaders();
     
     return this.http.get<any[]>(`${baseUrl}/contract/backups-contracts` ,{headers}).subscribe((data) => {
+      
       this.contractSource.next(data)
   });
 }

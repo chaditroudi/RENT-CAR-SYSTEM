@@ -54,8 +54,8 @@ body[class="dark-only"] {
 	*** Icons Scss ***
 -----------------------*/
 //@import "vendors/whether-icon";
-@import "vendors/icofont";
-@import "vendors/themify";
+// @import "vendors/icofont";
+// @import "vendors/themify";
 
 /* ---------------------
 	*** Base ***
@@ -141,6 +141,6 @@ body[class="dark-only"] {
 @import "layout/sidebar.scss";
 @import "layout/rtl.scss";
 @import "layout/box-layout.scss";
-@import "../../assets/scss/vendors/bootstrap/forms/labels.scss";
+// @import "../../assets/scss/vendors/bootstrap/forms/labels.scss";
 
 

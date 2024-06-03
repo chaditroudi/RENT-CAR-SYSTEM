@@ -13,13 +13,12 @@ node_modules/
 *.log
 *.tmp
 
-# Ignore environment-specific files
 .env
 
 # Ignore dependency management files
 package-lock.json
 yarn.lock
 
-dist/
+
 
 uploads/

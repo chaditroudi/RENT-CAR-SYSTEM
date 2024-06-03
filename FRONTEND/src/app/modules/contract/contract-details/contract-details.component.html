@@ -114,12 +114,12 @@
                       </div>
                       <div class="col-md-12">
                         <ul class="action">
-                          <li class="edit">
-                            <a (click)="openEditContractModal()"
-                              ><i class="icon-pencil-alt"></i
-                            ></a>
-
-                            <confirmation-modal
+                          <ng-container >
+                            <li class="edit">
+                              <a (click)="openEditContractModal()"
+                                ><i class="icon-pencil-alt"></i
+                              ></a>
+                              <confirmation-modal
                               #editContractModal
                               (newConfirmationEvent)="
                                 editContractAlert($event, c._id)
@@ -134,6 +134,9 @@
                               modalButtonColor="btn btn-info"
                             ></confirmation-modal>
                           </li>
+                          </ng-container>
+                          
+                    
                           <li class="delete">
                             <a (click)="open()"
                               ><i class="icon-trash mb-3"></i>
@@ -170,7 +173,7 @@
                             disabled="true"
                             
                             placeholder="No"
-                            (change)="onChangeInputValue($event, 0)"
+                            (input)="onChangeInputValue($event, 0)"
                             [value]="c.serial"
                           />
                         </div>
@@ -182,9 +185,9 @@
                           <input
                             class="form-control"
                             type="text"
-                            disabled
+                            disabled="true"
                             placeholder="Version"
-                            (change)="onChangeInputValue($event, 1)"
+                            (input)="onChangeInputValue($event, 1)"
                             [value]="c.version"
                           />
                         </div>
@@ -196,7 +199,7 @@
                             class="form-control"
                             type="text"
                             placeholder="Sponsor"
-                            (change)="onChangeInputValue($event, 2)"
+                            (input)="onChangeInputValue($event, 2)"
                             [value]="c.sponsor"
                           />
                         </div>
@@ -210,7 +213,7 @@
                           <input
                             class="form-control"
                             type="datetime-local"
-                            (change)="onChangeInputValue($event, 3)"
+                            (input)="onChangeInputValue($event, 3)"
                             [value]="c.car_out | date : 'yyyy-MM-dd HH:mm'"
                           />
                         </div>
@@ -222,7 +225,7 @@
                           <input
                             class="form-control"
                             type="number"
-                            (change)="onChangeInputValue($event, 4)"
+                            (input)="onChangeInputValue($event, 4)"
                             [value]="c.days"
                           />
                         </div>
@@ -232,7 +235,7 @@
                         <div class="mb-3">
                           <label class="col-form-label">Car back</label>
                           <input class="form-control" type="datetime-local"
-                          (change)="onChangeInputValue($event, 5)"
+                          (input)="onChangeInputValue($event, 5)"
                           [value]="c.car_back | date : 'yyyy-MM-dd HH:mm' "
                           [ngClass]="{
                           disabled: isDisabled }" />
@@ -279,7 +282,7 @@
                                     '-' +
                                     c.car?.year
                               "
-                              (change)="onChangeInputValue($event, 6)"
+                              (input)="onChangeInputValue($event, 6)"
                             />
                             <button
                               class="btn btn-outline-primary btn-xs"
@@ -312,7 +315,7 @@
                               class="form-control"
                               type="text"
                               placeholder="Hirer"
-                              (change)="onChangeInputValue($event, 10)"
+                              (input)="onChangeInputValue($event, 10)"
                               [value]="
                                 selectedCustomerData && selectedCustomerData
                                   ? selectedCustomerData
@@ -339,7 +342,7 @@
                           <textarea
                             class="comments form-control"
                             type="text"
-                            (change)="onChangeInputValue($event, 11)"
+                            (input)="onChangeInputValue($event, 11)"
                             [value]="c.comments"
                             placeholder="No"
                           ></textarea>
@@ -357,7 +360,7 @@
                               name="radio1"
                               [checked]="c.status_contract === 'daily'"
                               value="daily"
-                              (change)="
+                              (input)="
                                 onChangeRadioValue($event, c.days, c.daily)
                               "
                             />
@@ -370,7 +373,7 @@
                               type="number"
                               class="form-control"
                               [value]="daily && daily ? daily : c.car?.daily"
-                              (change)="onChangeInputValue($event, 12)"
+                              (input)="onChangeInputValue($event, 12)"
                               [disabled]="c.daily !== ''"
                               [ngClass]="{
                                 'fw-bold': c.status_contract == 'daily'
@@ -388,7 +391,7 @@
                               type="radio"
                               name="radio1"
                               [checked]="c.status_contract === 'weekly'"
-                              (change)="
+                              (input)="
                                 onChangeRadioValue($event, c.days, c.weekly)
                               "
                               value="weekly"
@@ -404,7 +407,7 @@
                               [value]="
                                 weekly && weekly ? weekly : c.car?.weekly
                               "
-                              (change)="onChangeInputValue($event, 13)"
+                              (input)="onChangeInputValue($event, 13)"
                               [disabled]="c.weekly !== ''"
                               [ngClass]="{
                                 'fw-bold': c.status_contract == 'weekly'
@@ -423,7 +426,7 @@
                               name="radio1"
                               value="monthly"
                               [checked]="c.status_contract === 'monthly'"
-                              (change)="
+                              (input)="
                                 onChangeRadioValue($event, c.days, c.monthly)
                               "
                             />
@@ -438,7 +441,7 @@
                               [value]="
                                 monthly && monthly ? monthly : c.car?.monthly
                               "
-                              (change)="onChangeInputValue($event, 14)"
+                              (input)="onChangeInputValue($event, 14)"
                               [disabled]="c.monthly !== ''"
                               [ngClass]="{
                                 'fw-bold': c.status_contract == 'monthly'
@@ -457,7 +460,7 @@
                               name="radio1"
                               value="annual"
                               [checked]="c.status_contract === 'annual'"
-                              (change)="
+                              (input)="
                                 onChangeRadioValue($event, c.days, c.annual)
                               "
                             />
@@ -472,7 +475,7 @@
                               [value]="
                                 annual && annual ? annual : c.car?.annual
                               "
-                              (change)="onChangeInputValue($event, 15)"
+                              (input)="onChangeInputValue($event, 15)"
                               [disabled]="c.annual !== ''"
                               [ngClass]="{
                                 'fw-bold': c.status_contract == 'annual'
@@ -508,7 +511,7 @@
                                             type="text"
                                             placeholder="Fuel out"
                                             [value]="c.fuel_out"
-                                            (change)="
+                                            (input)="
                                               onChangeInputValue($event, 16)
                                             "
                                           />
@@ -523,7 +526,7 @@
                                             type="text"
                                             placeholder="No KM out"
                                             [value]="c.no_km_out"
-                                            (change)="
+                                            (input)="
                                               onChangeInputValue($event, 17)
                                             "
                                           />
@@ -562,7 +565,7 @@
                                             type="text"
                                             placeholder="Fuel back"
                                             [value]="c.fuel_back"
-                                            (change)="
+                                            (input)="
                                               onChangeInputValue($event, 18)
                                             "
                                           />
@@ -577,7 +580,7 @@
                                             type="text"
                                             placeholder="No KM back"
                                             [value]="c.no_km_back"
-                                            (change)="
+                                            (input)="
                                               onChangeInputValue($event, 19)
                                             "
                                           />
@@ -624,7 +627,7 @@
                                                       ? daily_val1
                                                       : c.daily_val1
                                                   "
-                                                  (change)="
+                                                  (input)="
                                                     onChangeInputValue(
                                                       $event,
                                                       21
@@ -646,7 +649,7 @@
                                                   (input)="
                                                     calculateResult($event)
                                                   "
-                                                  (change)="
+                                                  (input)="
                                                     onChangeInputValue(
                                                       $event,
                                                       22
@@ -666,7 +669,7 @@
                                                       ? result
                                                       : c.daily_result
                                                   "
-                                                  (change)="
+                                                  (input)="
                                                     onChangeInputValue(
                                                       $event,
                                                       23
@@ -797,7 +800,7 @@
                                                         ? discount
                                                         : c.discount
                                                     "
-                                                    (change)="
+                                                    (input)="
                                                       onChangeInputValue(
                                                         $event,
                                                         25
@@ -815,7 +818,7 @@
                                                     [value]="
                                                       result ? result : ''
                                                     "
-                                                    (change)="
+                                                    (input)="
                                                       onChangeInputValue(
                                                         $event,
                                                         24
@@ -835,7 +838,7 @@
                                                         ? payable
                                                         : c.payable
                                                     "
-                                                    (change)="
+                                                    (input)="
                                                       onChangeInputValue(
                                                         $event,
                                                         27
@@ -906,7 +909,7 @@
                                                             ? discount
                                                             : c.discount
                                                         "
-                                                        (change)="
+                                                        (input)="
                                                           onChangeInputValue(
                                                             $event,
                                                             25
@@ -932,7 +935,7 @@
                                                         [value]="
                                                           result ? result : ''
                                                         "
-                                                        (change)="
+                                                        (input)="
                                                           onChangeInputValue(
                                                             $event,
                                                             24
@@ -960,7 +963,7 @@
                                                             ? payable
                                                             : c.payable
                                                         "
-                                                        (change)="
+                                                        (input)="
                                                           onChangeInputValue(
                                                             $event,
                                                             27

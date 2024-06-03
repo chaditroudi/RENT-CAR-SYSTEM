@@ -1,3 +1,5 @@
+
+
 const autoIncrement = async (model, serial) => {
     try {
         const highestSerial = await model

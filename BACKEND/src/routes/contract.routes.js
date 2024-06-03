@@ -19,9 +19,9 @@ const storage = multer.diskStorage({
 const auth = require('../middleware/auth.middleware');
 const { OnlyAdminCanAccess, OnlyEditorAdminCanAccess } = require('../middleware/admin.midlleware');
 const { uploadSingleMiddleware, uploadMultipleMiddleware } = require('../middleware/update.middlleware');
-router.get('/backups-contracts', contractController.getAllContractsBackups,auth, OnlyAdminCanAccess,);
+router.get('/backups-contracts',auth, OnlyEditorAdminCanAccess,contractController.getAllContractsBackups);
 
-router.get('/autoinc', contractController.getAutoInc,auth, OnlyAdminCanAccess);
+router.get('/autoinc', auth, OnlyAdminCanAccess,contractController.getAutoInc);
 
 
 

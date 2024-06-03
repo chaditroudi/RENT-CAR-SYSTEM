@@ -6,17 +6,21 @@ const app = express();
 const bodyParser = require("body-parser");
 var cors = require("cors");
 const cookieParser = require('cookie-parser');
-
+const mongoose  = require('mongoose')
 require("./src/utils/mongo-connection");
 
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./src/utils/swagger');
 
-
+const socketIo = require('./src/utils/socket');
 const appRoutes = require("./src/routes");
+const path = require("path");
 
-app.use(bodyParser.urlencoded());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 app.use(cookieParser());
@@ -34,6 +38,30 @@ app.use((_, res) =>{
 });
 
 
-app.listen(3200, (req, res)=>{
-    console.log("Server is listening on port 3200");
-})
+
+
+const httpServer = require('http').createServer(app);
+
+const port = 3200;
+
+
+
+// Define a schema for notifications
+const notificationSchema = new mongoose.Schema({
+  userId: String,
+  title: String,
+  message: String,
+}, { timestamps: true });
+
+const Notification = mongoose.model('Notification', notificationSchema);
+
+// Socket.IO logic
+
+httpServer.listen(port, () => console.log(`listening on port ${port}`   ));
+
+const io = require('./src/utils/socket').init(httpServer);
+
+
+io.on('connection', socket=>{
+  console.log('Connected To Socket');
+});

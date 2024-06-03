@@ -10,6 +10,9 @@
       <div class="toggle-sidebar" (click)="sidebarToggle()">
         <app-feather-icons [icon]="'align-center'" class="status_toggle middle"></app-feather-icons>
       </div>
+    <ng-container *ngIf="role !==1">
+      <strong class="text-dark">Welcome to branch : <span>{{branch}}</span></strong><br/>
+      <p class="text-primary">Office:{{office}}</p></ng-container>
     </div>
  
     <div class="nav-right col-xxl-7 col-xl-6 col-md-7 col-8 pull-right right-header p-0 ms-auto">

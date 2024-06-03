@@ -4,7 +4,7 @@
       <use href="assets/svg/icon-sprite.svg#notification"></use>
     </svg>
     <span class="badge rounded-pill badge-secondary">
-      <span *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+      <span  *ngIf="unreadCount > 0">{{ unreadCount }}</span>
       <span *ngIf="unreadCount == 0 && readCount > 0">{{ readCount }}</span>
     </span> 
     
@@ -25,7 +25,7 @@
         class="notification-item"
       >
         <div class="media" (click)="markAsRead(notification._id)">
-          <img class="img-fluid b-r-5 me-3 img-60" src="assets/images/cars/oil.png" alt="" />
+          <img class="img-fluid b-r-5 me-3 img-60" src="assets/images/engine-oil.png" alt="" />
           <div class="media-body">
             <span>{{notification.title}}</span>
            

@@ -109,6 +109,8 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
   selectedItems: any[] = [];
   selectedItemsBackCar: any[] = [];
 
+  enableEditIc:boolean = false;
+
   reportData: Report;
   selectedItemsBack: string[] = [];
   selectedFeatures2: any[];
@@ -227,6 +229,8 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
     const target = event.target as HTMLInputElement;
 
     this.inputsValue[index] = target.value;
+
+
 
     console.log(
       `inputValue: ${index + 1}  changed to : ${this.inputsValue[index]}`

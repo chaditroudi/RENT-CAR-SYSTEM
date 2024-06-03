@@ -222,7 +222,15 @@ export class InitContractFormComponent implements OnInit {
           contract: response.data._id,
         };
 
+
+
+
         await this.reportService.createReport(this.reportData).toPromise();
+        this.contractForm.reset({
+          car: this.car_id,
+          owner: this.customer_id
+        });
+
 
         this.toastr.showSuccess("Contract added successfully");
         this.router.navigate(["/modules/contracts/contract/contract-details"]);

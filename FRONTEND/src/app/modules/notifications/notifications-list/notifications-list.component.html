@@ -33,7 +33,7 @@
                           <div class="media p-3">
                             <img
                               class="img-50 img-fluid m-r-20 rounded-circle"
-                              src="assets/images/cars/oil.png"
+                              src="assets/images/engine-oil.png"
                               alt="Notification image"
                             />
                             <div class="media-body">
@@ -45,7 +45,7 @@
                                   <a (click)="deleteNotification(notification._id)"><i class="fa fa-close"></i></a>
                                 </div>
                               </div>
-                              <p class="email_add_0">
+                              <p class="email_add_0 text-dark">
                                 {{ notification.date | date }}
                               </p>
                               <i [ngClass]="{ 'fa fa-check text-success': notification.isRead, 'unread': !notification.isRead }"></i>

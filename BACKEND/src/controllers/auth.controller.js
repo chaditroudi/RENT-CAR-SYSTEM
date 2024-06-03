@@ -121,6 +121,7 @@ const loginUser = async (req, res) => {
       });
     }
 
+
     if (userData.branch_id) {
       userData = await userData.populate("branch_id");
       console.log(userData)
@@ -130,6 +131,7 @@ const loginUser = async (req, res) => {
         _id: userData._id,
         branch_id: userData.branch_id._id,
         branch_name: userData.branch_id.branch_name,
+        administration:userData.administration
       };
     } else {
        user = {
@@ -199,6 +201,7 @@ const loginUser = async (req, res) => {
       accessToken: gat.token,
       expDate: gat.expiration,
       branch_name: user.branch_name,
+      administration: user.administration,
       tokenType: "Bearer Token",
       data: result[0],
     });

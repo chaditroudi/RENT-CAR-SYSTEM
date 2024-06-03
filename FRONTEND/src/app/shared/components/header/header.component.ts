@@ -3,6 +3,7 @@ import { DOCUMENT } from "@angular/common";
 import { NavService } from "../../services/nav.service";
 import { LayoutService } from "../../services/layout.service";
 import SwiperCore, { Navigation, Pagination, Autoplay } from "swiper";
+import { StorageService } from "src/app/core/services/storage.service";
 
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 @Component({
@@ -13,10 +14,18 @@ SwiperCore.use([Navigation, Pagination, Autoplay]);
 export class HeaderComponent implements OnInit {
   public elem: any;
 
-  constructor(public layout: LayoutService, public navServices: NavService, @Inject(DOCUMENT) private document: any) {}
+  branch:String;
+  office:String
+  role:number;
+  constructor(public layout: LayoutService, public navServices: NavService, @Inject(DOCUMENT) private document: any,private storageSer:StorageService) {}
 
   ngOnInit() {
     this.elem = document.documentElement;
+
+this.branch=this.storageSer.getBranchName();
+this.office =this.storageSer.getOffice();
+this.role = this.storageSer.getRole();
+
   }
 
   sidebarToggle() {

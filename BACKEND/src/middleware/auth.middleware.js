@@ -13,7 +13,7 @@ const verifyToken = async(req, res, next) => {
         const bearer = token.split(' ');
         const bearerToken = bearer[1];
 
-        const decodedData = jwt.verify(bearerToken, "secret");
+        const decodedData = jwt.verify(bearerToken, process.env.JWT_SECRET);
 
         req.user = decodedData;
         console.log("decoeded",decodedData)

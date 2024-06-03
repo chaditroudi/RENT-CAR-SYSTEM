@@ -85,7 +85,12 @@
           <div class="card">
             <div class="card-header">
               <a  routerLink="/modules/contracts/contract/contract-details" class="text-end">Return</a>
+              <div class="text-end">
+                <span    class="text-success fw-bold f-10"                 >Serial: {{autoInc}}</span>
+
+              </div>
             </div>
+            
             <div class="card-body">
               <form class="theme-form mega-form" [formGroup]="contractForm">
                 <div class="col-md-12">
@@ -97,30 +102,8 @@
                 </div>
   
                 <div class="row g-4">
-                  <div class="col-md-3">
-                    <div class="mb-3">
-                      <label class="col-form-label">No</label>
-                      <input
-                        class="form-control"
-                        type="text"
-                        placeholder="No"
-                        disabled="true"
-                        [value]="autoInc">
-                      
-                    </div>
-                  </div>
-  
-                  <div class="col-md-3">
-                    <div class="mb-3">
-                      <label class="col-form-label">Version</label>
-                      <input
-                        class="form-control"
-                        type="text"
-                        placeholder="Version"
-                        formControlName="version"
-                      />
-                    </div>
-                  </div>
+                  
+                  
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label class="col-form-label">Sponsor/Driver</label>
@@ -129,6 +112,19 @@
                         type="text"
                         placeholder="Sponsor"
                         formControlName="sponsor"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="mb-3">
+                      <label class="col-form-label">Location</label>
+                      <input
+                        ngx-google-places-autocomplete
+                        type="text"
+                        class="form-control"
+                        formControlName="location"
+                        placeholder="add location"
+                        (onAddressChange)="AddressChange($event)"
                       />
                     </div>
                   </div>
@@ -226,21 +222,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="row justify-content-center">
-                    <div class="col-md-3">
-                      <div class="mb-3">
-                        <label class="col-form-label">Location</label>
-                        <input
-                          ngx-google-places-autocomplete
-                          type="text"
-                          class="form-control"
-                          formControlName="location"
-                          placeholder="add location"
-                          (onAddressChange)="AddressChange($event)"
-                        />
-                      </div>
-                    </div>
-                  </div>
+           
 
                   <ng-container *ngIf="showDetailsHirer" >
                     <div class="card-header">

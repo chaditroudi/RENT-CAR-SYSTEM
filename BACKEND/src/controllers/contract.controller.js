@@ -6,6 +6,7 @@ const { autoIncrement } = require("../utils/auto-increment");
 const { formatDateTime } = require("../utils/date-format");
 const socket = require("../utils/socket");
 const Notification = require("../models/notification.model");
+const { ObjectId } = require('mongodb');
 
 const Backup = mongoose.model(
   "backup_contract",
@@ -54,9 +55,7 @@ exports.createContract = async (req, res) => {
         });
       }
 
-      // if (!req.user || !req.user.branch_id) {
-      //   return res.status(400).json({ message: "User information or branch_id is missing" });
-      // }
+     
 
     //  console.log("branch id in contract",req.user.branch_id)
       car.rented = true;
@@ -359,9 +358,19 @@ exports.getAllContracts = async (req, res) => {
   }
 };
 
-exports.getAllContractsBackups = async (req, res) => {
+exports.  getAllContractsBackups = async (req, res) => {
   try {
+    
+    console.log(req.user.branch_id)
     const contracts = await Backup.aggregate([
+
+
+      {
+
+        $match:{
+          'data.branch_id':new  ObjectId(req.user.branch_id)
+        }
+      },
       {
         $group: {
           _id: "$data.serial",
@@ -381,6 +390,7 @@ exports.getAllContractsBackups = async (req, res) => {
       },
     ]);
 
+    console.log("XXXXXXXXXXXXXxxxx",contracts);
     return res.status(200).json(contracts);
   } catch (error) {
     return res.status(400).json({ status: 400, message: error.message });
@@ -406,7 +416,7 @@ async function checkKM(current, km_back) {
   const inc = 5000;
 
 
-  const res = parseInt(current,10) - parseInt(km_back,10); 
+  const res = parseInt(current,10) + parseInt(km_back,10); 
   console.log("currenttt",current)
   console.log("RESULTAT check vidange difference between current et km_back",res);
 
