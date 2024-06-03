@@ -15,11 +15,11 @@ export class MyAccountComponent implements OnInit {
   public profileImg: "assets/images/dashboard/user-profile.png";
 
   constructor(public router: Router, private authService: AuthService, private userMangementServ: StorageService) {
-    if (this.authService.isLoggedIn()) {
-      console.log("true");
+    if (this.userMangementServ.getIsLoggedIn() ==="CONNECTED") {
+      ("true");
       
-      console.log("userconnte",this.userMangementServ.getCurrentUser());
       this.userName = JSON.parse(this.userMangementServ.getCurrentUser()).data.name;
+
 
       this.role = JSON.parse(this.userMangementServ.getCurrentUser()).data.role;
 
@@ -33,7 +33,7 @@ export class MyAccountComponent implements OnInit {
         this.roleData = "Viewer"
       }
     } else {
-      console.log("NO ");
+      ("NO ");
     }
 
     

@@ -1,4 +1,4 @@
-import { Customer } from './../../../core/models/customer.model';
+import { Customer } from "../../../core/models/customer.model";
 import { Component, Input, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -15,6 +15,11 @@ import { Car } from "src/app/core/models/car.model";
 import { CarService } from "src/app/core/services/car.service";
 import { CustomerModalComponent } from "../../customers/customer-modal/customer-modal.component";
 import { CustomerService } from "src/app/core/services/customer.service";
+import { Report } from "src/app/core/models";
+import { ReportService } from "src/app/core/services/report.service";
+import { Observable, combineLatest } from "rxjs";
+import { DatePipe } from "@angular/common";
+import { StorageService } from "src/app/core/services/storage.service";
 
 @Component({
   selector: "app-init-contract-form",
@@ -33,8 +38,16 @@ export class InitContractFormComponent implements OnInit {
   customerData = [];
   contractForm: FormGroup;
 
-  car_id:any;
-  customer_id:any
+  public active1 = 1;
+  public active2 = 1;
+  public active3 = 1;
+  public active4 = 1;
+  disabled = true;
+
+  reportData: Report;
+
+  car_id: any;
+  customer_id: any;
   constructor(
     private router: Router,
     config: NgbModalConfig,
@@ -43,7 +56,9 @@ export class InitContractFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private contractService: ContractService,
     private carService: CarService,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private reportService: ReportService,
+    private storageService:StorageService,
   ) {
     this.initForm(formBuilder);
     this.modal = new ModalComponent(config, modalService);
@@ -54,20 +69,92 @@ export class InitContractFormComponent implements OnInit {
     this.carService.cars$.subscribe((res) => {
       this.carData = res;
 
-      console.log(this.carData);
+      this.carData;
     });
   }
 
-  ngOnInit(): void {
-    this.fetchAllCustomers();
-    this.loadData();
+  autoInc = 0;
+  getAutoInc() {
+    this.contractService.getAutoInc().subscribe((res) => {
+      this.autoInc = res;
+    });
   }
 
-  public active1 = 1;
-  public active2 = 1;
-  public active3 = 1;
-  public active4 = 1;
-  disabled = true;
+  combineLatestDateAndDays(): Observable<[Date, number]> {
+    return combineLatest([
+      this.contractForm.get("car_out").valueChanges,
+      this.contractForm.get("days").valueChanges,
+    ]);
+  }
+
+  addDays(date: Date, days: number): Date {
+    const copy = new Date(date.getTime());
+    copy.setDate(copy.getDate() + days);
+    return copy;
+  }
+
+  ngOnInit(): void {
+    this.getAutoInc();
+    this.fetchAllCustomers();
+    this.fetchAllCars();
+   // this.loadData();
+
+    this.contractForm.valueChanges.subscribe(() => {
+            this.calculateReturnDate();
+    });
+  }
+
+  async fetchAllCars() {
+    if (this.storageService.getRole() == 1) {
+      this.carService.getCars();
+
+      this.carService.cars$.subscribe((res) => {
+        this.carData = res;
+      });
+    } else if (
+      this.storageService.getRole() == 2 ||
+      this.storageService.getRole() == 3
+    ) {
+      this.carService.getCarsByBranch();
+      this.carService.cars$.subscribe((res) => {
+        this.carData = res;
+      });
+    }
+  }
+  
+
+
+
+  
+  calculateReturnDate() {
+    const checkOutDate = this.contractForm.get("car_out").value;
+    const numberOfDays = this.contractForm.get("days").value;
+  
+    if (checkOutDate && numberOfDays) {
+      const checkOutDateTime = new Date(checkOutDate).getTime();
+      const returnDateTime = checkOutDateTime + numberOfDays * 24 * 60 * 60 * 1000;
+      const returnDate = new Date(returnDateTime);
+      const formattedDate = returnDate.toISOString().split('T')[0];
+      const formattedTime = returnDate.toTimeString().split(' ')[0];
+      const formattedDateTime = `${formattedDate}T${formattedTime}`;
+      
+      this.contractForm.patchValue(
+        { car_back: formattedDateTime },
+        { emitEvent: false }
+      );
+    }
+  }
+
+    //Local Variable defined 
+    formattedaddress=" "; 
+    options={ 
+      
+    } 
+    public AddressChange(address: any) { 
+    //setting address from API to local variable 
+     this.formattedaddress=address.formatted_address 
+     
+  } 
 
   onNavChange1(changeEvent: NgbNavChangeEvent) {
     if (changeEvent.nextId === 4) {
@@ -118,24 +205,38 @@ export class InitContractFormComponent implements OnInit {
     });
   }
 
-  createContract() {
-
+  
+  async createContract() {
     this.contractForm.controls["car"].setValue(this.car_id);
     this.contractForm.controls["owner"].setValue(this.customer_id);
+    this.contractForm.controls["location"].setValue(this.formattedaddress);
     this.contractService.create(this.contractForm.value).subscribe(
-      (response) => {
-        console.log(response);
+      async (response: any) => {
+        if(response.rented == true) {
+          this.toastr.showError("Car is already rented");
+          return;
+        }
 
-        if (this.contractForm.valid) {
-          this.toastr.showSuccess("Contract added successfully");
-        }
-        if (response) {
-        } else {
-          this.toastr.showError("Error in adding the Contract details");
-        }
+        this.reportData = {
+          car: this.car_id,
+          contract: response.data._id,
+        };
+
+
+
+
+        await this.reportService.createReport(this.reportData).toPromise();
+        this.contractForm.reset({
+          car: this.car_id,
+          owner: this.customer_id
+        });
+
+
+        this.toastr.showSuccess("Contract added successfully");
+        this.router.navigate(["/modules/contracts/contract/contract-details"]);
       },
       (err) => {
-        console.log(err);
+        this.toastr.showError("Error in adding the Contract details");
       }
     );
   }
@@ -143,33 +244,22 @@ export class InitContractFormComponent implements OnInit {
   openCarModal() {
     const modalRef = this.modalService.open(CarModalComponent);
     modalRef.componentInstance.carData = this.carData;
-    console.log(modalRef.componentInstance.carData);
+    modalRef.componentInstance.carData;
 
     modalRef.componentInstance.carSelected.subscribe((selectedCar: Car) => {
-      console.log("Selected car:", selectedCar);
       this.contractForm.controls["car"].setValue(
         selectedCar.car + " " + selectedCar.year + " " + selectedCar.plate
       );
 
-      this.contractForm.controls["daily"].setValue(
-        selectedCar.daily
-      );
-      
-      this.contractForm.controls["weekly"].setValue(
-        selectedCar.weekly
-      );
-      
-      this.contractForm.controls["monthly"].setValue(
-        selectedCar.monthly
-      );
-      
-      this.contractForm.controls["annual"].setValue(
-        selectedCar.annual
-      );
+      this.contractForm.controls["daily"].setValue(selectedCar.daily);
+
+      this.contractForm.controls["weekly"].setValue(selectedCar.weekly);
+
+      this.contractForm.controls["monthly"].setValue(selectedCar.monthly);
+
+      this.contractForm.controls["annual"].setValue(selectedCar.annual);
       this.car_id = selectedCar._id;
-
     });
-
   }
 
   fetchAllCustomers() {
@@ -182,30 +272,62 @@ export class InitContractFormComponent implements OnInit {
       this.carData = res;
     });
   }
+
+  fullname="";
+  selectedCust :Customer
+
+  showDetailsHirer:boolean = false;
   openCustomerModal() {
     // this.openSearchModal();
-    const modalRef = this.modalService.open(CustomerModalComponent);
+    const modalRef = this.modalService.open(CustomerModalComponent, {
+      size: "xl",
+    });
     modalRef.componentInstance.customerData = this.customerData;
 
-    modalRef.componentInstance.customerSelected.subscribe((selectedCust:Customer) => {
-      console.log("Selected car:", selectedCust);
-      this.contractForm.controls["owner"].setValue(
-        selectedCust.fullName + " " + selectedCust.mobile 
-      );
+    modalRef.componentInstance.customerSelected.subscribe(
+      (selectedCust: Customer) => {
+        this.contractForm.controls["owner"].setValue(
+          selectedCust.fullName + " " + selectedCust.mobile +" "+selectedCust.QAR_address
+        );
+        this.fullname = selectedCust.fullName;
 
-      this.customer_id = selectedCust._id;
+        this.selectedCust = {
+          _id: selectedCust._id,
+          fullName: selectedCust.fullName,
+          mobile: selectedCust.mobile,
+          QAR_address: selectedCust.QAR_address,
+          email: selectedCust.email,
+          passport_number: selectedCust.passport_number,
+          id_number: selectedCust.id_number,
+          title: selectedCust.title,
+          date_birth: selectedCust.date_birth,
+          license_number: selectedCust.license_number,
+          code:selectedCust.code,
+          issued_by: selectedCust.issued_by,
+          issued_on: selectedCust.issued_on,
+          expiry_date: selectedCust.expiry_date,
+          passport_expiry: selectedCust.passport_expiry,
+          operation_balance: selectedCust.operation_balance,
+          nationality: selectedCust.nationality,
+          permanent_address: selectedCust.permanent_address,
+          person_name: selectedCust.person_name,
+          home_country: selectedCust.home_country,
+      
 
-    });
+        }
+        
+
+        this.customer_id = selectedCust._id;
+
+        this.showDetailsHirer = true;
+
+      }
+    );
   }
-
-
-
 
   // PAYMENTS:
   onChangePaymentDays(event) {
-
-
-   let days =  this.contractForm.controls["days"].value;
-    this.contractForm.controls["daily_val1"].setValue(days)
+    let days = this.contractForm.controls["days"].value;
+    this.contractForm.controls["daily_val1"].setValue(days);
   }
 }

@@ -10,6 +10,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 })
 export class CustomerAddComponent implements OnInit {
 
+  nameArray: File[] = [];
   customerForm = this.formBuilder.group({
     passport_number: [0],
     id_number: [0],
@@ -28,7 +29,9 @@ export class CustomerAddComponent implements OnInit {
     permanent_address: [''],
     person_name: [''],
     home_country: [''],
-    nationality: ['']
+    nationality: [''],
+    files:[],
+  
   });
   constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder,private readonly customerService:CustomerService) {
 
@@ -39,13 +42,24 @@ export class CustomerAddComponent implements OnInit {
 
   addCustomer(): void {
 
+    const formData = new FormData();
 
     if (this.customerForm.valid) {
 
-   
-      this.customerService.createCustomer(this.customerForm.value).subscribe(
+      for (const key in this.customerForm.value) {
+        if (key === 'files') {
+          for (const file of this.nameArray) {  
+            console.log(file)
+            formData.append('files', file);
+          }
+        } else {
+          formData.append(key, this.customerForm.get(key).value);
+        }
+      }
+      
+      
+      this.customerService.createCustomer(formData).subscribe(
         response => {
-          console.log('Customer added successfully', response);
         this.customerForm.reset();
      this.router.navigate(['modules/customers/customers-list']);
         },
@@ -55,5 +69,16 @@ export class CustomerAddComponent implements OnInit {
       );
     }
   }
+
+  onSelect1(event: any): void {
+    this.nameArray.push(...event.addedFiles);
+    this.customerForm.controls['files'].setValue(this.nameArray.map((res)=>res.name))
+    console.log(this.customerForm.value)
+  }
+
+  onRemove(file: File): void {
+    this.nameArray = this.nameArray.filter(f => f !== file);
+  }
+
  
 }

@@ -5,8 +5,6 @@ const { validationResult } = require("express-validator");
 // Add New Permissions API Method
 
 const addPermission = async (req, res) => {
-  console.log("hellllllllllllllooooooooooooooooooooooooooo");
-
   try {
     const errors = validationResult(req);
 
@@ -44,7 +42,7 @@ const addPermission = async (req, res) => {
 
     const permission = new Permission(obj);
     const newPermission = await permission.save();
-
+    
     return res.status(200).json(newPermission);
   } catch (error) {
     return res.status(400).json({
@@ -143,7 +141,7 @@ const updatePermission = async (req, res) => {
 
     const isExists = await Permission.findOne({ _id: id });
 
-    console.log("isExists",isExists);
+    ("isExists",isExists);
 
     if (!isExists) {
       return res.status(400).json({
@@ -160,7 +158,7 @@ const updatePermission = async (req, res) => {
       },
     });
 
-    console.log("isNameAssigned",isNameAssigned);
+    ("isNameAssigned",isNameAssigned);
 
     if (isNameAssigned) {
       return res.status(400).json({

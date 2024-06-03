@@ -1,678 +1,381 @@
-<form class="theme-form mega-form" [formGroup]="contractForm">
-  <div class="col-md-12">
-    <ul class="action">
-      <li class="plus">
-        <a (click)="createContract()"><i class="icon-plus"></i> </a>
-      </li>
-    </ul>
-  </div>
+<app-breadcrumb
+  [title]="'Car Page'"
+  [items]="['Forms', 'Form Layout']"
+  [active_item]="'Car Page'"
+></app-breadcrumb>
+<div class="container-fluid">
+  <div class="feature-cars">
+    <div class="row">
+      <div class="col-md-6 cars-total"></div>
 
-  <div class="row g-4">
-    <!-- <div class="col-md-3">
-      <div class="mb-3">
-        <label class="col-form-label">No</label>
-        <input class="form-control" type="text" placeholder="No" />
-      </div>
-    </div>
-   -->
-    <div class="col-md-3">
-      <div class="mb-3">
-        <label class="col-form-label">Version</label>
-        <input
-          class="form-control"
-          type="text"
-          placeholder="Version"
-          formControlName="version"
-        />
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="mb-3">
-        <label class="col-form-label">Sponsor/Driver</label>
-        <input
-          class="form-control"
-          type="text"
-          placeholder="Sponsor"
-          formControlName="sponsor"
-        />
-      </div>
-    </div>
-  </div>
-
-  <div class="row g-6">
-    <div class="col-md-3">
-      <div class="mb-3">
-        <label class="col-form-label">Car out</label>
-        <input
-          class="form-control"
-          type="datetime-local"
-          formControlName="car_out"
-        />
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="mb-3">
-        <label class="col-form-label">Days</label>
-        <input class="form-control" type="number" formControlName="days" 
-        (ngModelChange)="onChangePaymentDays($event)"
-        
-        />
-
-        <span>02/02/2024</span>
-      </div>
-    </div>
-
-    <div class="col-md-4">
-      <div class="mb-3">
-        <label class="col-form-label">Car back</label>
-        <input
-          class="form-control"
-          type="datetime-local"
-          formControlName="car_back"
-        />
-      </div>
-    </div>
-    <div class="col-md-2">
-      <div class="mb-3">
-        <label class="col-form-label"></label>
-        <div class="form-check checkbox checkbox-solid-primary">
-          <input
-            class="form-check-input"
-            id="solid3"
-            type="checkbox"
-            checked=""
-          />
-          <label class="form-check-label" for="solid3"></label>
+      <div class="col-md-6 text-sm-end">
+        <div class="select2-drpdwn-car select-options d-inline-block">
+          <select name="select" class="form-control btn-square">
+            <option value="opt1">Open contracts only</option>
+            <option value="opt2">Closest contract only</option>
+            <option value="opt3">All contracts</option>
+          </select>
         </div>
       </div>
     </div>
   </div>
-
-  <div class="row g-4">
-    <div class="col-md-3">
-      <div class="mb-3">
-        <label class="col-form-label">Car</label>
-        <div class="d-flex">
-          <input
-            class="form-control"
-            type="text"
-            placeholder="Car"
-            formControlName="car"
-          />
-          <button
-            class="btn btn-outline-primary btn-xs"
-            (click)="openCarModal()"
-          >
-            Choose
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="mb-3">
-        <label class="col-form-label">select one</label>
-        <select class="select form-control" formControlName="select_one">
-          <option>Kia</option>
-          <option>Bmw</option>
-          <option>Hondai</option>
-          <option>Benz</option>
-          <option>Kia sportage</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="mb-3">
-        <label class="col-form-label">Deposit</label>
-        <div class="d-flex">
-          <input
-            class="form-control"
-            type="text"
-            placeholder="Deposit"
-            formControlName="deposit"
-          />
-          <button
-            class="btn btn-outline-primary btn-xs"
-            (click)="modal.open(content)"
-          >
-            Choose
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-6">
-      <div class="mb-3">
-        <label class="col-form-label">Location</label>
-        <input
-          class="form-control"
-          type="text"
-          placeholder="No"
-          formControlName="location"
-        />
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="mb-3">
-        <label class="col-form-label">Hirer</label>
-        <div class="d-flex">
-          <input
-            class="form-control"
-            type="text"
-            placeholder="Hirer"
-            formControlName="owner"
-          />
-          <button
-            class="btn btn-outline-primary btn-xs"
-            (click)="openCustomerModal()"
-          >
-            Choose
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-12">
-      <div class="mb-3">
-        <label class="col-form-label">Comments </label>
-        <textarea
-          class="comments form-control"
-          type="text"
-          placeholder="No"
-          formControlName="comments"
-        ></textarea>
-      </div>
-    </div>
-  </div>
-  <div class="mb-3 m-t-15 custom-radio-ml p-2">
-    <div class="form-check radio radio-primary">
-      <div class="d-flex">
-        <div class="col-sm-2">
-          <input
-            class="form-check-input"
-            id="radio22"
-            type="radio"
-            name="radio1"
-            value="option1"
-          />
-          <label class="form-check-label" for="radio22">Daily</label>
-        </div>
-        <div class="col-auto">
-          <input type="text" class="form-control" formControlName="daily"             appDecimalFormat
-          />
-        </div>
-      </div>
-    </div>
-    <div class="form-check radio radio-primary">
-      <div class="d-flex">
-        <div class="col-sm-2">
-          <input
-            class="form-check-input"
-            id="radio22"
-            type="radio"
-            name="radio1"
-            value="option1"
-          />
-          <label class="form-check-label" for="radio22">Weekly</label>
-        </div>
-        <div class="col-auto">
-          <input type="text" class="form-control" formControlName="weekly"             appDecimalFormat
-          />
-        </div>
-      </div>
-    </div>
-    <div class="form-check radio radio-primary">
-      <div class="d-flex">
-        <div class="col-sm-2">
-          <input
-            class="form-check-input"
-            id="radio22"
-            type="radio"
-            name="radio1"
-            value="option1"
-          />
-          <label
-            class="form-check-label"
-            for="radio22"
-            appDecimalFormat
-            >Monthly</label
-          >
-        </div>
-        <div class="col-auto">
-          <input type="text" class="form-control"     
-          appDecimalFormat
-          formControlName="monthly"
-          />
-        </div>
-      </div>
-    </div>
-    <div class="form-check radio radio-primary">
-      <div class="d-flex">
-        <div class="col-sm-2">
-          <input
-            class="form-check-input"
-            id="radio22"
-            type="radio"
-            name="radio1"
-            value="option1"
-          />
-          <label class="form-check-label" for="radio22">Annual</label>
-        </div>
-        <div class="col-auto">
-          <input type="text" class="form-control" formControlName="annual"    
-                  appDecimalFormat
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <hr class="mt-4 mb-4" />
   <div class="row">
-    <div class="col-sm-12 col-xl-12">
-      <ul
-        ngbNav
-        #nav="ngbNav"
-        [(activeId)]="active3"
-        (navChange)="onNavChange1($event)"
-        class="nav-tabs"
-      >
-        <li [ngbNavItem]="1">
-          <a ngbNavLink>Car parts</a>
-          <ng-template ngbNavContent>
-            <div class="row">
-              <div class="col-md-12">
-                <h5 class="mb-3 pt-4">Out</h5>
-
-                <div class="animate-chk">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="mb-3 pt-2">
-                        <input
-                          class="form-control"
-                          type="text"
-                          placeholder="Fuel out"
-                          formControlName="fuel_out"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="mb-3 pt-2">
-                        <input
-                          class="form-control"
-                          type="text"
-                          placeholder="No KM out"
-                          formControlName="no_km_out"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col">
-                      <label for="chk-ani" class="d-block"
-                        ><input
-                          id="chk-ani"
-                          type="checkbox"
-                          checked=""
-                          class="checkbox_animated"
-                        />
-                        Spare wheel </label
-                      ><label for="chk-ani1" class="d-block"
-                        ><input
-                          id="chk-ani1"
-                          type="checkbox"
-                          class="checkbox_animated"
-                        />
-                        Wheel cover </label
-                      ><label for="chk-ani2" class="d-block"
-                        ><input
-                          id="chk-ani2"
-                          type="checkbox"
-                          checked=""
-                          class="checkbox_animated"
-                        />
-                        Tools & Jack </label
-                      ><label for="chk-ani3" class="d-block"
-                        ><input
-                          id="chk-ani3"
-                          type="checkbox"
-                          class="checkbox_animated"
-                        />
-                        Radio / Tape
-                      </label>
-                      <label for="chk-ani4" class="d-block"
-                        ><input
-                          id="chk-ani4"
-                          type="checkbox"
-                          class="checkbox_animated"
-                        />
-                        Fire Extinguisher
-                      </label>
-                    </div>
-                    <div class="col">
-                      <label for="chk-ani" class="d-block"
-                        ><input
-                          id="chk-ani"
-                          type="checkbox"
-                          checked=""
-                          class="checkbox_animated"
-                        />
-                        First AID box</label
-                      ><label for="chk-ani1" class="d-block"
-                        ><input
-                          id="chk-ani1"
-                          type="checkbox"
-                          class="checkbox_animated"
-                        />
-                        Lights </label
-                      ><label for="chk-ani2" class="d-block"
-                        ><input
-                          id="chk-ani2"
-                          type="checkbox"
-                          checked=""
-                          class="checkbox_animated"
-                        />
-                        GPS </label
-                      ><label for="chk-ani3" class="d-block"
-                        ><input
-                          id="chk-ani3"
-                          type="checkbox"
-                          class="checkbox_animated"
-                        />
-                        Heater / AC
-                      </label>
-                      <label for="chk-ani3" class="d-block"
-                        ><input
-                          id="chk-ani3"
-                          type="checkbox"
-                          class="checkbox_animated"
-                        />
-                        Fuel panel
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <hr class="mt-4 mb-4" />
-
-            <div class="row">
-              <div class="col-md-12">
-                <h5 class="mb-3 pt-4">Back</h5>
-                <div class="animate-chk">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="mb-3 pt-2">
-                        <input
-                          class="form-control"
-                          type="text"
-                          placeholder="Fuel back"
-                          formControlName="fuel_back"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="mb-3 pt-2">
-                        <input
-                          class="form-control"
-                          type="text"
-                          placeholder="No Km back"
-                          formControlName="no_km_back"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col">
-                      <label for="chk-ani" class="d-block"
-                        ><input
-                          id="chk-ani"
-                          type="checkbox"
-                          checked=""
-                          class="checkbox_animated"
-                        />
-                        Spare wheel </label
-                      ><label for="chk-ani1" class="d-block"
-                        ><input
-                          id="chk-ani1"
-                          type="checkbox"
-                          class="checkbox_animated"
-                        />
-                        Wheel cover </label
-                      ><label for="chk-ani2" class="d-block"
-                        ><input
-                          id="chk-ani2"
-                          type="checkbox"
-                          checked=""
-                          class="checkbox_animated"
-                        />
-                        Tools & Jack </label
-                      ><label for="chk-ani3" class="d-block"
-                        ><input
-                          id="chk-ani3"
-                          type="checkbox"
-                          class="checkbox_animated"
-                        />
-                        Radio / Tape
-                      </label>
-                      <label for="chk-ani4" class="d-block"
-                        ><input
-                          id="chk-ani4"
-                          type="checkbox"
-                          class="checkbox_animated"
-                        />
-                        Fire Extinguisher
-                      </label>
-                    </div>
-                    <div class="col">
-                      <label for="chk-ani" class="d-block"
-                        ><input
-                          id="chk-ani"
-                          type="checkbox"
-                          checked=""
-                          class="checkbox_animated"
-                        />
-                        First AID box</label
-                      ><label for="chk-ani1" class="d-block"
-                        ><input
-                          id="chk-ani1"
-                          type="checkbox"
-                          class="checkbox_animated"
-                        />
-                        Lights </label
-                      ><label for="chk-ani2" class="d-block"
-                        ><input
-                          id="chk-ani2"
-                          type="checkbox"
-                          checked=""
-                          class="checkbox_animated"
-                        />
-                        GPS </label
-                      ><label for="chk-ani3" class="d-block"
-                        ><input
-                          id="chk-ani3"
-                          type="checkbox"
-                          class="checkbox_animated"
-                        />
-                        Heater / AC
-                      </label>
-                      <label for="chk-ani3" class="d-block"
-                        ><input
-                          id="chk-ani3"
-                          type="checkbox"
-                          class="checkbox_animated"
-                        />
-                        Fuel panel
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ng-template>
-        </li>
-        <li [ngbNavItem]="2">
-          <a ngbNavLink>Payments</a>
-          <ng-template ngbNavContent>
-            <div class="row g-4">
-              <div class="col-md-3">
-                <div class="mb-3">
-                  <div class="d-flex">
-                    <input
-                      type="text"
-                      ng-model="val1"
-                      class="form-control"
-                      formControlName="daily_val1"
-                    /><strong style="color: black" class="ps-1 pt-3 pe-1"
-                      >X</strong
-                    ><input
-                      class="form-control"
-                      type="text"
-                      ng-model="val2"
-                      formControlName="daily_val2"
-                    />
-                    <strong style="color: black" class="ps-1 pt-3 pe-1"
-                      >=</strong
-                    >
-                    <input
-                      type="text"
-                      ng-model="val1"
-                      class="form-control"
-                      formControlName="daily_result"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div
-              class="row row-cols-sm-3 theme-form mt-3 form-bottom align-items-center g-2 ng-untouched ng-pristine ng-valid"
+    <div class="col-sm-12 box-col-12">
+      <div class="text-center">
+        <div class="cardheader socialheader">
+          <div class="info market-tabs col-md-12">
+            <ul
+              id="top-tab"
+              role="tablist"
+              class="nav nav-tabs border-tab tabs-scoial"
             >
-              <div class="col-md-3 d-flex">
-                <input
-                  type="number"
-                  placeholder="Overtime"
-                  class="form-control"
-                />
-              </div>
+              <li class="nav-item">
+                <button
+                  class="btn btn-pill btn-light btn-air-light active txt-dark me-1"
+                  type="button"
+                  disabled
+                >
+                  Voucher 0
+                </button>
+              </li>
+              <li class="nav-item">
+                <button
+                  class="btn btn-pill btn-light btn-air-light active txt-dark me-1"
+                  type="button"
+                  disabled
+                >
+                  Change car
+                </button>
+              </li>
+              <li class="nav-item">
+                <button
+                  class="btn btn-pill btn-light btn-air-light active txt-dark me-1"
+                  type="button"
+                >
+                  Deposit back
+                </button>
+              </li>
 
-              <div class="d-flex">
-                <button class="btn btn-primary">Set</button>
-              </div>
-            </div>
-
-            <div
-              class="row row-cols-sm-3 theme-form mt-3 form-bottom align-items-center g-2 ng-untouched ng-pristine ng-valid"
-            >
-              <div class="col-md-3 d-flex">
-                <input
-                  type="number"
-                  placeholder="Driver / Petrol"
-                  class="form-control"
-                />
-              </div>
-
-              <div class="d-flex">
-                <button class="btn btn-primary">Calc</button>
-              </div>
-            </div>
-            <div
-              class="row row-cols-sm-3 theme-form mt-3 form-bottom align-items-center g-2 ng-untouched ng-pristine ng-valid"
-            >
-              <div class="col-md-3 d-flex">
-                <input type="number" placeholder="Fines" class="form-control" />
-              </div>
-
-              <div class="d-flex">
-                <button class="btn btn-primary">Show</button>
-              </div>
-            </div>
-            <div
-              class="row row-cols-sm-3 theme-form mt-3 form-bottom align-items-center g-2 ng-untouched ng-pristine ng-valid"
-            >
-              <div class="col-md-3 d-flex">
-                <input
-                  type="number"
-                  placeholder="Overdrive / Other"
-                  class="form-control"
-                />
-              </div>
-
-              <div class="d-flex">
-                <button class="btn btn-primary">Set</button>
-              </div>
-
-              <hr class="mt-4 mb-4" />
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th scope="col">Advance</th>
-                    <th scope="col">Discount</th>
-                    <th scope="col">Sum</th>
-                    <th scope="col">Payable</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <input
-                        type="number"
-                        class="form-control"
-                        formControlName="advance"
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        class="form-control"
-                        formControlName="discount"
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        class="form-control"
-                        formControlName="sum"
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        class="form-control"
-                        formControlName="payable"
-                      />
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </ng-template>
-        </li>
-        <li [ngbNavItem]="3">
-          <a ngbNavLink>Car body</a>
-          <ng-template ngbNavContent>
-            <img
-              class="img-fluid w-100"
-              src="assets/images/cars/car_body.png"
-            />
-          </ng-template>
-        </li>
-      </ul>
-      <div [ngbNavOutlet]="nav" class="mt-2"></div>
+              <li class="nav-item">
+                <button
+                  class="btn btn-pill btn-light btn-air-light active txt-dark me-1"
+                  type="button"
+                >
+                  Rec. Voucher
+                </button>
+              </li>
+              <li class="nav-item">
+                <button
+                  class="btn btn-pill btn-light btn-air-light active txt-dark me-1"
+                  type="button"
+                >
+                  Pay. Voucher
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</form>
+  <div class="row">
+    <div class="col-md-12 col-xl-12">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="card">
+            <div class="card-header">
+              <a  routerLink="/modules/contracts/contract/contract-details" class="text-end">Return</a>
+              <div class="text-end">
+                <span    class="text-success fw-bold f-10"                 >Serial: {{autoInc}}</span>
+
+              </div>
+            </div>
+            
+            <div class="card-body">
+              <form class="theme-form mega-form" [formGroup]="contractForm">
+                <div class="col-md-12">
+                  <ul class="action">
+                    <li class="plus">
+                      <a (click)="createContract()"><i class="icon-plus"></i> </a>
+                    </li>
+                  </ul>
+                </div>
+  
+                <div class="row g-4">
+                  
+                  
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="col-form-label">Sponsor/Driver</label>
+                      <input
+                        class="form-control"
+                        type="text"
+                        placeholder="Sponsor"
+                        formControlName="sponsor"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="mb-3">
+                      <label class="col-form-label">Location</label>
+                      <input
+                        ngx-google-places-autocomplete
+                        type="text"
+                        class="form-control"
+                        formControlName="location"
+                        placeholder="add location"
+                        (onAddressChange)="AddressChange($event)"
+                      />
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="row g-6">
+                  <div class="col-md-3">
+                    <div class="mb-3">
+                      <label class="col-form-label">Car out</label>
+                      <input
+                        class="form-control"
+                        type="datetime-local"
+                        formControlName="car_out"
+                      />
+                    </div>
+                  </div>
+  
+                  <div class="col-md-3">
+                    <div class="mb-3">
+                      <label class="col-form-label">Days</label>
+                      <input
+                        class="form-control"
+                        type="number"
+                        formControlName="days"
+                        (ngModelChange)="onChangePaymentDays($event)"
+                      />
+  
+                    </div>
+                  </div>
+  
+                  <div class="col-md-4">
+                    <div class="mb-3">
+                      <label class="col-form-label">Car back</label>
+                      <input
+                        class="form-control"
+                        type="datetime-local"
+                        formControlName="car_back"
+                        [value]="contractForm.get('car_back').value"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="mb-3">
+                      <label class="col-form-label"></label>
+                      <div class="form-check checkbox checkbox-solid-primary">
+                        <input
+                          class="form-check-input"
+                          id="solid3"
+                          type="checkbox"
+                          checked=""
+                        />
+                        <label class="form-check-label" for="solid3"></label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="row g-4">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="col-form-label">Car</label>
+                      <div class="d-flex">
+                        <input
+                          class="form-control"
+                          type="text"
+                          placeholder="Car"
+                          formControlName="car"
+                        />
+                        <button
+                          class="btn btn-outline-primary btn-xs"
+                          (click)="openCarModal()"
+                        >
+                          Choose
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+  
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="col-form-label">Hirer</label>
+                      <div class="d-flex">
+                        <input
+                          class="form-control"
+                          type="text"
+                          placeholder="Hirer"
+                          formControlName="owner"
+                        />
+                        <button
+                          class="btn btn-outline-primary btn-xs"
+                          (click)="openCustomerModal()"
+                        >
+                          Choose
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+           
+
+                  <ng-container *ngIf="showDetailsHirer" >
+                    <div class="card-header">
+                      <h5>Customer Details:</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="details-container p-4 mt-3">
+                        <ul class="list-group list-group-light">
+                          <li class="list-group-item" *ngIf="selectedCust._id">
+                            <div class="detail-item">
+                              <span class="detail-label">ID:</span>
+                              <span class="detail-value">{{ selectedCust._id }}</span>
+                            </div>
+                          </li>
+                          <li class="list-group-item" *ngIf="selectedCust.fullName">
+                            <div class="detail-item">
+                              <span class="detail-label">Full Name:</span>
+                              <span class="detail-value">{{ selectedCust.fullName }}</span>
+                            </div>
+                          </li>
+                          <li class="list-group-item" *ngIf="selectedCust.mobile">
+                            <div class="detail-item">
+                              <span class="detail-label">Mobile:</span>
+                              <span class="detail-value">{{ selectedCust.mobile }}</span>
+                            </div>
+                          </li>
+                          <li class="list-group-item" *ngIf="selectedCust.QAR_address">
+                            <div class="detail-item">
+                              <span class="detail-label">QAR Address:</span>
+                              <span class="detail-value">{{ selectedCust.QAR_address }}</span>
+                            </div>
+                          </li>
+                          <li class="list-group-item" *ngIf="selectedCust.email">
+                            <div class="detail-item">
+                              <span class="detail-label">Email:</span>
+                              <span class="detail-value">{{ selectedCust.email }}</span>
+                            </div>
+                          </li>
+                          <li class="list-group-item" *ngIf="selectedCust.passport_number">
+                            <div class="detail-item">
+                              <span class="detail-label">Passport Number:</span>
+                              <span class="detail-value">{{ selectedCust.passport_number }}</span>
+                            </div>
+                          </li>
+                          <li class="list-group-item" *ngIf="selectedCust.id_number">
+                            <div class="detail-item">
+                              <span class="detail-label">ID Number:</span>
+                              <span class="detail-value">{{ selectedCust.id_number }}</span>
+                            </div>
+                          </li>
+                          <li class="list-group-item" *ngIf="selectedCust.title">
+                            <div class="detail-item">
+                              <span class="detail-label">Title:</span>
+                              <span class="detail-value">{{ selectedCust.title }}</span>
+                            </div>
+                          </li>
+                          <li class="list-group-item" *ngIf="selectedCust.date_birth">
+                            <div class="detail-item">
+                              <span class="detail-label">Date of Birth:</span>
+                              <span class="detail-value">{{ selectedCust.date_birth }}</span>
+                            </div>
+                          </li>
+                          <li class="list-group-item" *ngIf="selectedCust.license_number">
+                            <div class="detail-item">
+                              <span class="detail-label">License Number:</span>
+                              <span class="detail-value">{{ selectedCust.license_number }}</span>
+                            </div>
+                          </li>
+                          <li class="list-group-item" *ngIf="selectedCust.code">
+                            <div class="detail-item">
+                              <span class="detail-label">Code:</span>
+                              <span class="detail-value">{{ selectedCust.code }}</span>
+                            </div>
+                          </li>
+                          <li class="list-group-item" *ngIf="selectedCust.issued_by">
+                            <div class="detail-item">
+                              <span class="detail-label">Issued By:</span>
+                              <span class="detail-value">{{ selectedCust.issued_by }}</span>
+                            </div>
+                          </li>
+                          <li class="list-group-item" *ngIf="selectedCust.issued_on">
+                            <div class="detail-item">
+                              <span class="detail-label">Issued On:</span>
+                              <span class="detail-value">{{ selectedCust.issued_on }}</span>
+                            </div>
+                          </li>
+                          <li class="list-group-item" *ngIf="selectedCust.expiry_date">
+                            <div class="detail-item">
+                              <span class="detail-label">Expiry Date:</span>
+                              <span class="detail-value">{{ selectedCust.expiry_date }}</span>
+                            </div>
+                          </li>
+                          <li class="list-group-item" *ngIf="selectedCust.passport_expiry">
+                            <div class="detail-item">
+                              <span class="detail-label">Passport Expiry:</span>
+                              <span class="detail-value">{{ selectedCust.passport_expiry }}</span>
+                            </div>
+                          </li>
+                          <li class="list-group-item" *ngIf="selectedCust.operation_balance">
+                            <div class="detail-item">
+                              <span class="detail-label">Operation Balance:</span>
+                              <span class="detail-value">{{ selectedCust.operation_balance }}</span>
+                            </div>
+                          </li>
+                          <li class="list-group-item" *ngIf="selectedCust.nationality">
+                            <div class="detail-item">
+                              <span class="detail-label">Nationality:</span>
+                              <span class="detail-value">{{ selectedCust.nationality }}</span>
+                            </div>
+                          </li>
+                          <li class="list-group-item" *ngIf="selectedCust.permanent_address">
+                            <div class="detail-item">
+                              <span class="detail-label">Permanent Address:</span>
+                              <span class="detail-value">{{ selectedCust.permanent_address }}</span>
+                            </div>
+                          </li>
+                          <li class="list-group-item" *ngIf="selectedCust.person_name">
+                            <div class="detail-item">
+                              <span class="detail-label">Person Name:</span>
+                              <span class="detail-value">{{ selectedCust.person_name }}</span>
+                            </div>
+                          </li>
+                          <li class="list-group-item" *ngIf="selectedCust.home_country">
+                            <div class="detail-item">
+                              <span class="detail-label">Home Country:</span>
+                              <span class="detail-value">{{ selectedCust.home_country }}</span>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    
+                  </ng-container>
+                  
+                  
+                </div>
+              </form>
+            </div>
+
+       
+           
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="card-body">
   <ng-template #content let-modal>
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Our Available Cars</h4>
+      <h4 class="modal-title" id="modal-basic-title">
+        Our Available Cars
+      </h4>
       <button
         type="button"
         class="btn-close"

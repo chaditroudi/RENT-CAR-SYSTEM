@@ -2,14 +2,9 @@
  *** Vendors Scss ***
 -----------------------*/
 
-//@import "vendors/chartist";
-@import "vendors/scrollable";
-@import "vendors/sticky";
-// @import "vendors/todo";
-
-
-@import "components/modal";
-
+// @import "vendors/dropzone";
+// @import "vendors/scrollable";
+// @import "vendors/sticky";
 
 /* Toastr */
 @import "/node_modules/ngx-toastr/toastr.css";
@@ -19,12 +14,15 @@
 
 
 
+// /* Dropzone */
+// @import "~dropzone/dist/min/dropzone.min.css";
 
 
 /* Scrollbar */
 @import "~perfect-scrollbar/css/perfect-scrollbar.css";
 
-@import "@angular/cdk/overlay-prebuilt.css";
+/* Emoji */
+// overlay
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
 @import 'swiper/scss';
@@ -33,6 +31,7 @@
 /* ---------------------
 	*** Theme Scss ***
 -----------------------*/
+// @import "~animate.css/animate.min.css";
 @import "/node_modules/bootstrap/scss/bootstrap";
 @import "../scss/vendors/themify.scss";
 @import "style";

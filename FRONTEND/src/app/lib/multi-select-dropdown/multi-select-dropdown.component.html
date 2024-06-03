@@ -1,0 +1,22 @@
+<div>
+  <div class="mb-2">
+    <div class="col-form-label">Features Car</div>
+  </div>
+
+  <div class="drop-toggle" (mouseleave)="showDropDown = false">
+    <ng-select
+      class="js-example-basic-multiple"
+      
+      [ngModel]="selectedFeatures"
+      [multiple]="true"
+      (change)="getSelectedValue($event)"
+      [hideSelected]="false"
+      [closeOnSelect]="false"
+      [clearAllText]="'Clear all'"
+    >
+      <ng-option *ngFor="let item of list" [value]="item">{{
+        item.label
+      }}</ng-option>
+    </ng-select>
+  </div>
+</div>

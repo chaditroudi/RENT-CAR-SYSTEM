@@ -1,7 +1,7 @@
-import { fadeInAnimation } from './../../shared/data/router-animation/router-animation';
 import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import * as feather from "feather-icons";
+import { fadeInAnimation } from "src/app/shared/data/router-animation/router-animation";
 import { LayoutService } from 'src/app/shared/services/layout.service';
 import { NavService } from 'src/app/shared/services/nav.service';
 
@@ -9,7 +9,8 @@ import { NavService } from 'src/app/shared/services/nav.service';
   selector: "app-content",
   templateUrl: "./content.component.html",
   styleUrls: ["./content.component.scss"],
-  animations: [fadeInAnimation],
+  animations: [fadeInAnimation]
+
 })
 export class ContentComponent implements OnInit, AfterViewInit {
   constructor(private route: ActivatedRoute, public navServices: NavService, public layout: LayoutService) {

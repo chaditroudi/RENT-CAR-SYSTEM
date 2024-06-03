@@ -23,9 +23,7 @@ export class PermissionService {
 
    getHeaders():HttpHeaders{
     this.accessToken = JSON.parse(this.userMangementServ.getCurrentUser()).accessToken;
-    console.log(this.accessToken,"acctoken")
 
-    console.log("token",this.accessToken)
     return new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${this.accessToken}`
@@ -35,7 +33,7 @@ export class PermissionService {
 
   fetchAllpermissions(): void {
     const headers = this.getHeaders();
-    console.log(headers)
+    (headers)
     this.http
       .get<any[]>(`${baseUrl}/admin/get-permissions`,{headers})
       .subscribe((permissions) => {
@@ -50,7 +48,6 @@ export class PermissionService {
       .post(`${baseUrl}/admin/add-permission`, permissionData,{headers})
       .pipe(
         tap((newPermission) => {
-          console.log("***",this.permissionSource)
           const permissions = this.permissionSource.value;
           permissions.push(newPermission);
           this.permissionSource.next(permissions);
@@ -67,12 +64,11 @@ export class PermissionService {
   updatepermission(permission: Permission): Observable<Permission> {
     const headers = this.getHeaders();
 
-    console.log(permission)
+    (permission)
     return this.http
       .put<Permission>(`${baseUrl}/admin/update-permission/${permission._id}`, permission,{headers})
       .pipe(
         map((updatedpermission) => {
-          console.log("permission updated successfully:", updatedpermission);
           return updatedpermission;
         })
       );
@@ -86,7 +82,6 @@ export class PermissionService {
         const newData = this.permissionSource.value.filter(
           (item) => item._id !== id
         );
-        console.log("new data=", newData);
 
         this.permissionSource.next(newData);
       })

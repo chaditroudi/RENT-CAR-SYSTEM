@@ -33,6 +33,7 @@ export class NavService implements OnDestroy {
   public language: boolean = false;
 
 
+
   // role :
 
   role = 0;
@@ -83,23 +84,28 @@ export class NavService implements OnDestroy {
     this.screenWidth.next(width);
   }
 
+
   getMenuItems(role: number): Menu[] {
     // Generate menu items based on role
     let menuItems: Menu[] = [];
 
-    // Common menu items
- 
 
-    role = JSON.parse(this.userServMang.getCurrentUser()).data.role;
+    if(this.userServMang.getCurrentUser() ) {
+      role = JSON.parse(this.userServMang.getCurrentUser()).data.role;
 
-     if (role === 1) {
+    }
+
+
+     if (role == 1) {
       menuItems.push(
         {
           headTitle1: "Pages",
         },
+        { path: "/modules/dashboard", icon: "home", title: "Dashboard", type: "link", bookmark: true },
+
         {
           title: "Cars",
-          icon: "home",
+          icon: "truck",
           type: "sub",
           badgeType: "light-primary",
           badgeValue: "1",
@@ -110,7 +116,7 @@ export class NavService implements OnDestroy {
         },
         {
           title: "Contract",
-          icon: "user",
+          icon: "layout",
           type: "sub",
           badgeType: "light-primary",
           badgeValue: "2",
@@ -125,7 +131,7 @@ export class NavService implements OnDestroy {
         },
         {
           title: "Customers",
-          icon: "file-text",
+          icon: "user",
           type: "sub",
           badgeType: "light-primary",
           badgeValue: "1",
@@ -135,7 +141,7 @@ export class NavService implements OnDestroy {
           ],
         },
         {  title: "Permission",
-        icon: "log-out",
+        icon: "list",
         type: "sub",
         badgeType: "light-primary",
         badgeValue: "1",
@@ -153,6 +159,8 @@ export class NavService implements OnDestroy {
         {
           headTitle1: "Pages",
         },
+        { path: "/modules/dashboard", icon: "home", title: "Dashboard", type: "link", bookmark: true },
+
         {
           title: "Cars",
           icon: "home",
@@ -166,33 +174,44 @@ export class NavService implements OnDestroy {
         },
         {
           title: "Contract",
-          icon: "user",
+          icon: "layout",
           type: "sub",
           badgeType: "light-primary",
           badgeValue: "1",
           active: false,
           children: [
-            { path: "/modules/contracts/contract-details", title: "Contract Page", type: "link" },
-            { path: "/modules/contracts/contract-backup", title: "Contract Backups", type: "link" },
+            { path: "/modules/contracts/contract/contract-details", title: "Contract Page", type: "link" },
+            { path: "/modules/contracts/contract/contract-backups", title: "Contract Backups", type: "link" },
           ],
         },
         {
-          title: "Reports",
-          icon: "reports",
+          title: "Customers",
+          icon: "users",
           type: "sub",
           badgeType: "light-primary",
           badgeValue: "1",
-          active: false,
+          active: true,
           children: [
-            { path: "/modules/customers/customers-list", title: "Customers Page", type: "link" },
+            { path: "/modules/customers/customers-list", title: "Users Details", type: "link" },
           ],
         },
+        // {
+        //   title: "Reports",
+        //   icon: "layout",
+        //   type: "widget",
+        //   badgeType: "light-primary",
+        //   badgeValue: "1",
+        //   active: false,
+        //   children: [
+        //     { path: "/modules/customers/customers-list", title: "Customers Page", type: "link" },
+        //   ],
+        // },
         
       );
     }
     // VIEWER 
     else {
-      console.log("viewer user")
+      ("viewer user")
       menuItems.push(
         {
           headTitle1: "Pages",
@@ -200,13 +219,13 @@ export class NavService implements OnDestroy {
         
         {
           title: "Reports",
-          icon: "reports",
-          type: "sub",
+          icon: "layout",
+          type: "sub" ,
           badgeType: "light-primary",
           badgeValue: "1",
           active: false,
           children: [
-            { path: "/modules/customers/customers-list", title: "Customers Page", type: "link" },
+            { path: "/modules/reports", title: "Reports Page", type: "link" },
           ],
         },
         

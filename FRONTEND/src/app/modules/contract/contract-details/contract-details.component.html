@@ -82,12 +82,10 @@
     <div class="col-md-12 col-xl-12">
       <div class="row">
         <div class="col-sm-12">
-          <div class="card">
+          <div class="card" *ngIf="formData.length > 0; else noDataFound">
             <div class="card-header">
-           
-
               <div class="text-end">
-                <button (click)="resetForm()" class="btn btn-success">
+                <button (click)="goToAddContract()" class="btn btn-success">
                   {{ buttonAdd }}
                 </button>
               </div>
@@ -104,21 +102,41 @@
                   >
                     <div class="row">
                       <div class="col-md-12">
-                        <h5 class="text-center" >
-                          <span 
-                          [ngClass]="{'text-danger': status === 'Contract is Open', 'text-success': status === 'Contract is Closed'}"
-                          >{{mycb ? status : c.status}}
-                        </span>
-          
+                        <h5 class="text-center">
+                          <span
+                            [ngClass]="{
+                              'text-danger': c.status === 'Contract is Open',
+                              'text-success': c.status === 'Contract is Closed'
+                            }"
+                            >{{ mycb.checked ? status : c.status }}
+                          </span>
                         </h5>
                       </div>
                       <div class="col-md-12">
                         <ul class="action">
-                          <li class="edit">
-                            <a (click)="updateContract(c._id)"
-                              ><i class="icon-pencil-alt"></i
-                            ></a>
+                          <ng-container >
+                            <li class="edit">
+                              <a (click)="openEditContractModal()"
+                                ><i class="icon-pencil-alt"></i
+                              ></a>
+                              <confirmation-modal
+                              #editContractModal
+                              (newConfirmationEvent)="
+                                editContractAlert($event, c._id)
+                              "
+                              modalStyle="modal-style-info"
+                              modalTitle="Edit contract"
+                              [modalBody]="
+                                !noEditAlertModal
+                                  ? 'you have payments available are you sure to update ?'
+                                  : 'are you sure to edit contract?'
+                              "
+                              modalButtonColor="btn btn-info"
+                            ></confirmation-modal>
                           </li>
+                          </ng-container>
+                          
+                    
                           <li class="delete">
                             <a (click)="open()"
                               ><i class="icon-trash mb-3"></i>
@@ -128,14 +146,14 @@
                                 (newConfirmationEvent)="
                                   getConfirmationValue($event, c._id)
                                 "
-                                [modalStyle]="modalStyle"
-                                [modalTitle]="modalTitle"
-                                [modalBody]="modalBody"
-                                [modalButtonColor]="modalButtonColor"
+                                modalStyle="modal-style-info"
+                                modalTitle="Delete contract"
+                                modalBody="are you sure to delete contract?"
+                                modalButtonColor="btn btn-danger"
                               ></confirmation-modal>
                             </a>
                           </li>
-                          <li class="pdf">
+                          <li class="pdf" *ngIf="show_pdf">
                             <a
                               routerlink="/cars/car-details"
                               (click)="goToInvoice(c._id)"
@@ -153,8 +171,9 @@
                             class="form-control"
                             type="text"
                             disabled="true"
+                            
                             placeholder="No"
-                            (change)="onChangeInputValue($event, 0)"
+                            (input)="onChangeInputValue($event, 0)"
                             [value]="c.serial"
                           />
                         </div>
@@ -162,12 +181,13 @@
 
                       <div class="col-md-3">
                         <div class="mb-3">
-                          <label class="col-form-label">Version</label>
+                          <label class="col-form-label" >Version</label>
                           <input
                             class="form-control"
                             type="text"
+                            disabled="true"
                             placeholder="Version"
-                            (change)="onChangeInputValue($event, 1)"
+                            (input)="onChangeInputValue($event, 1)"
                             [value]="c.version"
                           />
                         </div>
@@ -179,7 +199,7 @@
                             class="form-control"
                             type="text"
                             placeholder="Sponsor"
-                            (change)="onChangeInputValue($event, 2)"
+                            (input)="onChangeInputValue($event, 2)"
                             [value]="c.sponsor"
                           />
                         </div>
@@ -193,10 +213,9 @@
                           <input
                             class="form-control"
                             type="datetime-local"
-                            (change)="onChangeInputValue($event, 3)"
+                            (input)="onChangeInputValue($event, 3)"
                             [value]="c.car_out | date : 'yyyy-MM-dd HH:mm'"
                           />
-                          
                         </div>
                       </div>
 
@@ -206,25 +225,20 @@
                           <input
                             class="form-control"
                             type="number"
-                            (change)="onChangeInputValue($event, 4)"
-
+                            (input)="onChangeInputValue($event, 4)"
                             [value]="c.days"
                           />
-
                         </div>
                       </div>
 
                       <div class="col-md-4">
                         <div class="mb-3">
                           <label class="col-form-label">Car back</label>
-                          <input
-                            class="form-control"
-                            type="datetime-local"
-                            (change)="onChangeInputValue($event, 5)"
-                            [value]="c.car_back| date : 'yyyy-MM-dd HH:mm'"
-
-                            [ngClass]="{'disabled': isDisabled}"
-                          />
+                          <input class="form-control" type="datetime-local"
+                          (input)="onChangeInputValue($event, 5)"
+                          [value]="c.car_back | date : 'yyyy-MM-dd HH:mm' "
+                          [ngClass]="{
+                          disabled: isDisabled }" />
                         </div>
                       </div>
                       <div class="col-md-2">
@@ -233,6 +247,7 @@
                           <div
                             class="form-check checkbox checkbox-solid-primary"
                           >
+                            Status Contract
                             <input
                               class="form-check-input"
                               id="solid3"
@@ -250,7 +265,7 @@
                     </div>
 
                     <div class="row g-4">
-                      <div class="col-md-3">
+                      <div class="col-md-6">
                         <div class="mb-3">
                           <label class="col-form-label">Car</label>
                           <div class="d-flex">
@@ -258,8 +273,16 @@
                               class="form-control"
                               type="text"
                               placeholder="Car "
-                              [value]="selectedCarData && selectedCarData ? selectedCarData : c.car?.car +'-'+c.car?.plate +'-'+c.car?.year"
-                              (change)="onChangeInputValue($event, 6)"
+                              [value]="
+                                selectedCarData && selectedCarData
+                                  ? selectedCarData
+                                  : c.car?.car +
+                                    '-' +
+                                    c.car?.plate +
+                                    '-' +
+                                    c.car?.year
+                              "
+                              (input)="onChangeInputValue($event, 6)"
                             />
                             <button
                               class="btn btn-outline-primary btn-xs"
@@ -271,65 +294,37 @@
                         </div>
                       </div>
 
-                      <div class="col-md-3">
-                        <div class="mb-3">
-                          <label class="col-form-label">select one</label>
-                          <select
-                            class="select form-control"
-                            (change)="onChangeInputValue($event, 7)"
-                            [value]="c.select_one"
-                          >
-                            <option>Kia</option>
-                            <option>Bmw</option>
-                            <option>Hondai</option>
-                            <option>Benz</option>
-                            <option>Kia sportage</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div class="col-md-3">
-                        <div class="mb-3">
-                          <label class="col-form-label">Deposit</label>
-                          <div class="d-flex">
-                            <input
-                              class="form-control"
-                              type="text"
-                              placeholder="Deposit"
-                            />
-                            <button
-                              class="btn btn-outline-primary btn-xs"
-                              (click)="modal.open(content)"
-                            >
-                              Choose
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-md-6">
+                      <div class="col-md-4">
                         <div class="mb-3">
                           <label class="col-form-label">Location</label>
                           <input
-                            class="form-control"
+                            ngx-google-places-autocomplete
                             type="text"
-                            (change)="onChangeInputValue($event, 8)"
+                            class="form-control"
                             [value]="c.location"
-                            placeholder="No"
+                            placeholder="add location"
+                            (onAddressChange)="AddressChange($event)"
                           />
                         </div>
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-6">
                         <div class="mb-3">
                           <label class="col-form-label">Hirer</label>
                           <div class="d-flex">
-                            
                             <input
                               class="form-control"
                               type="text"
                               placeholder="Hirer"
-                              (change)="onChangeInputValue($event, 10)"
-                              [value]="selectedCustomerData && selectedCustomerData ? selectedCustomerData : c.owner?.fullName +'-'+c.owner?.mobile +'-'+c.car?.year"
+                              (input)="onChangeInputValue($event, 10)"
+                              [value]="
+                                selectedCustomerData && selectedCustomerData
+                                  ? selectedCustomerData
+                                  : c.owner?.fullName +
+                                    '-' +
+                                    c.owner?.mobile +
+                                    '-' +
+                                    c.car?.year
+                              "
                             />
                             <button
                               class="btn btn-outline-primary btn-xs"
@@ -347,7 +342,7 @@
                           <textarea
                             class="comments form-control"
                             type="text"
-                            (change)="onChangeInputValue($event, 11)"
+                            (input)="onChangeInputValue($event, 11)"
                             [value]="c.comments"
                             placeholder="No"
                           ></textarea>
@@ -363,21 +358,26 @@
                               id="radio22"
                               type="radio"
                               name="radio1"
+                              [checked]="c.status_contract === 'daily'"
                               value="daily"
-                              (change)="onChangeRadioValue($event,c.days,c.daily)"
+                              (input)="
+                                onChangeRadioValue($event, c.days, c.daily)
+                              "
                             />
                             <label class="form-check-label" for="radio22"
                               >Daily</label
                             >
                           </div>
-                          <div class="col-auto">
+                          <div class="col-md-3">
                             <input
                               type="number"
                               class="form-control"
-                              [value]="c.daily "
-
-                              (change)="onChangeInputValue($event, 12)"
-                              [disabled]="c.daily!== ''"
+                              [value]="daily && daily ? daily : c.car?.daily"
+                              (input)="onChangeInputValue($event, 12)"
+                              [disabled]="c.daily !== ''"
+                              [ngClass]="{
+                                'fw-bold': c.status_contract == 'daily'
+                              }"
                             />
                           </div>
                         </div>
@@ -390,22 +390,28 @@
                               id="radio22"
                               type="radio"
                               name="radio1"
-                              (change)="onChangeRadioValue($event,c.days,c.weekly)"
-
+                              [checked]="c.status_contract === 'weekly'"
+                              (input)="
+                                onChangeRadioValue($event, c.days, c.weekly)
+                              "
                               value="weekly"
                             />
                             <label class="form-check-label" for="radio22"
                               >Weekly</label
                             >
                           </div>
-                          <div class="col-auto">
+                          <div class="col-md-3">
                             <input
                               type="number"
                               class="form-control"
-                              [value]="c.weekly"
-                              (change)="onChangeInputValue($event, 13)"
-                              [disabled]="c.weekly!== ''"
-
+                              [value]="
+                                weekly && weekly ? weekly : c.car?.weekly
+                              "
+                              (input)="onChangeInputValue($event, 13)"
+                              [disabled]="c.weekly !== ''"
+                              [ngClass]="{
+                                'fw-bold': c.status_contract == 'weekly'
+                              }"
                             />
                           </div>
                         </div>
@@ -419,21 +425,27 @@
                               type="radio"
                               name="radio1"
                               value="monthly"
-                              (change)="onChangeRadioValue($event,c.days,c.monthly)"
-
+                              [checked]="c.status_contract === 'monthly'"
+                              (input)="
+                                onChangeRadioValue($event, c.days, c.monthly)
+                              "
                             />
                             <label class="form-check-label" for="radio22"
                               >Monthly</label
                             >
                           </div>
-                          <div class="col-auto">
+                          <div class="col-md-3">
                             <input
                               type="number"
                               class="form-control"
-                              [value]="c.monthly"
-                              (change)="onChangeInputValue($event, 14)"
-                              [disabled]="c.monthly!== ''"
-
+                              [value]="
+                                monthly && monthly ? monthly : c.car?.monthly
+                              "
+                              (input)="onChangeInputValue($event, 14)"
+                              [disabled]="c.monthly !== ''"
+                              [ngClass]="{
+                                'fw-bold': c.status_contract == 'monthly'
+                              }"
                             />
                           </div>
                         </div>
@@ -447,28 +459,33 @@
                               type="radio"
                               name="radio1"
                               value="annual"
-                              (change)="onChangeRadioValue($event,c.days,c.annual)"
-
+                              [checked]="c.status_contract === 'annual'"
+                              (input)="
+                                onChangeRadioValue($event, c.days, c.annual)
+                              "
                             />
                             <label class="form-check-label" for="radio22"
                               >Annual</label
                             >
                           </div>
-                          <div class="col-auto">
+                          <div class="col-md-3">
                             <input
                               type="number"
                               class="form-control"
-                              [value]="c.annual"
-                              (change)="onChangeInputValue($event, 15)"
-                              [disabled]="c.annual!== ''"
-
+                              [value]="
+                                annual && annual ? annual : c.car?.annual
+                              "
+                              (input)="onChangeInputValue($event, 15)"
+                              [disabled]="c.annual !== ''"
+                              [ngClass]="{
+                                'fw-bold': c.status_contract == 'annual'
+                              }"
                             />
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    <hr class="mt-4 mb-4" />
                     <div class="row">
                       <div class="col-sm-12 col-xl-12">
                         <ul
@@ -494,7 +511,7 @@
                                             type="text"
                                             placeholder="Fuel out"
                                             [value]="c.fuel_out"
-                                            (change)="
+                                            (input)="
                                               onChangeInputValue($event, 16)
                                             "
                                           />
@@ -509,7 +526,7 @@
                                             type="text"
                                             placeholder="No KM out"
                                             [value]="c.no_km_out"
-                                            (change)="
+                                            (input)="
                                               onChangeInputValue($event, 17)
                                             "
                                           />
@@ -518,44 +535,17 @@
                                     </div>
                                     <div class="row">
                                       <div class="col">
-                                        <label
-                                          *ngFor="
-                                            let item of checkboxItems.slice(
-                                              0,
-                                              5
-                                            );
-                                            let i = index
+                                        <app-multi-select-dropdown
+                                          [list]="selectedItems"
+                                          [currentData]="currentData"
+                                          (shareCheckedList)="
+                                            shareCheckedList($event)
                                           "
-                                          class="d-block"
-                                        >
-                                          <input
-                                            type="checkbox"
-                                            [(ngModel)]="item.checked"
-                                            [ngModelOptions]="{standalone: true}"
-                                            (change)="onCheckboxChange()"
-                                            class="checkbox_animated"
-                                          />
-                                          {{ item.label }}
-                                        </label>
-                                      </div>
-                                      <div class="col">
-                                        <label
-                                          *ngFor="
-                                            let item of checkboxItems.slice(5);
-                                            let i = index
+                                          (shareIndividualCheckedList)="
+                                            shareIndividualCheckedList($event)
                                           "
-                                          class="d-block"
                                         >
-                                          <input
-                                            type="checkbox"
-                                            [(ngModel)]="item.checked"
-                                            [ngModelOptions]="{standalone: true}"
-
-                                            (change)="onCheckboxChange()"
-                                            class="checkbox_animated"
-                                          />
-                                          {{ item.label }}
-                                        </label>
+                                        </app-multi-select-dropdown>
                                       </div>
                                     </div>
                                   </div>
@@ -575,7 +565,7 @@
                                             type="text"
                                             placeholder="Fuel back"
                                             [value]="c.fuel_back"
-                                            (change)="
+                                            (input)="
                                               onChangeInputValue($event, 18)
                                             "
                                           />
@@ -590,7 +580,7 @@
                                             type="text"
                                             placeholder="No KM back"
                                             [value]="c.no_km_back"
-                                            (change)="
+                                            (input)="
                                               onChangeInputValue($event, 19)
                                             "
                                           />
@@ -599,86 +589,17 @@
                                     </div>
                                     <div class="row">
                                       <div class="col">
-                                        <label for="chk-ani" class="d-block"
-                                          ><input
-                                            id="chk-ani"
-                                            type="checkbox"
-                                            checked=""
-                                            class="checkbox_animated"
-                                          />
-                                          Spare wheel </label
-                                        ><label for="chk-ani1" class="d-block"
-                                          ><input
-                                            id="chk-ani1"
-                                            type="checkbox"
-                                            class="checkbox_animated"
-                                          />
-                                          Wheel cover </label
-                                        ><label for="chk-ani2" class="d-block"
-                                          ><input
-                                            id="chk-ani2"
-                                            type="checkbox"
-                                            checked=""
-                                            class="checkbox_animated"
-                                          />
-                                          Tools & Jack </label
-                                        ><label for="chk-ani3" class="d-block"
-                                          ><input
-                                            id="chk-ani3"
-                                            type="checkbox"
-                                            class="checkbox_animated"
-                                          />
-                                          Radio / Tape
-                                        </label>
-                                        <label for="chk-ani4" class="d-block"
-                                          ><input
-                                            id="chk-ani4"
-                                            type="checkbox"
-                                            class="checkbox_animated"
-                                          />
-                                          Fire Extinguisher
-                                        </label>
-                                      </div>
-                                      <div class="col">
-                                        <label for="chk-ani" class="d-block"
-                                          ><input
-                                            id="chk-ani"
-                                            type="checkbox"
-                                            checked=""
-                                            class="checkbox_animated"
-                                          />
-                                          First AID box</label
-                                        ><label for="chk-ani1" class="d-block"
-                                          ><input
-                                            id="chk-ani1"
-                                            type="checkbox"
-                                            class="checkbox_animated"
-                                          />
-                                          Lights </label
-                                        ><label for="chk-ani2" class="d-block"
-                                          ><input
-                                            id="chk-ani2"
-                                            type="checkbox"
-                                            checked=""
-                                            class="checkbox_animated"
-                                          />
-                                          GPS </label
-                                        ><label for="chk-ani3" class="d-block"
-                                          ><input
-                                            id="chk-ani3"
-                                            type="checkbox"
-                                            class="checkbox_animated"
-                                          />
-                                          Heater / AC
-                                        </label>
-                                        <label for="chk-ani3" class="d-block"
-                                          ><input
-                                            id="chk-ani3"
-                                            type="checkbox"
-                                            class="checkbox_animated"
-                                          />
-                                          Fuel panel
-                                        </label>
+                                        <app-multi-select-dropdown
+                                          [list]="selectedItemsBackCar"
+                                          [currentData]="currentData1"
+                                          (shareCheckedList)="
+                                            shareCheckedListBack($event)
+                                          "
+                                          (shareIndividualCheckedList)="
+                                            shareIndividualCheckedList($event)
+                                          "
+                                        >
+                                        </app-multi-select-dropdown>
                                       </div>
                                     </div>
                                   </div>
@@ -689,190 +610,534 @@
                           <li [ngbNavItem]="2">
                             <a ngbNavLink>Payments</a>
                             <ng-template ngbNavContent>
-                              <div class="row g-4">
-                                <div class="col-md-6">
-                                  <div class="mb-3">
-                                    <div class="d-flex">
-                                      <input
-                                        type="text"
-                                        ng-model="daily_val1"
-                                        class="form-control"
-                                        [value]="amount"
-                                        (change)="
-                                        onChangeInputValue($event, 30)
-                                      "
-                                        disabled
-                                      
-                                      /><strong
-                                        style="color: black"
-                                        class="ps-1 pt-3 pe-1"
-                                        >X</strong
-                                      ><input
-                                        class="form-control"
-                                        type="text"
-                                        ng-model="daily_val2"
-                                        [value]="price"
-                                        
-                                     
-                                      />
-                                      <strong
-                                        style="color: black"
-                                        class="ps-1 pt-3 pe-1"
-                                        >=</strong
-                                      >
-                                      <input
-                                        type="text"
-                                        ng-model="val1"
-                                        class="form-control"
-                                        [value]="result"
-                                        (change)="
-                                          onChangeInputValue($event, 23)
-                                        "
-                                      />
+                              <div class="container">
+                                <div class="card">
+                                  <div class="card-body">
+                                    <div class="row">
+                                      <div class="col-md-12">
+                                        <div class="row g-4">
+                                          <div class="col-md-6">
+                                            <div class="mb-3">
+                                              <div class="d-flex">
+                                                <input
+                                                  type="text"
+                                                  class="form-control border border-3 border-black"
+                                                  [value]="
+                                                    daily_val1
+                                                      ? daily_val1
+                                                      : c.daily_val1
+                                                  "
+                                                  (input)="
+                                                    onChangeInputValue(
+                                                      $event,
+                                                      21
+                                                    )
+                                                  "
+                                                  disabled
+                                                /><strong
+                                                  style="color: black"
+                                                  class="ps-1 pt-3 pe-1"
+                                                  >X</strong
+                                                ><input
+                                                  class="form-control border border-3 border-black"
+                                                  type="text"
+                                                  [value]="
+                                                    daily_val2
+                                                      ? daily_val2
+                                                      : c.daily_val2
+                                                  "
+                                                  (input)="
+                                                    calculateResult($event)
+                                                  "
+                                                  (input)="
+                                                    onChangeInputValue(
+                                                      $event,
+                                                      22
+                                                    )
+                                                  "
+                                                />
+                                                <strong
+                                                  style="color: black"
+                                                  class="ps-1 pt-3 pe-1"
+                                                  >=</strong
+                                                >
+                                                <input
+                                                  type="text"
+                                                  class="form-control border border-3 border-black"
+                                                  [value]="
+                                                    result
+                                                      ? result
+                                                      : c.daily_result
+                                                  "
+                                                  (input)="
+                                                    onChangeInputValue(
+                                                      $event,
+                                                      23
+                                                    )
+                                                  "
+                                                />
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        <div
+                                          class="row row-cols-sm-3 theme-form mt-3 form-bottom align-items-center g-2 ng-untouched ng-pristine ng-valid"
+                                        >
+                                          <div class="col-md-3 d-flex">
+                                            <div class="mb-3"></div>
+                                            <input
+                                              type="number"
+                                              placeholder="Overtime"
+                                              class="form-control"
+                                            />
+                                          </div>
+
+                                          <div class="d-flex">
+                                            <button class="btn btn-primary">
+                                              Set
+                                            </button>
+                                          </div>
+                                        </div>
+
+                                        <div
+                                          class="row row-cols-sm-3 theme-form mt-3 form-bottom align-items-center g-2 ng-untouched ng-pristine ng-valid"
+                                        >
+                                          <div class="col-md-3 d-flex">
+                                            <input
+                                              type="number"
+                                              placeholder="Driver / Petrol"
+                                              class="form-control"
+                                            />
+                                          </div>
+
+                                          <div class="d-flex">
+                                            <button class="btn btn-primary">
+                                              Calc
+                                            </button>
+                                          </div>
+                                        </div>
+                                        <div
+                                          class="row row-cols-sm-3 theme-form mt-3 form-bottom align-items-center g-2 ng-untouched ng-pristine ng-valid"
+                                        >
+                                          <div class="col-md-3 d-flex">
+                                            <input
+                                              type="number"
+                                              placeholder="Fines"
+                                              class="form-control"
+                                            />
+                                          </div>
+
+                                          <div class="d-flex">
+                                            <button class="btn btn-primary">
+                                              Show
+                                            </button>
+                                          </div>
+                                        </div>
+                                        <div
+                                          class="row row-cols-sm-3 theme-form mt-3 form-bottom align-items-center g-2 ng-untouched ng-pristine ng-valid"
+                                        >
+                                          <div class="col-md-3 d-flex">
+                                            <input
+                                              type="number"
+                                              placeholder="Overdrive / Other"
+                                              class="form-control"
+                                            />
+                                          </div>
+
+                                          <div class="d-flex">
+                                            <button class="btn btn-primary">
+                                              Set
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="row">
+                                      <div class="table-responsive">
+                                        <table class="table d-none d-md-table">
+                                          <thead>
+                                            <tr>
+                                              <th scope="col">Advance</th>
+                                              <th scope="col">Discount</th>
+                                              <th scope="col">Sum</th>
+                                              <th scope="col">Payable</th>
+                                              <th scope="col">Calculate</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            <tr>
+                                              <td>
+                                                <div class="form-group">
+                                                  <input
+                                                    #advance
+                                                    type="text"
+                                                    class="form-control"
+                                                    [(ngModal)]="
+                                                      advance
+                                                        ? advance
+                                                        : c.advance
+                                                    "
+                                                    (chnage)="
+                                                      onChangeInputValue(
+                                                        $event,
+                                                        26
+                                                      )
+                                                    "
+                                                  />
+                                                </div>
+                                              </td>
+
+                                              <td>
+                                                <div class="form-group">
+                                                  <input
+                                                    #discount
+                                                    type="text"
+                                                    class="form-control"
+                                                    [(ngModal)]="
+                                                      discount
+                                                        ? discount
+                                                        : c.discount
+                                                    "
+                                                    (input)="
+                                                      onChangeInputValue(
+                                                        $event,
+                                                        25
+                                                      )
+                                                    "
+                                                  />
+                                                </div>
+                                              </td>
+                                              <td>
+                                                <div class="form-group">
+                                                  <input
+                                                    #sum
+                                                    type="text"
+                                                    class="form-control"
+                                                    [value]="
+                                                      result ? result : ''
+                                                    "
+                                                    (input)="
+                                                      onChangeInputValue(
+                                                        $event,
+                                                        24
+                                                      )
+                                                    "
+                                                  />
+                                                </div>
+                                              </td>
+                                              <td>
+                                                <div class="form-group">
+                                                  <input
+                                                    #payable
+                                                    type="text"
+                                                    class="form-control"
+                                                    [ngModal]="
+                                                      payable
+                                                        ? payable
+                                                        : c.payable
+                                                    "
+                                                    (input)="
+                                                      onChangeInputValue(
+                                                        $event,
+                                                        27
+                                                      )
+                                                    "
+                                                  />
+                                                </div>
+                                              </td>
+                                              <td>
+                                                <button
+                                                  type="button"
+                                                  class="btn btn-light"
+                                                  (click)="calculate()"
+                                                >
+                                                  Calculate
+                                                </button>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+
+                                        <div class="row">
+                                          <div class="col">
+                                            <div class="d-md-none">
+                                              <form class="mega-form">
+                                                <div class="form-group">
+                                                  <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                      <label
+                                                        class="col-form-label"
+                                                        >Advance</label
+                                                      >
+
+                                                      <input
+                                                        #advance
+                                                        type="text"
+                                                        class="form-control"
+                                                        [(ngModal)]="
+                                                          advance
+                                                            ? advance
+                                                            : c.advance
+                                                        "
+                                                        (chnage)="
+                                                          onChangeInputValue(
+                                                            $event,
+                                                            26
+                                                          )
+                                                        "
+                                                      />
+                                                    </div>
+                                                  </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                  <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                      <label
+                                                        class="col-form-label"
+                                                        >Discount</label
+                                                      >
+
+                                                      <input
+                                                        #discount
+                                                        type="text"
+                                                        class="form-control"
+                                                        [(ngModal)]="
+                                                          discount
+                                                            ? discount
+                                                            : c.discount
+                                                        "
+                                                        (input)="
+                                                          onChangeInputValue(
+                                                            $event,
+                                                            25
+                                                          )
+                                                        "
+                                                      />
+                                                    </div>
+                                                  </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                  <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                      <label
+                                                        class="col-form-label"
+                                                        >Result</label
+                                                      >
+
+                                                      <input
+                                                        #sum
+                                                        type="text"
+                                                        class="form-control"
+                                                        [value]="
+                                                          result ? result : ''
+                                                        "
+                                                        (input)="
+                                                          onChangeInputValue(
+                                                            $event,
+                                                            24
+                                                          )
+                                                        "
+                                                      />
+                                                    </div>
+                                                  </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                  <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                      <label
+                                                        class="col-form-label"
+                                                        >Payable</label
+                                                      >
+
+                                                      <input
+                                                        #inputpayable
+                                                        type="text"
+                                                        class="form-control"
+                                                        [ngModal]="
+                                                          payable
+                                                            ? payable
+                                                            : c.payable
+                                                        "
+                                                        (input)="
+                                                          onChangeInputValue(
+                                                            $event,
+                                                            27
+                                                          )
+                                                        "
+                                                      />
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </form>
+                                              <button
+                                                type="button"
+                                                class="btn btn-light"
+                                                (click)="calculate()"
+                                              >
+                                                Calculate
+                                              </button>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="container">
+                                        <div class="row">
+                                          <div class="col-md-12">
+                                            <div class="mb-3">
+                                              <div
+                                                class="card-no-border p-8 mt-4"
+                                              >
+                                                <ng-container
+                                                  *ngIf="
+                                                    +c.payable === 0 &&
+                                                    c.payable != null
+                                                  "
+                                                >
+                                                  <div
+                                                    role="alert"
+                                                    class="alert alert-success show fade"
+                                                  >
+                                                    Contract is Paid
+                                                  </div>
+                                                </ng-container>
+
+                                                <ng-container>
+                                                  <div class="card-header">
+                                                    <h5>Current payments :</h5>
+                                                  </div>
+                                                  <div class="car_body">
+                                                    <div
+                                                      class="mb-3 p-4 m-t-15"
+                                                    >
+                                                      <!-- <p>
+                                                        discount:{{
+                                                          c.discount
+                                                        }}
+                                                      </p>
+                                                      <p>
+                                                        advance:{{ c.advance }}
+                                                      </p>
+                                                      <p>
+                                                        payable:{{ c.payable }}
+                                                      </p>
+                                                      <p>sum:{{ c.sum }}</p> -->
+                                                      <ol
+                                                        class="list-group list-group-light list-group-numbered"
+                                                      >
+                                                        <li
+                                                          class="list-group-item d-flex justify-content-between align-items-start"
+                                                        >
+                                                          <div
+                                                            class="ms-2 me-auto"
+                                                          >
+                                                            <div
+                                                              class="fw-bold"
+                                                            >
+                                                              Advance
+                                                            </div>
+                                                          </div>
+                                                          <span
+                                                            class="badge badge-danger rounded-pill"
+                                                            >{{
+                                                              c.advance
+                                                            }}</span
+                                                          >
+                                                        </li>
+                                                        <li
+                                                          class="list-group-item d-flex justify-content-between align-items-start"
+                                                        >
+                                                          <div
+                                                            class="ms-2 me-auto"
+                                                          >
+                                                            <div
+                                                              class="fw-bold"
+                                                            >
+                                                              Rental period
+                                                            </div>
+                                                          </div>
+                                                          <span
+                                                            class="badge badge-danger rounded-pill"
+                                                          ></span>
+                                                        </li>
+                                                        <li
+                                                          class="list-group-item d-flex justify-content-between align-items-start"
+                                                        >
+                                                          <div
+                                                            class="ms-2 me-auto"
+                                                          >
+                                                            <div
+                                                              class="fw-bold"
+                                                            >
+                                                              Discount
+                                                            </div>
+                                                          </div>
+                                                          <span
+                                                            class="badge badge-primary rounded-pill"
+                                                            >{{
+                                                              c.discount
+                                                            }}</span
+                                                          >
+                                                        </li>
+                                                        <li
+                                                          class="list-group-item d-flex justify-content-between align-items-start"
+                                                        >
+                                                          <div
+                                                            class="ms-2 me-auto"
+                                                          >
+                                                            <div
+                                                              class="fw-bold"
+                                                            >
+                                                              Sum
+                                                            </div>
+                                                          </div>
+                                                          <span
+                                                            class="badge badge-primary rounded-pill"
+                                                            >{{ c.sum }}</span
+                                                          >
+                                                        </li>
+                                                        <li
+                                                          class="list-group-item d-flex justify-content-between align-items-start"
+                                                        >
+                                                          <div
+                                                            class="ms-2 me-auto"
+                                                          >
+                                                            <div
+                                                              class="fw-bold"
+                                                            >
+                                                              Payable
+                                                            </div>
+                                                          </div>
+                                                          <span
+                                                            class="badge badge-primary rounded-pill"
+                                                            >{{
+                                                              c.payable
+                                                            }}</span
+                                                          >
+                                                        </li>
+                                                      </ol>
+                                                    </div>
+                                                  </div>
+                                                </ng-container>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-
-                              <div
-                                class="row row-cols-sm-3 theme-form mt-3 form-bottom align-items-center g-2 ng-untouched ng-pristine ng-valid"
-                              >
-                                <div class="col-md-3 d-flex">
-                                  <input
-                                    type="number"
-                                    placeholder="Overtime"
-                                    class="form-control"
-                                  />
-                                </div>
-
-                                <div class="d-flex">
-                                  <button class="btn btn-primary">Set</button>
-                                </div>
-                              </div>
-
-                              <div
-                                class="row row-cols-sm-3 theme-form mt-3 form-bottom align-items-center g-2 ng-untouched ng-pristine ng-valid"
-                              >
-                                <div class="col-md-3 d-flex">
-                                  <input
-                                    type="number"
-                                    placeholder="Driver / Petrol"
-                                    class="form-control"
-                                  />
-                                </div>
-
-                                <div class="d-flex">
-                                  <button class="btn btn-primary">Calc</button>
-                                </div>
-                              </div>
-                              <div
-                                class="row row-cols-sm-3 theme-form mt-3 form-bottom align-items-center g-2 ng-untouched ng-pristine ng-valid"
-                              >
-                                <div class="col-md-3 d-flex">
-                                  <input
-                                    type="number"
-                                    placeholder="Fines"
-                                    class="form-control"
-                                  />
-                                </div>
-
-                                <div class="d-flex">
-                                  <button class="btn btn-primary">Show</button>
-                                </div>
-                              </div>
-                              <div
-                                class="row row-cols-sm-3 theme-form mt-3 form-bottom align-items-center g-2 ng-untouched ng-pristine ng-valid"
-                              >
-                                <div class="col-md-3 d-flex">
-                                  <input
-                                    type="number"
-                                    placeholder="Overdrive / Other"
-                                    class="form-control"
-                                  />
-                                </div>
-
-                                <div class="d-flex">
-                                  <button class="btn btn-primary">Set</button>
-                                </div>
-
-                                <hr class="mt-4 mb-4" />
-                                <table class="table table-striped">
-                                  <thead>
-                                    <tr>
-                                      <th scope="col">Advance</th>
-                                      <th scope="col">Discount</th>
-                                      <th scope="col">Sum</th>
-                                      <th scope="col">Payable</th>
-                                      <th scope="col">Calculate</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td>
-                                        <input #advance
-                                          type="number"
-                                          
-                                          class="form-control"
-                                          [value]="advance ? advance : c.advance"
-                                          (chnage)="
-                                            onChangeInputValue($event, 26)
-                                          "
-                                        />
-                                      </td>
-                                      <td>
-                                        <input #discount
-                                          type="number"
-                                          class="form-control"
-                                          [value]="discount ? discount : c.discount"
-                                          (change)="
-                                            onChangeInputValue($event, 25)
-                                          "
-                                        />
-                                      </td>
-                                      <td>
-                                        <input #sum
-                                        
-                                          type="number"
-                                          class="form-control"
-                                          [value]="result ? result : c.sum"
-                                          (change)="
-                                            onChangeInputValue($event, 24)
-                                          "
-                                        />
-                                      </td>
-                                      <td>
-                                        <input #payable
-                                          type="number"
-                                          class="form-control"
-                                          [value]="payable ? payable: c.payable"
-                                          
-                                          (change)="
-                                            onChangeInputValue($event, 27)
-                                          "
-                                          
-                                        />
-                                      </td>
-                                      <td>
-                                            <button  type="button" class="btn btn-light "
-                                            (click)="calculate()"
-                                            >Calculate</button>
-          
-                                      </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                            
-                              </div>
-                          
                             </ng-template>
                           </li>
                           <li [ngbNavItem]="3">
                             <a ngbNavLink>Car body</a>
                             <ng-template ngbNavContent>
-                              <img
-                                class="img-fluid w-100"
-                                src="assets/images/cars/car_body.png"
-                              />
+                              <app-drawing [idContract]="c._id"></app-drawing>
                             </ng-template>
                           </li>
                         </ul>
@@ -889,8 +1154,9 @@
                               <pagination-controls
                                 class="custom-pagination"
                                 (pageChange)="p = $event"
+                                (pageChange)="pageChanged($event, p)"
                                 (pageBoundsCorrection)="pageChanged($event)"
-                                maxSize="10"
+                                maxSize="5"
                                 directionLinks="true"
                                 autoHide="true"
                                 responsive="true"
@@ -909,13 +1175,25 @@
                   </div>
                 </div>
               </div>
-              <ng-template #noDataFound>
-                <app-init-contract-form></app-init-contract-form>
-              </ng-template>
             </form>
           </div>
+          <ng-template #noDataFound>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <span>No contract added yet .</span>
+                    <button class="btn btn-primary" (click)="goToAddContract()">
+                      Add Contract
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
         </div>
       </div>
     </div>
   </div>
 </div>
+

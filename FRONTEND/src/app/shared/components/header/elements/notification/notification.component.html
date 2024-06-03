@@ -1,24 +1,52 @@
-<div class="notification-box" (click)="toggleNotificationMobile()">
-  <svg>
-    <use href="assets/svg/icon-sprite.svg#notification"></use>
-  </svg>
-  <span class="badge rounded-pill badge-secondary">4</span>
+<div class="container ">
+  <div class="cart-box" (click)="toggleNotificationMobile()">
+    <svg>
+      <use href="assets/svg/icon-sprite.svg#notification"></use>
+    </svg>
+    <span class="badge rounded-pill badge-secondary">
+      <span  *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+      <span *ngIf="unreadCount == 0 && readCount > 0">{{ readCount }}</span>
+    </span> 
+    
+  </div>
+
+  <div class="cart-dropdown  onhover-show-div " [class.active]="openNotification">
+    <h6 class="f-18 mb-0 dropdown-title">Notification</h6>
+
+
+
+    <ul class="custom-scrollbar">
+      <li *ngIf="notifications.length === 0" class="text-muted ">
+        <span>No new notifications</span>
+      </li>
+
+      <li
+        *ngFor="let notification of notifications"
+        class="notification-item"
+      >
+        <div class="media" (click)="markAsRead(notification._id)">
+          <img class="img-fluid b-r-5 me-3 img-60" src="assets/images/engine-oil.png" alt="" />
+          <div class="media-body">
+            <span>{{notification.title}}</span>
+           
+            <span class="f-8 text-secondary">{{notification.date | date}} <p class="text-success">
+              
+              <i         [ngClass]="{ 'fa fa-check': notification.isRead, 'unread': !notification.isRead }"
+              ></i>
+            </span> 
+          </div>
+          <div class="close-circle">
+            <a class="bg-danger" (click)="deleteNotification(notification._id)"
+            ><i class="fa fa-close"></i
+          ></a>          </div>
+        </div>
+        </li>
+      <!-- <li class="total">
+      </li> -->
+      <!-- <li class="text-center"><a class="d-block mb-3 view-cart f-w-700" href="cart.html">Go to your cart</a><a class="btn btn-primary view-checkout" href="checkout.html">Checkout</a></li> -->
+    </ul>
+  </div>
 </div>
-<div class="onhover-show-div notification-dropdown">
-  <h6 class="f-18 mb-0 dropdown-title">Notitications</h6>
-  <ul>
-    <li class="b-l-primary border-4">
-      <p>Delivery processing <span class="font-danger">10 min.</span></p>
-    </li>
-    <li class="b-l-success border-4">
-      <p>Order Complete<span class="font-success">1 hr</span></p>
-    </li>
-    <li class="b-l-secondary border-4">
-      <p>Tickets Generated<span class="font-secondary">3 hr</span></p>
-    </li>
-    <li class="b-l-warning border-4">
-      <p>Delivery Complete<span class="font-warning">6 hr</span></p>
-    </li>
-    <li><a class="f-w-700" href="#">Check all</a></li>
-  </ul>
-</div>
+  
+  
+  

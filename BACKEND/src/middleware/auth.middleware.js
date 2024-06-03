@@ -13,10 +13,10 @@ const verifyToken = async(req, res, next) => {
         const bearer = token.split(' ');
         const bearerToken = bearer[1];
 
-        const decodedData = jwt.verify(bearerToken, "secret");
+        const decodedData = jwt.verify(bearerToken, process.env.JWT_SECRET);
 
         req.user = decodedData;
-        console.log(req.user);
+        console.log("decoeded",decodedData)
         
     } catch (error) {
         return res.status(400).json({

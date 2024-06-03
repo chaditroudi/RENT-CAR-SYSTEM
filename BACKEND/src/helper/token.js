@@ -1,15 +1,19 @@
-
 const jwt = require('jsonwebtoken');
 
-const generateAccessToken = async(user) => {
-  
-    const email = user.email;
-    const role = user.role;
-    const expiration = 7 *24 * 60 * 60 * 1000;
-    const token = jwt.sign({ email:email, role:role }, "secret", {
-      expiresIn: expiration,
-    });
-    return {token: token,expiration: expiration}
-  };
+const generateAccessToken = (user) => {
+  // Destructure the necessary properties from the user object
+  const { email, role, _id, branch_id , branch_name,administration } = user;
 
-  module.exports = generateAccessToken;
+  // Create the payload object using object shorthand
+  const payload = { email, role, _id, branch_id, branch_name,administration };
+
+  // Sign the token with the payload and secret key, setting an expiration time
+  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' });
+
+  console.log("TOKEN GENERATED",token)
+
+  // Return the token in an object
+  return { token };
+};
+
+module.exports = generateAccessToken;

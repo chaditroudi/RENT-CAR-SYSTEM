@@ -1,0 +1,78 @@
+<app-breadcrumb
+  [title]="'Customers page'"
+  [items]="['Home', 'Customers page']"
+  [active_item]="'Customers page'"
+></app-breadcrumb>
+
+<!-- Container-fluid starts-->
+<div class="container-fluid">
+  <div class="edit-profile card">
+    <div class="card-header">
+      <h4 class="card-title mb-0">Edit user</h4>
+    </div>
+    <form
+      [formGroup]="customerForm"
+      (ngSubmit)="updateCustomer()"
+      class="theme-form mega-form"
+    >
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card-body">
+            <div class="row">
+              <div class="info-block">
+                <div class="mb-3">
+                  <label class="form-label">Email</label>
+                  <input
+                    class="form-control"
+                    formControlName="email"
+                    [(ngModel)]="customer.email"
+                    type="text"
+                    placeholder="email"
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">name</label>
+                  <input
+                    class="form-control"
+                    [(ngModel)]="customer.name"
+                    formControlName="name"
+                    type="text"
+                  />
+                </div>
+              </div>
+
+              <div class="info-block">
+                <div class="mb-3">
+                  <label class="form-label">Roles</label>
+                  <input
+                    class="form-control"
+                    formControlName="role"
+                    type="text"
+                    placeholder="Title"
+                    [(ngModel)]="customer.role"
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Administration</label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="Fullname"
+                    formControlName="administration"
+                    [(ngModel)]="customer.administration"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-primary w-100">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- Container-fluid Ends-->

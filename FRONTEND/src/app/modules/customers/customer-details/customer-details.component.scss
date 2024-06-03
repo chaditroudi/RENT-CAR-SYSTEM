@@ -1,0 +1,25 @@
+/* global styles.css or customer-details-modal.component.css */
+.custom-modal-body {
+    max-height: 70vh; /* Adjust the height as needed */
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+  
+  .resized-image {
+
+    object-fit: cover; /* This ensures the image covers the entire area without distortion */
+    margin: 0.5rem; /* Add some space between images */
+  }
+  .image-container {
+    overflow-y: auto;
+    max-height: 300px; /* Adjust as needed */
+}
+
+.image-scroll {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+li {
+  color:black
+}

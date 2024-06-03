@@ -53,7 +53,6 @@ export class BookmarkComponent implements OnInit {
   }
 
   searchTerm(term: any) {
-    console.log("🚀 ~ file: bookmark.component.ts:56 ~ BookmarkComponent ~ searchTerm ~ term", term)
     term ? this.addFix() : this.removeFix();
     if (!term) {
       this.open = false;

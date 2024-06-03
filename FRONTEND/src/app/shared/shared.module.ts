@@ -1,3 +1,4 @@
+import { NgSelectModule } from '@ng-select/ng-select';
 import { ToastService } from "./services/toast.service";
 import { BaseModule } from "./../ui/base/base.module";
 import { LoaderComponent } from "./components/loader/loader.component";
@@ -20,7 +21,6 @@ import { TapToTopComponent } from "./components/tap-to-top/tap-to-top.component"
 import { SearchComponent } from "./components/header/elements/search/search.component";
 import { LanguagesComponent } from "./components/header/elements/languages/languages.component";
 import { NotificationComponent } from "./components/header/elements/notification/notification.component";
-import { BookmarkComponent } from "./components/header/elements/bookmark/bookmark.component";
 import { MessageBoxComponent } from "./components/header/elements/message-box/message-box.component";
 import { MyAccountComponent } from "./components/header/elements/my-account/my-account.component";
 
@@ -37,6 +37,11 @@ import {
 import { GeneratePdfDirective } from "./directives/generate-pdf.directive";
 import { ConfirmationModalComponent } from "./components/confirmation-modal/confirmation-modal.component";
 import { DecimalFormatDirective } from './directives/decimal-format.directive';
+import { NumberInputDirective } from './directives/input-number.directive';
+import { UnauthorizedPageComponent } from './pages/errors/unauthorized-page/unauthorized-page.component';
+import { NotFoundPageComponent } from './pages/errors/not-found-page/not-found-page.component';
+import {ReportManager} from "./components/report-manager/report-manager";
+import { MultiSelectDropdownComponent } from "../lib/multi-select-dropdown/multi-select-dropdown.component";
 
 @NgModule({
   declarations: [
@@ -47,31 +52,37 @@ import { DecimalFormatDirective } from './directives/decimal-format.directive';
     ModalComponent,
     NgbdModalContent,
     BreadcrumbComponent,
-    FeatherIconsComponent,
     FullComponent,
+    MultiSelectDropdownComponent,
     LoaderComponent,
     TapToTopComponent,
      SearchComponent,
     LanguagesComponent,
     NotificationComponent,
-    BookmarkComponent,
     MessageBoxComponent,
     MyAccountComponent,
+    FeatherIconsComponent,
     SvgIconComponent,
     GeneratePdfDirective,
     ConfirmationModalComponent,
     DecimalFormatDirective,
+    NumberInputDirective,
+    UnauthorizedPageComponent,
+    NotFoundPageComponent,
+      
   ],
   imports: [
     CommonModule,
     RouterModule,
+    NgSelectModule,
+
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
     TranslateModule.forRoot(),
     SwiperModule,
   ],
-  providers: [NavService, LayoutService, DecimalPipe, ToastService],
+  providers: [NavService, LayoutService, DecimalPipe, ToastService,ReportManager],
   exports: [
     NgbModule,
     GeneratePdfDirective,
@@ -80,11 +91,12 @@ import { DecimalFormatDirective } from './directives/decimal-format.directive';
     TranslateModule,
     ModalComponent,
     SearchComponent,
+    UnauthorizedPageComponent,
     DecimalFormatDirective,
 
+    MultiSelectDropdownComponent,
     LoaderComponent,
     BreadcrumbComponent,
-    FeatherIconsComponent,
     TapToTopComponent,
     SvgIconComponent,
     SwiperModule,

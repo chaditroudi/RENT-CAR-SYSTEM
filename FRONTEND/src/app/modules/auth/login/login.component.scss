@@ -1,7 +1,4 @@
 
-label {
-  color:black !important;
-}
 .loader--text {
   top: 200%;
   left: 0;
@@ -48,4 +45,7 @@ img {
   75% {
     content: "Loading...";
   }
+}
+.text-muted{
+  color:black !important;
 }

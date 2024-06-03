@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-var AutoIncrement = require('mongoose-sequence')(mongoose);
+// var AutoIncrement = require('mongoose-sequence')(mongoose);
 
 // Create a schema for the data
 const carSchema = new Schema({
@@ -16,13 +16,18 @@ const carSchema = new Schema({
     current:Number,
     insurance: Date,
     registration: Date,
-
+    createdBy:{
+        type:String
+      },
+      updatedBy:{
+        type:String
+      },
     engine_no: String,
     chassis_no: String,
     fuel: String,
     comment: String,
     out_of_service: Boolean,
-    petrol_charge: Number,
+    petrol_charge: String,
     daily: Number,
     weekly: Number,
     monthly: Number,
@@ -35,15 +40,22 @@ const carSchema = new Schema({
     seats:Number,
     cylinders:Number,
     insurance_company:String,
-    type_of_insurance:String,
+
     owner_name:String,
     owner_id:Number,
+    
     nationality:String,
+
+    rented:Boolean,
+    branch_id: { type: Schema.Types.ObjectId, ref: 'Branch' }
+
+
+
 
 
 });
 
-carSchema.plugin(AutoIncrement, {id:'serial_seq',inc_field: 'serial'});
+// carSchema.plugin(AutoIncrement, {id:'serial_seq',inc_field: 'serial'});
 
 // Create a model using the schema
 const car = mongoose.model('Car', carSchema);

@@ -40,7 +40,7 @@ export class PermissionsDetailsComponent implements OnInit {
   createPermission() {
     this.permissionService.createPermission(this.formGroup.value).subscribe(
       (response) => {
-        console.log(response);
+        (response);
 
         if (this.formGroup.valid) {
           this.toastr.showSuccess("permission added successfully");
@@ -51,20 +51,19 @@ export class PermissionsDetailsComponent implements OnInit {
         }
       },
       (err) => {
-        console.log(err);
+        (err);
       }
     );
   }
 
   updatePermission(permission: Permission) {
-    console.log("Hello permission");
-    console.log(permission);
+    ("Hello permission");
+    (permission);
     if (permission) {
       this.permissionService.updatepermission(permission).subscribe(
         (updatePermission) => {
-          console.log("Permission updated successfully:", updatePermission);
         },
-        (error) => console.log(error)
+        (error) => (error)
       );
     }
   }
@@ -77,7 +76,6 @@ export class PermissionsDetailsComponent implements OnInit {
     this.permissionService.fetchAllpermissions();
 
     this.permissionService.permissions$.subscribe((data) => {
-      console.log("all data ", data);
       this.permissions = data;
     });
   }
@@ -95,7 +93,7 @@ export class PermissionsDetailsComponent implements OnInit {
   }
 
   goToUpdatePermission(id: number) {
-    console.log(id);
+    (id);
 
     return this.router.navigate(["modules/permissions/permissions-update", id]);
   }

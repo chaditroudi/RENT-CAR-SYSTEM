@@ -1,0 +1,46 @@
+<div class="modal fade show" id="customerDetailsModal" tabindex="-1" aria-labelledby="customerDetailsModalLabel" aria-hidden="true" style="display: block;">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="customerDetailsModalLabel">Customer Details</h5>
+          <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body custom-modal-body">
+          <div class="row">
+            <div class="col-md-3 d-flex flex-wrap image-container">
+                <div class="image-scroll">
+            <div class="col-md-12 d-flex flex-wrap">
+              <div *ngFor="let image of customer.files" class="p-2">
+                <img [src]="'http://localhost:3200/backend/uploads/' + image" class="img-fluid rounded shadow-sm resized-image" alt="Customer Image">
+              </div>
+            </div>
+            </div>
+        </div>
+            <div class="col-md-8">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Code:</strong> {{ customer.code }}</li>
+                <li class="list-group-item"><strong>Passport Number:</strong> {{ customer.passport_number }}</li>
+                <li class="list-group-item"><strong>ID Number:</strong> {{ customer.id_number }}</li>
+                <li class="list-group-item"><strong>Title:</strong> {{ customer.title }}</li>
+                <li class="list-group-item"><strong>Full Name:</strong> {{ customer.fullName }}</li>
+                <li class="list-group-item"><strong>Date of Birth:</strong> {{ customer.date_birth | date : "yyyy-MM-dd" }}</li>
+                <li class="list-group-item"><strong>License Number:</strong> {{ customer.license_number }}</li>
+                <li class="list-group-item"><strong>Issued By:</strong> {{ customer.issued_by }}</li>
+                <li class="list-group-item"><strong>Issued On:</strong> {{ customer.issued_on | date : "yyyy-MM-dd" }}</li>
+                <li class="list-group-item"><strong>Mobile:</strong> {{ customer.mobile }}</li>
+                <li class="list-group-item"><strong>Telephone:</strong> {{ customer.telephone }}</li>
+                <li class="list-group-item"><strong>Email:</strong> {{ customer.email }}</li>
+                <li class="list-group-item"><strong>QAR Address:</strong> {{ customer.QAR_address }}</li>
+                <li class="list-group-item"><strong>Permanent Address:</strong> {{ customer.permanent_address }}</li>
+                <li class="list-group-item"><strong>Person Name:</strong> {{ customer.person_name }}</li>
+                <li class="list-group-item"><strong>Home Country:</strong> {{ customer.home_country }}</li>
+                <li class="list-group-item"><strong>Nationality:</strong> {{ customer.nationality }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      
+      </div>
+    </div>
+  </div>
+  

@@ -2,6 +2,9 @@ const express = require("express");
 const carRouter = express.Router();
 const carController = require("../controllers/car.controller");
 
+const auth = require('../middleware/auth.middleware');
+const { OnlyAdminCanAccess, OnlyEditorAdminCanAccess } = require('../middleware/admin.midlleware');
+
 /** POST Methods */
 /**
  * @openapi
@@ -88,10 +91,10 @@ const carController = require("../controllers/car.controller");
  *                   description: "A message detailing the result of the operation."
  */
 
-carRouter.post("/add-car", carController.createCar);
+carRouter.post("/add-car", auth,OnlyEditorAdminCanAccess,carController.createCar);
 
 // Get all
-carRouter.get("/display-cars", carController.getAllCars);
+carRouter.get("/display-cars", auth,OnlyEditorAdminCanAccess,carController.getAllCars);
 
 
 /**
@@ -110,7 +113,11 @@ carRouter.get("/display-cars", carController.getAllCars);
  *         description: Returns the requested car
  */
 
-carRouter.get("/get-car/:id", carController.getCarById);
+carRouter.get("/get-car/:id",auth,OnlyEditorAdminCanAccess, carController.getCarById);
+
+
+
+carRouter.get('/by-branchs', auth,OnlyEditorAdminCanAccess,carController.getAllCarsByBranch);
 
 
 
@@ -205,7 +212,7 @@ carRouter.get("/get-car/:id", carController.getCarById);
  *                   type: string
  *                   description: "A message detailing the result of the operation."
  */
-carRouter.put("/update-car/:id", carController.updateCar);
+carRouter.put("/update-car/:id", auth,OnlyEditorAdminCanAccess,carController.updateCar);
 
 
 /**
@@ -223,6 +230,6 @@ carRouter.put("/update-car/:id", carController.updateCar);
  *       200:
  *         description: Returns the requested car
  */
-carRouter.delete("/delete-car/:id", carController.deleteCar);
+carRouter.delete("/delete-car/:id", auth,OnlyAdminCanAccess,carController.deleteCar);
 
 module.exports = carRouter;

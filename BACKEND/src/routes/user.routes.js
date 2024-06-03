@@ -7,11 +7,14 @@ const router = express.Router();
 
 const auth = require('../middleware/auth.middleware');
 
-const { updateUserValidator, deleteUserValidator } = require('../helper/user-validator.helper');
+const { updateUserValidator, deleteUserValidator, createUserValidator } = require('../helper/user-validator.helper');
 
-router.get('/get-users', auth, userController.getUsers);
-router.post('/update-user', auth, updateUserValidator, userController.updateUser);
-router.post('/delete-user', auth, deleteUserValidator, userController.deleteUser);
+router.get('/', userController.fetchUsers);
+
+
+router.put('/:id', userController.updateUser);
+router.delete('/:id', userController.deleteUser);
+router.post('/', userController.createUser);
 
 
 module.exports = router;

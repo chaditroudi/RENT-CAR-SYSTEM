@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @import "./assets/scss/app.scss";
 
+@import "./assets/scss/utils/variables.scss";
+
 .router-wrapper  {
     position:  relative;
     overflow:  hidden;
@@ -9,6 +11,13 @@
     perspective:  1200px;
     transform-style:  preserve-3d;
 }
+
+span ,strong,li{
+  color:$font-gray-color;
+}
+
+
+
 
 button {
     cursor: pointer;

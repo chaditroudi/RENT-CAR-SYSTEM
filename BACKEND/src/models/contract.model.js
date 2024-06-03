@@ -10,7 +10,8 @@ const contractSchema = new mongoose.Schema({
     
   },
 
-
+  rented:{type:Boolean}
+,
     status: { type: String },
 
   car:{
@@ -52,6 +53,7 @@ const contractSchema = new mongoose.Schema({
         
     },
  
+    
     comments:{
         type:String,
         required: false
@@ -89,8 +91,12 @@ const contractSchema = new mongoose.Schema({
       },
       features:{
           type:Array,
-          required: false
+          required: false,
       },
+      features_back:{
+        type:Array,
+        required: false,
+    },
       daily_val1:{
         type:Number,
         default:0
@@ -120,6 +126,9 @@ const contractSchema = new mongoose.Schema({
         default:0
 
       },
+      status_contract:{
+        type:String
+      },
       amount:{
         type:Number,
         default:0
@@ -129,8 +138,16 @@ const contractSchema = new mongoose.Schema({
         type:Number,
         default:0
 
-      }
-    
+      },
+      createdBy:{
+        type:String
+      },
+      files:[String],
+
+      
+  
+      branch_id: { type: Schema.Types.ObjectId, ref: 'Branch' }
+
 })
 
 

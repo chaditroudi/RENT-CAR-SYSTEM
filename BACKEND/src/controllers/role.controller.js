@@ -20,7 +20,6 @@ const storeRole = async(req, res) => {
 
         const { role_name, value } = req.body;
 
-        console.log("req body",req.body);
 
         const existingRole = await Role.findOne({ role_name });
 
@@ -35,7 +34,7 @@ const storeRole = async(req, res) => {
             role_name,
             value
         });
-        console.log("role",role)
+        ("role",role)
 
         const roleData = await role.save();
         

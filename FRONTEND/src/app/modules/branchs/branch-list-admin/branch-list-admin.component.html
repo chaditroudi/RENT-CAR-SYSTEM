@@ -1,0 +1,125 @@
+<app-breadcrumb
+  [title]="'Customers Page'"
+  [items]="['Forms', 'Form Layout']"
+  [active_item]="'Customers Page'"
+></app-breadcrumb>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12 col-xl-12">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card ">
+            <div class="card-header">
+              <li class="text-end">
+                <button class="btn btn-primary" (click)="modal.open(content)">
+                  Add new Branch
+                </button>
+              </li>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <ng-container *ngFor="let branch of branchs">
+                  <div class="col-md-4 mb-4">
+                    <div class="card">
+                      <div class="card-header">
+                        <h5>{{ branch.branch_name }}</h5>
+                      </div>
+                      <div class="card-body">
+                          <!-- <ng-container *ngFor="let user of branch.users | slice:0:5; let i = index">
+                            <li>
+                              <p>User ID: {{ user._id }}</p>
+                              <p>User Name: {{ user.name }}</p>
+                              <p>User Email: {{ user.email }}</p>
+                            </li>
+                         
+                          </ng-container> -->
+                          <ul class="list-unstyled" style="max-height: 200px; overflow-y: auto;">
+
+                          <ng-container *ngIf="showAllUsers[branch._id]">
+                            <h4>list of users:</h4>
+                            <div class="w-100 flex p-4">
+                              <li *ngFor="let user of branch.users; let i = index" [class.d-none]="i >1">
+                                  <p>User Email: {{ user.email }}</p>
+                                  <p>Office: {{user.administration}}</p>
+                                  <hr/>
+                           
+                              </li>
+                            </div>
+                            <li>
+                              <button class="btn btn-link" (click)="toggleShowAllUsers(branch._id)">View Less</button>
+                            </li>
+                          </ng-container>
+                            <li *ngIf="!showAllUsers[branch._id]">
+                              <button class="btn btn-link" (click)="toggleShowAllUsers(branch._id)">View All ({{ branch.users.length }})</button>
+                            </li>
+                        </ul>
+                      </div>
+                     
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card-body">
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Add new Branch</h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <form
+        class="theme-form mega-form"
+        [formGroup]="formGroup"
+        (ngSubmit)="createBranch()"
+      >
+        <span> </span>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="mb-3">
+              <label class="col-form-label">Branch name</label>
+              <input
+                class="form-control"
+                type="text"
+                placeholder="Branch name"
+                formControlName="branch_name"
+              />
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="mb-3">
+              <label class="form-label">Administration</label>
+              <ng-select
+              
+              (change)="getValueAdministration($event)"
+              [items]="administrations$ | async" placeholder="Select" formControlName="administrations"></ng-select>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="submit"
+            class="btn btn-outline-dark"
+            (click)="modal.close('Save click')"
+          >
+            Add
+          </button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</div>

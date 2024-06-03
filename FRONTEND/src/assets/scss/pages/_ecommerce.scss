@@ -2,7 +2,7 @@
     33.  Ecommerce  CSS Start
 ==========================**/
 
-/**====== car Start ======**/
+/**====== Product Start ======**/
 .toggle-data {
   cursor: pointer;
 }
@@ -84,7 +84,7 @@
     max-height: 37px;
   }
 }
-.car-social {
+.product-social {
   li {
     a {
       color: $dark-gray;
@@ -115,7 +115,7 @@
   }
 }
 
-.car-sidebar {
+.product-sidebar {
   .filter-section {
     .card {
       .card-header {
@@ -141,8 +141,8 @@
   }
 }
 
-.car-wrapper {
-  .car-sidebar {
+.product-wrapper {
+  .product-sidebar {
     .filter-section {
       .card {
         .left-filter {
@@ -153,7 +153,7 @@
           transition: 0.3s;
           min-width: 320px;
 
-          .car-filter {
+          .product-filter {
             .irs-with-grid {
               margin-bottom: 15px;
             }
@@ -163,15 +163,15 @@
     }
   }
 
-  .car-grid {
-    .car-wrapper-grid {
+  .product-grid {
+    .product-wrapper-grid {
       margin-left: 0;
       transition: 0.3s;
     }
   }
 
   &.sidebaron {
-    .car-sidebar {
+    .product-sidebar {
       .filter-section {
         .card {
           .left-filter {
@@ -190,7 +190,7 @@
   }
 }
 
-.d-none-carlist {
+.d-none-productlist {
   display: none;
 
   svg {
@@ -199,31 +199,31 @@
   }
 }
 
-.car-wrapper-grid {
+.product-wrapper-grid {
   &.list-view {
-    .car-box {
+    .product-box {
       display: flex;
       align-items: center;
 
-      .car-img {
+      .product-img {
         width: 20%;
       }
 
-      .car-details {
+      .product-details {
         text-align: left;
       }
     }
   }
 }
 
-.slider-car {
+.slider-product {
   padding: 15px 0;
   border-top: 1px solid $light-color;
   border-bottom: 1px solid $light-color;
   margin-bottom: 15px;
 }
 
-.cars-total {
+.products-total {
   display: flex;
   align-items: center;
 }
@@ -308,7 +308,7 @@
   }
 }
 
-.square-car-setting {
+.square-product-setting {
   height: 36px;
   vertical-align: middle;
 
@@ -330,8 +330,8 @@
   }
 }
 
-.car-filter {
-  .banner-car {
+.product-filter {
+  .banner-product {
     margin-top: 15px;
   }
 
@@ -390,7 +390,7 @@
     }
   }
 
-  &.new-cars {
+  &.new-products {
     margin-top: 20px;
 
     button {
@@ -428,12 +428,12 @@
 
       .owl-item {
         .item {
-          .car-box {
-            .car-details {
+          .product-box {
+            .product-details {
               padding: 25px 0;
             }
 
-            + .car-box {
+            + .product-box {
               margin-top: 15px;
             }
           }
@@ -443,7 +443,7 @@
   }
 }
 
-.select2-drpdwn-car {
+.select2-drpdwn-product {
   .form-control {
     border: none;
     box-shadow: 1px 5px 24px 0 rgba(68, 102, 242, 0.05);
@@ -452,7 +452,7 @@
   }
 }
 
-.feature-cars {
+.feature-products {
   form {
     .form-group {
       position: relative;
@@ -475,11 +475,11 @@
   }
 }
 
-.car-box {
+.product-box {
   border-radius: 10px;
   overflow: hidden;
 
-  .car-details {
+  .product-details {
     padding: 15px 25px;
 
     > a {
@@ -517,27 +517,27 @@
     }
   }
 
-  //       .car-moda {
-  //         .car-box {
-  //           .car-details {
+  //       .product-moda {
+  //         .product-box {
+  //           .product-details {
   //             padding: 25px 0;
 
   //             h6 {
   //               text-transform: capitalize;
   //             }
 
-  //             .car-price {
+  //             .product-price {
   //               font-size: 22px;
   //               margin-bottom: 10px;
   //             }
 
-  //             .car-view {
+  //             .product-view {
   //               padding: 20px 0;
   //               border-top: 1px dotted $semi-dark;
   //               border-bottom: 1px dotted $semi-dark;
   //             }
 
-  //             .car-size {
+  //             .product-size {
   //               margin: 20px 0;
 
   //               ul {
@@ -547,7 +547,7 @@
   //               }
   //             }
 
-  //             .car-qnty {
+  //             .product-qnty {
   //               margin-bottom: 20px;
 
   //               .input-group {
@@ -572,12 +572,12 @@
   //         }
   //       }
 
-  .car-modal {
-    .car-box {
+  .product-modal {
+    .product-box {
       border-radius: 10px;
       overflow: hidden;
 
-      .car-details {
+      .product-details {
         padding: 15px 25px;
 
         > a {
@@ -617,26 +617,26 @@
 
       // .modal {
       //   .modal-header {
-      //     .car-box {
-      //       .car-details {
+      //     .product-box {
+      //       .product-details {
       //         padding: 25px 0;
 
       //         h6 {
       //           text-transform: capitalize;
       //         }
 
-      //         .car-price {
+      //         .product-price {
       //           font-size: 22px;
       //           margin-bottom: 10px;
       //         }
 
-      //         .car-view {
+      //         .product-view {
       //           padding: 20px 0;
       //           border-top: 1px dotted $semi-dark;
       //           border-bottom: 1px dotted $semi-dark;
       //         }
 
-      //         .car-size {
+      //         .product-size {
       //           margin: 20px 0;
 
       //           ul {
@@ -646,7 +646,7 @@
       //           }
       //         }
 
-      //         .car-qnty {
+      //         .product-qnty {
       //           margin-bottom: 20px;
 
       //           .input-group {
@@ -671,10 +671,10 @@
       //   }
       // }
 
-      .car-img {
+      .product-img {
         position: relative;
 
-        .car-hover {
+        .product-hover {
           position: absolute;
           height: 100%;
           width: 100%;
@@ -725,7 +725,7 @@
       }
 
       &:hover {
-        .car-hover {
+        .product-hover {
           opacity: 1;
           border-radius: 0%;
           transform: scale(1);
@@ -735,10 +735,10 @@
     }
   }
 
-  .car-img {
+  .product-img {
     position: relative;
 
-    .car-hover {
+    .product-hover {
       position: absolute;
       height: 100%;
       width: 100%;
@@ -789,7 +789,7 @@
   }
 
   &:hover {
-    .car-hover {
+    .product-hover {
       opacity: 1;
       border-radius: 0%;
       transform: scale(1);
@@ -798,7 +798,7 @@
   }
 }
 
-.car-page-main {
+.product-page-main {
   padding: 30px;
   .owl-item {
     .item {
@@ -812,7 +812,7 @@
       }
     }
   }
-  .car-slider {
+  .product-slider {
     margin-bottom: 20px;
     img {
       @media (min-width: 1400px) {
@@ -825,12 +825,12 @@
       }
     }
   }
-  .car-color {
+  .product-color {
     margin-top: 10px;
   }
 }
 
-.car-page-details {
+.product-page-details {
   h4 {
     color: $theme-body-font-color;
     text-transform: uppercase;
@@ -853,7 +853,7 @@
   }
 }
 
-.car-price {
+.product-price {
   font-size: 18px;
   font-weight: 700;
   margin-top: 5px;
@@ -866,7 +866,7 @@
   }
 }
 
-.car-color {
+.product-color {
   li {
     display: inline-block;
     border-radius: 100%;
@@ -876,7 +876,7 @@
   }
 }
 
-.car-page-main {
+.product-page-main {
   p {
     font-size: 15px;
   }
@@ -887,7 +887,7 @@
   }
 }
 
-/**====== car  Ends ======**/
+/**====== Product  Ends ======**/
 
 .payment-opt {
   li {
@@ -900,3 +900,12 @@
   }
 }
 
+/**=====================
+    33. Ecommerce  CSS End
+==========================**/
+@media screen and (max-width: 1660px) and (min-width: 1200px) {
+  .owl-carousel .owl-item img {
+    max-width: 420px;
+    margin: 0 auto;
+  }
+}
