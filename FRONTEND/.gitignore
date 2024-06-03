@@ -13,12 +13,12 @@ node_modules/
 *.log
 *.tmp
 
-# Ignore environment-specific files
-.env
-
-# Ignore dependency management files
+# Ignore lock files
 package-lock.json
 yarn.lock
 
+# Ignore build artifacts
 dist/
 
+# Ignore .env file
+.env
