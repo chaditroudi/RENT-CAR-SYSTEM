@@ -1,7 +1,6 @@
 import { StorageService } from 'src/app/core/services/storage.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Contract } from '../models/contract.model';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { baseUrl } from '../api/base.url';
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Contract } from "src/app/core/models/contract.model";
-import { ContractService } from "src/app/core/services/Contract.service";
+import { ContractService } from "src/app/core/services/contract.service";
 
 @Component({
   selector: "app-contract-invoice",

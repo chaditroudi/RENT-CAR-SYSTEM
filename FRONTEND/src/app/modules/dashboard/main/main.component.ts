@@ -1,6 +1,6 @@
 import { StatisticsService } from './../../../core/services/statistics.service';
 import { Component, OnInit } from '@angular/core';
-import { ContractService } from 'src/app/core/services/Contract.service';
+import { ContractService } from 'src/app/core/services/contract.service';
 
 @Component({
   selector: 'app-main',

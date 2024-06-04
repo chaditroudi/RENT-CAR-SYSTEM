@@ -1,9 +1,8 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { BehaviorSubject, Observable, of } from "rxjs";
-import { catchError, map, tap } from "rxjs/operators";
+import {  map, tap } from "rxjs/operators";
 import { baseUrl } from "../api/base.url";
-import { Permission } from "../models/permission.model";
 import { StorageService } from "./storage.service";
 import { Report } from "../models";
 

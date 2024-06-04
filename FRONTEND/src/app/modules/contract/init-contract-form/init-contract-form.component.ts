@@ -7,7 +7,7 @@ import {
   NgbModalConfig,
   NgbNavChangeEvent,
 } from "@ng-bootstrap/ng-bootstrap";
-import { ContractService } from "src/app/core/services/Contract.service";
+import { ContractService } from "src/app/core/services/contract.service";
 import { ToastService } from "src/app/shared/services/toast.service";
 import { ModalComponent } from "src/app/ui/base/modal/modal.component";
 import { CarModalComponent } from "../../cars/car-modal/car-modal.component";

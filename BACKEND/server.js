@@ -2,6 +2,8 @@
 const express = require("express");
 require('dotenv').config();
 
+const PORT =process.env.PORT_SERVER;
+
 const app = express();
 const bodyParser = require("body-parser");
 var cors = require("cors");
@@ -42,8 +44,6 @@ app.use((_, res) =>{
 
 const httpServer = require('http').createServer(app);
 
-const port = 3200;
-
 
 
 // Define a schema for notifications
@@ -57,7 +57,7 @@ const Notification = mongoose.model('Notification', notificationSchema);
 
 // Socket.IO logic
 
-httpServer.listen(port, () => console.log(`listening on port ${port}`   ));
+httpServer.listen(PORT, () => console.log(`listening on port ${PORT}`   ));
 
 const io = require('./src/utils/socket').init(httpServer);
 

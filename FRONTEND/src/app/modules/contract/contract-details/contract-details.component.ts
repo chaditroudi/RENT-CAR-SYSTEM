@@ -1,4 +1,4 @@
-import { ContractService } from "./../../../core/services/Contract.service";
+import { ContractService } from "./../../../core/services/contract.service";
 import {
   Component,
   ElementRef,

@@ -5,7 +5,7 @@ import { NgbModal, NgbModalConfig } from "@ng-bootstrap/ng-bootstrap";
 import { Router } from "@angular/router";
 import { CustomerService } from "src/app/core/services/customer.service";
 import { ToastService } from "src/app/shared/services/toast.service";
-import { ContractService } from "src/app/core/services/Contract.service";
+import { ContractService } from "src/app/core/services/contract.service";
 
 @Component({
   selector: "app-contract-backups",

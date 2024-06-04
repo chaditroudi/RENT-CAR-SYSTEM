@@ -2,7 +2,7 @@ import { User } from './../models/user.model';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import {  map, tap } from 'rxjs/operators';
 import { baseUrl } from '../api/base.url';
 
 @Injectable({

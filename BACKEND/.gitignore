@@ -23,3 +23,5 @@ uploads/
 # Ignore .env file
 .env
 
+ecosystem.js
+    

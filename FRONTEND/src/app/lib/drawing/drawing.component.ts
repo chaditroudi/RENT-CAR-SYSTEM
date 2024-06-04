@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
 import * as Hammer from 'hammerjs';
 import { HttpClient } from '@angular/common/http';
-import { ContractService } from 'src/app/core/services/Contract.service';
+import { ContractService } from 'src/app/core/services/contract.service';
 
 @Component({
   selector: 'app-drawing',
