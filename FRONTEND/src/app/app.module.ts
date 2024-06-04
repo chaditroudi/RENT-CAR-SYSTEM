@@ -24,15 +24,12 @@ import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { CookieService } from 'ngx-cookie-service';
 
 import { AppComponent } from './app.component'
-import { fadeInAnimation } from './shared/data/router-animation/router-animation';
 ;
 
 import { OverlayModule } from '@angular/cdk/overlay';
 import { LoginComponent } from './modules/auth/login/login.component';
 import { BaseModule } from './ui/base/base.module';
 import { BranchsListComponent } from './modules/branchs/branchs-list-user/branchs-list.component';
-import { DrawingComponent } from './lib/drawing/drawing.component';
-import { LoadingSpinnerComponent } from './ui/base/loading-spinner/loading-spinner.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
