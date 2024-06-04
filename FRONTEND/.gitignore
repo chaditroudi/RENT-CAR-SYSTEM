@@ -23,5 +23,4 @@ dist/
 # Ignore .env file
 .env
 
-
-src/environment/environment.prod.ts
+environments/environment.prod.ts
