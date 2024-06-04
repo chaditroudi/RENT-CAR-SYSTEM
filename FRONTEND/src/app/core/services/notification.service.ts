@@ -7,6 +7,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { baseUrl } from '../api/base.url';
 import { Car } from '../models/car.model';
 import { StorageService } from './storage.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class NotificationService {
   constructor(
     private http: HttpClient,private storageService:StorageService
   ) { 
-    this.socket = io(process.env.PORT_SERVER);
+    this.socket = io(environment.SOCKET_URL);
   }
 
 

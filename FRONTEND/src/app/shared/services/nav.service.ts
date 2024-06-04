@@ -140,6 +140,10 @@ export class NavService implements OnDestroy {
             { path: "/modules/customers/customers-list", title: "Customers Page", type: "link" },
           ],
         },
+       
+        {
+          headTitle1: "Permissions Users",
+        },
         {  title: "Permission",
         icon: "list",
         type: "sub",
@@ -148,7 +152,31 @@ export class NavService implements OnDestroy {
         active: false,
         children: [
           { path: "/modules/permissions/permissions-details", title: "Permission Page", type: "link" },
-        ],}
+        ],},
+
+        {
+          title: "Branchs",
+          icon: "info",
+          type: "sub",
+          badgeType: "light-primary",
+          badgeValue: "1",
+          active: true,
+          children: [
+            { path: "/modules/branchs/branch-list-admin", title: "Branchs Details", type: "link" },
+          ],
+        },
+        {
+          title: "Users",
+          icon: "users",
+          type: "sub",
+          badgeType: "light-primary",
+          badgeValue: "1",
+          active: true,
+          children: [
+            { path: "/modules/users/user-add", title: "Users Details", type: "link" },
+          ],
+        },
+
       );
     }
 
