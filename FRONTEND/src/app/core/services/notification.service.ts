@@ -23,7 +23,7 @@ export class NotificationService {
   constructor(
     private http: HttpClient,private storageService:StorageService
   ) { 
-    this.socket = io('http://localhost:3200');
+    this.socket = io(process.env.PORT_SERVER);
   }
 
 

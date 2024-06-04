@@ -1,3 +1,4 @@
+import { environment } from './../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -6,13 +7,12 @@ import { Notification } from '../models';
 
 
 
-const backendUrl = "http://localhost:3200";
 
 @Injectable({
   providedIn: 'root'
 })
 export class SocketIoService {
-  socket = io('http://localhost:3200');
+  socket = io(environment.SOCKET_URL);
   public message$: BehaviorSubject<string> = new BehaviorSubject('');
 
 

@@ -9,7 +9,7 @@ const options = {
             version: '1.0.0'
         },
         servers: [
-            { url: 'http://localhost:5000/api' }
+            { url: `${process.env.PORT_SERVER}/api` }
         ]
     },
     apis: ['src/routes/*.js'],
