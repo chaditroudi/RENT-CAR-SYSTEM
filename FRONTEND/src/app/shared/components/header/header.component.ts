@@ -22,10 +22,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.elem = document.documentElement;
 
-this.branch=this.storageSer.getBranchName();
-this.office =this.storageSer.getOffice();
-this.role = this.storageSer.getRole();
-
+  
   }
 
   sidebarToggle() {

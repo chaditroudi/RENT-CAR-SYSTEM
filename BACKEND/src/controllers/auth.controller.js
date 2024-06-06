@@ -102,7 +102,10 @@ const loginUser = async (req, res) => {
 
     const { email, password } = req.body;
 
+    console.log(email)
     let userData = await User.findOne({ email });
+
+    console.log(userData)
 
     if (!userData) {
       return res.status(400).json({
@@ -115,7 +118,7 @@ const loginUser = async (req, res) => {
     const isPasswordMatch = await bcrypt.compare(password, userData.password);
 
     if (!isPasswordMatch) {
-      return res.status(400).json({
+      return res.status(420).json({
         success: false,
         msg: "E-mail or Password does not match!",
       });

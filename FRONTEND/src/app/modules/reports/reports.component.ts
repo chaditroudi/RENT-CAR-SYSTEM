@@ -24,8 +24,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
   isFilter: boolean = false;
 
-  startDate: string; // Use string to bind with datetime-local input
-  endDate: string; // Use string to bind with datetime-local input
+  startDate: string; 
+  endDate: string; 
   weeklyReports: any[] = [];
   monthlyReports: any[] = [];
   yearlyReports: any[] = [];

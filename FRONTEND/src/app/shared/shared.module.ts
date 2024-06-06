@@ -42,6 +42,8 @@ import { UnauthorizedPageComponent } from './pages/errors/unauthorized-page/unau
 import { NotFoundPageComponent } from './pages/errors/not-found-page/not-found-page.component';
 import {ReportManager} from "./components/report-manager/report-manager";
 import { MultiSelectDropdownComponent } from "../lib/multi-select-dropdown/multi-select-dropdown.component";
+import { MainComponent } from '../modules/dashboard/main/main.component';
+import { ChartBoxComponent } from '../modules/dashboard/chart-box/chart-box.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +71,8 @@ import { MultiSelectDropdownComponent } from "../lib/multi-select-dropdown/multi
     NumberInputDirective,
     UnauthorizedPageComponent,
     NotFoundPageComponent,
+    MainComponent,
+    ChartBoxComponent
       
   ],
   imports: [
@@ -91,6 +95,8 @@ import { MultiSelectDropdownComponent } from "../lib/multi-select-dropdown/multi
     TranslateModule,
     ModalComponent,
     SearchComponent,
+    MainComponent,
+    ChartBoxComponent,
     UnauthorizedPageComponent,
     DecimalFormatDirective,
 

@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Car } from 'src/app/core/models/car.model';
 
 @Component({
   selector: 'app-chart-box',
@@ -8,9 +9,23 @@ import { Component, Input } from '@angular/core';
 export class ChartBoxComponent  {
 
   
-  @Input() data: any
+  @Input() validInss: Car[]
+
+  @Input() validRegist:Car[]
 
 
+
+
+  activeTab :string = 'tab1';
+
+
+
+
+  setActiveTabs(tab){
+
+    this.activeTab=tab;
+
+  }
  
 
 }

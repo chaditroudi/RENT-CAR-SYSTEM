@@ -1,70 +1,77 @@
-<app-breadcrumb [title]="'Default'" [items]="['Dashboard']" [active_item]="'Default'"></app-breadcrumb>
-<div class="container-fluid">
-  <div class="row widget-grid">
- 
-
-
-    <div class="container">
+<ng-container  *ngIf="role !== 3;">
+  <app-breadcrumb [title]="'Default'" [items]="['Dashboard']" [active_item]="'Default'"></app-breadcrumb>
+  <div class="container-fluid">
+    <div class="row widget-grid">
+   
+  
+  
+      <div class="container">
+      
+        <div class="row">
     
-      <div class="row">
-  
-    <!-- <div class="four col-md-3">
-      <div class="card">
-        
-        <div class="counter-box">
-          <i class="fa fa-users"></i>
-          <span class="counter">0</span>
-          <p>Users</p>
+      <!-- <div class="four col-md-3">
+        <div class="card">
+          
+          <div class="counter-box">
+            <i class="fa fa-users"></i>
+            <span class="counter">0</span>
+            <p>Users</p>
+          </div>
         </div>
-      </div>
-     
-    </div> -->
-  
-    <div class="four col-md-3">
-      <div class="card">
-        <div class="counter-box">
-          <i class="fa fa-file"></i>
-          <span class="counter">{{openContractCount}}</span>
-          <p>Open Contracts</p>
-        </div>
-      </div>
-     
-    </div>
-    <div class="four col-md-3">
-      <div class="card">
-        <div class="counter-box">
-          <i class="fa fa-file"></i>
-          <span class="counter">{{closedContractCount}}</span>
-          <p>Closed Contracts</p>
-        </div>
-      </div>
-     
-    </div>
-
-    <div class="four col-md-3">
-      <div class="card">
-        <div class="counter-box">
-          <i class="fa fa-check"></i>
-          <span class="counter">2147</span>
-          <p>Rented Cars</p>
-        </div>
-      </div>
-     
-    </div>
-
+       
+      </div> -->
     
-    <div class="four col-md-3">
-      <div class="card">
-        <div class="counter-box">
-          <i class="fa fa-thumbs-o-up"></i>
-          <span class="counter">2147</span>
-          <p>Available Cars</p>
+      <div class="four col-md-3">
+        <div class="card">
+          
+          <div class="counter-box">
+            <i class="fa fa-file"></i>
+            <span class="counter">{{openContractCount}}</span>
+            <p>Open Contracts</p>
+          </div>
         </div>
+       
       </div>
-     
+      <div class="four col-md-3">
+        <div class="card">
+          <div class="counter-box">
+            <i class="fa fa-file"></i>
+            <span class="counter">{{closedContractCount}}</span>
+            <p>Closed Contracts</p>
+          </div>
+        </div>
+       
+      </div>
+  
+      <div class="four col-md-3">
+        <div class="card">
+          <div class="counter-box">
+            <i class="fa fa-check"></i>
+            <span class="counter">2147</span>
+            <p>Rented Cars</p>
+          </div>
+        </div>
+       
+      </div>
+  
+      
+      <div class="four col-md-3">
+        <div class="card">
+          <div class="counter-box">
+            <i class="fa fa-thumbs-o-up"></i>
+            <span class="counter">2147</span>
+            <p>Available Cars</p>
+          </div>
+        </div>
+       
+      </div>
+    
+    
+  
+      <app-chart-box [validInss]="validInss" [validRegist]="validRegist"></app-chart-box>
+      </div>
     </div>
-  
-  
 
     </div>
-  </div>
+    </div>
+    </ng-container>

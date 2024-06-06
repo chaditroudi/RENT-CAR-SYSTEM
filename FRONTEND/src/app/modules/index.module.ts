@@ -22,8 +22,6 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { CarModalComponent } from "./cars/car-modal/car-modal.component";
 import { CustomerModalComponent } from "./customers/customer-modal/customer-modal.component";
-import { MainComponent } from "./dashboard/main/main.component";
-import { ChartBoxComponent } from "./dashboard/chart-box/chart-box.component";
 import { FilterPipe } from "../shared/pipe/filter.pipe";
 import { NotificationsListComponent } from './notifications/notifications-list/notifications-list.component';
 import { UserAddComponent } from './users/user-add/user-add.component';
@@ -47,7 +45,6 @@ import { CustomerDetailsComponent } from './customers/customer-details/customer-
     // ContractInvoiceComponent,
     InitCarFormComponent,
 
-    MainComponent,
     CustomerUpdateComponent,
     PermissionsDetailsComponent,
     CarModalComponent,
@@ -56,8 +53,6 @@ import { CustomerDetailsComponent } from './customers/customer-details/customer-
     ReportsComponent,
     
     UserAddComponent,
-    MainComponent,
-    ChartBoxComponent,
 
     FilterPipe,
       NotificationsListComponent,

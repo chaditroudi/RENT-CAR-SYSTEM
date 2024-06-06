@@ -43,6 +43,7 @@ const routes: Routes = [
       {
         path: "dashboard",
         component: MainComponent,
+        
         canActivate: [AuthGuard],
         data: { roles: ["1", "2"] } 
 

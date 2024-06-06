@@ -114,29 +114,28 @@
                       </div>
                       <div class="col-md-12">
                         <ul class="action">
-                          <ng-container >
+                          <ng-container>
                             <li class="edit">
                               <a (click)="openEditContractModal()"
                                 ><i class="icon-pencil-alt"></i
                               ></a>
                               <confirmation-modal
-                              #editContractModal
-                              (newConfirmationEvent)="
-                                editContractAlert($event, c._id)
-                              "
-                              modalStyle="modal-style-info"
-                              modalTitle="Edit contract"
-                              [modalBody]="
-                                !noEditAlertModal
-                                  ? 'you have payments available are you sure to update ?'
-                                  : 'are you sure to edit contract?'
-                              "
-                              modalButtonColor="btn btn-info"
-                            ></confirmation-modal>
-                          </li>
+                                #editContractModal
+                                (newConfirmationEvent)="
+                                  editContractAlert($event, c._id)
+                                "
+                                modalStyle="modal-style-info"
+                                modalTitle="Edit contract"
+                                [modalBody]="
+                                  !noEditAlertModal
+                                    ? 'you have payments available are you sure to update ?'
+                                    : 'are you sure to edit contract?'
+                                "
+                                modalButtonColor="btn btn-info"
+                              ></confirmation-modal>
+                            </li>
                           </ng-container>
-                          
-                    
+
                           <li class="delete">
                             <a (click)="open()"
                               ><i class="icon-trash mb-3"></i>
@@ -171,7 +170,6 @@
                             class="form-control"
                             type="text"
                             disabled="true"
-                            
                             placeholder="No"
                             (input)="onChangeInputValue($event, 0)"
                             [value]="c.serial"
@@ -181,7 +179,7 @@
 
                       <div class="col-md-3">
                         <div class="mb-3">
-                          <label class="col-form-label" >Version</label>
+                          <label class="col-form-label">Version</label>
                           <input
                             class="form-control"
                             type="text"
@@ -212,9 +210,10 @@
                           <label class="col-form-label">Car out</label>
                           <input
                             class="form-control"
+                            formControlName="car_out"
                             type="datetime-local"
                             (input)="onChangeInputValue($event, 3)"
-                            [value]="c.car_out | date : 'yyyy-MM-dd HH:mm'"
+                            [ngModel]="c.car_out | date : 'yyyy-MM-dd HH:mm'"
                           />
                         </div>
                       </div>
@@ -224,9 +223,10 @@
                           <label class="col-form-label">Days</label>
                           <input
                             class="form-control"
+                            formControlName="days"
                             type="number"
                             (input)="onChangeInputValue($event, 4)"
-                            [value]="c.days"
+                            [ngModel]="c.days"
                           />
                         </div>
                       </div>
@@ -234,11 +234,16 @@
                       <div class="col-md-4">
                         <div class="mb-3">
                           <label class="col-form-label">Car back</label>
-                          <input class="form-control" type="datetime-local"
-                          (input)="onChangeInputValue($event, 5)"
-                          [value]="c.car_back | date : 'yyyy-MM-dd HH:mm' "
-                          [ngClass]="{
-                          disabled: isDisabled }" />
+                          <input
+                            class="form-control"
+                            type="datetime-local"
+                            (input)="onChangeInputValue($event, 5)"
+                            [ngModel]="c.car_back | date : 'yyyy-MM-ddTHH:mm'"
+                            formControlName="car_back"
+                            [ngClass]="{
+                              disabled: isDisabled
+                            }"
+                          />
                         </div>
                       </div>
                       <div class="col-md-2">
@@ -361,7 +366,11 @@
                               [checked]="c.status_contract === 'daily'"
                               value="daily"
                               (input)="
-                                onChangeRadioValue($event, c.days, c.daily)
+                                onChangeRadioValue(
+                                  $event,
+                                  c.days,
+                                  daily && daily ? daily : c.car?.daily
+                                )
                               "
                             />
                             <label class="form-check-label" for="radio22"
@@ -392,7 +401,11 @@
                               name="radio1"
                               [checked]="c.status_contract === 'weekly'"
                               (input)="
-                                onChangeRadioValue($event, c.days, c.weekly)
+                                onChangeRadioValue(
+                                  $event,
+                                  c.days,
+                                  weekly && weekly ? weekly : c.car?.weekly
+                                )
                               "
                               value="weekly"
                             />
@@ -427,7 +440,11 @@
                               value="monthly"
                               [checked]="c.status_contract === 'monthly'"
                               (input)="
-                                onChangeRadioValue($event, c.days, c.monthly)
+                                onChangeRadioValue(
+                                  $event,
+                                  c.days,
+                                  monthly && monthly ? monthly : c.car?.monthly
+                                )
                               "
                             />
                             <label class="form-check-label" for="radio22"
@@ -461,7 +478,11 @@
                               value="annual"
                               [checked]="c.status_contract === 'annual'"
                               (input)="
-                                onChangeRadioValue($event, c.days, c.annual)
+                                onChangeRadioValue(
+                                  $event,
+                                  c.days,
+                                  annual && annual ? annual : c.car?.annual
+                                )
                               "
                             />
                             <label class="form-check-label" for="radio22"
@@ -622,11 +643,11 @@
                                                 <input
                                                   type="text"
                                                   class="form-control border border-3 border-black"
-                                                  [value]="
-                                                    daily_val1
-                                                      ? daily_val1
-                                                      : c.daily_val1
-                                                  "
+                                                  formControlName="daily_val1"
+                                                  [ngModel]="
+                                                  daily_val1 ?daily_val1:c.daily_val1
+                                                   
+                                                "
                                                   (input)="
                                                     onChangeInputValue(
                                                       $event,
@@ -641,20 +662,11 @@
                                                 ><input
                                                   class="form-control border border-3 border-black"
                                                   type="text"
-                                                  [value]="
-                                                    daily_val2
-                                                      ? daily_val2
-                                                      : c.daily_val2
-                                                  "
+                                                  [ngModel]="daily_val2 ? daily_val2: c.daily_val2"
                                                   (input)="
                                                     calculateResult($event)
                                                   "
-                                                  (input)="
-                                                    onChangeInputValue(
-                                                      $event,
-                                                      22
-                                                    )
-                                                  "
+                                                  formControlName="daily_val2"
                                                 />
                                                 <strong
                                                   style="color: black"
@@ -664,11 +676,10 @@
                                                 <input
                                                   type="text"
                                                   class="form-control border border-3 border-black"
-                                                  [value]="
-                                                    result
-                                                      ? result
-                                                      : c.daily_result
-                                                  "
+                                                  formControlName="daily_result"
+                                                  [ngModel]="
+                                                  daily_result ? daily_result :c.daily_result"
+                                                   
                                                   (input)="
                                                     onChangeInputValue(
                                                       $event,
@@ -774,7 +785,7 @@
                                                     #advance
                                                     type="text"
                                                     class="form-control"
-                                                    [(ngModal)]="
+                                                    [ngModal]="
                                                       advance
                                                         ? advance
                                                         : c.advance
@@ -795,7 +806,7 @@
                                                     #discount
                                                     type="text"
                                                     class="form-control"
-                                                    [(ngModal)]="
+                                                    [ngModal]="
                                                       discount
                                                         ? discount
                                                         : c.discount
@@ -816,7 +827,7 @@
                                                     type="text"
                                                     class="form-control"
                                                     [value]="
-                                                      result ? result : ''
+                                                          daily_result ? daily_result : c.daily_result
                                                     "
                                                     (input)="
                                                       onChangeInputValue(
@@ -904,7 +915,7 @@
                                                         #discount
                                                         type="text"
                                                         class="form-control"
-                                                        [(ngModal)]="
+                                                        [ngModal]="
                                                           discount
                                                             ? discount
                                                             : c.discount
@@ -933,7 +944,7 @@
                                                         type="text"
                                                         class="form-control"
                                                         [value]="
-                                                          result ? result : ''
+                                                          daily_result ? daily_result : c.daily_result
                                                         "
                                                         (input)="
                                                           onChangeInputValue(
@@ -1196,4 +1207,3 @@
     </div>
   </div>
 </div>
-

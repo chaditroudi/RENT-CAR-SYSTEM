@@ -137,19 +137,21 @@
 </div>
 
 <div class="container">
-  <div id="contentToConvert">
+
+  <div class="text-end mb-3">
+    <button
+      class="btn btn-primary"
+      appGeneratePdf
+      [contentToConvertContract]="contentToConvertContract"
+    >
+      Generate Contract
+    </button>
+  </div>
+  <div id="contentToConvertContract">
     <div class="row">
       <div class="invoice-header">
         <h1>Contract</h1>
-        <div class="text-end mb-0">
-          <button
-            class="btn btn-primary"
-            appGeneratePdf
-            [contentToConvert]="contentToConvert"
-          >
-            Generate Contract
-          </button>
-        </div>
+       
       </div>
       <div class="col-md-6">
         <div class="invoice-body">

@@ -1,7 +1,7 @@
 <app-breadcrumb
-  [title]="'Customers Page'"
+  [title]="'Users System Page'"
   [items]="['Forms', 'Form Layout']"
-  [active_item]="'Customers Page'"
+  [active_item]="'Users Page'"
 ></app-breadcrumb>
 
 <div class="container">
@@ -54,7 +54,7 @@
 
                           <th scope="row">{{ customer.name }}</th>
                           <td>{{ customer.email }}</td>
-                          <td>{{ customer.role }}</td>
+                          <td>{{ customer.role ===1 ? "Admin" : customer.role ===2 ? "Editor" : "Viewer" }}</td>
                           <td>{{ customer.administration }}</td>
                          
                           <td>

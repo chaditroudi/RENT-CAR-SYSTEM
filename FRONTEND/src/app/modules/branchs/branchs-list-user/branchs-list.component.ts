@@ -41,6 +41,7 @@ export class BranchsListComponent implements OnInit {
     if(this.role == 2 )   {
       this.auth.updateBranch({branch_id:branchId}).subscribe((res)=> {
       
+        
       this.toastr.showSuccess(`You are affected to branch ${branchName}`)
       })
       

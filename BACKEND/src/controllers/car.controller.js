@@ -108,8 +108,8 @@ exports.getAllCars = async (req, res) => {
 
 exports.getAllCarsByBranch = async (req, res) => {
   try {
+    console.log(req.user.branch_id);
     const cars= await Car.find({branch_id: req.user.branch_id});
-    console.log(cars)
     return res.status(200).json(cars);
   } catch (error) {
     return res.status(400).json({ status: 400, message: error.message });
@@ -123,5 +123,93 @@ exports.totalCar = async (req, res) => {
     return res.status(200).json(cars);
   } catch (error) {
     return res.status(400).json({ status: 400, message: error.message });
+  }
+}
+
+exports.fetchValidInssu =  async(req, res) =>{ 
+  try {
+    const cars = await fetchCarsWithValidInsurance(req.user.branch_id);
+    console.log(cars);
+
+    res.json(cars);
+} catch (err) {
+    res.status(500).json({ message: err.message });
+}
+}
+exports.fetchCarsWithValidRegist =  async(req, res) => { 
+  try {
+    const cars = await fetchCarsWithValidRegistration(req.user.branch_id);
+    res.json(cars);
+} catch (err) {
+    res.status(500).json({ message: err.message });
+}
+}
+
+
+async function fetchCarsWithValidRegistration(branch_id) {
+  const today = new Date();
+  try {
+
+
+
+    if(branch_id) {
+      const cars = await Car.find({ 
+        branch_id:branch_id, 
+        registration: { 
+            $gte: today,
+   
+        } 
+    });      console.log(cars)
+        return cars;
+    }else {
+      const cars = await Car.find({ 
+        registration: { 
+            $gte: today,
+   
+        } 
+    });      console.log(cars)
+        return cars;
+    }
+    
+  } catch (err) {
+      throw new Error(`Error fetching cars with valid registration: ${err.message}`);
+  }
+}
+
+async function fetchCarsWithValidInsurance(branch_id) {
+  const today = new Date();
+  const nextMonth = new Date(today);
+  nextMonth.setMonth(nextMonth.getMonth() + 1);
+
+  const nextWeek = new Date(today);
+  nextWeek.setDate(today.getDate() + 7);
+
+  try {
+    if(branch_id) {
+
+      const cars = await Car.find({ 
+        branch_id:branch_id, 
+  
+          insurance: { 
+              $gte: today,
+     
+          } 
+      });
+      console.log("Found cars with valid insurance:", cars);
+      return cars;
+    }else {
+      const cars = await Car.find({ 
+  
+          insurance: { 
+              $gte: today,
+     
+          } 
+      });
+      console.log("Found cars with valid insurance:", cars);
+      return cars;
+    }
+  } catch (err) {
+      console.error(`Error fetching cars with valid insurance: ${err.message}`);
+      throw err;
   }
 }

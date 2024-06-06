@@ -6,7 +6,7 @@
     input {
       border: 1px solid var(--theme-deafult);
       padding-left: 20px;
-      border-radius: 10px 0 0 10px;
+      border-radius: 1.25rem;
       flex: 1 1 auto;
       &::placeholder {
         color: $primary-color;

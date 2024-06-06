@@ -10,6 +10,7 @@ import { ContractService } from "src/app/core/services/contract.service";
 })
 export class ContractInvoiceComponent implements OnInit {
   contentToConvert: string = "contentToConvert";
+  contentToConvertContract: string = "contentToConvertContract";
   contract: Contract;
   id: string;
   price: number;

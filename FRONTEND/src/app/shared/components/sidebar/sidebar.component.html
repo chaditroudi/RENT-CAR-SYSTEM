@@ -17,9 +17,11 @@
   </a>
 </div>
 <nav class="sidebar-main">
+
   <div class="left-arrow" id="left-arrow" [class.d-none]="leftArrowNone" (click)="scrollToLeft()">
     <!-- <i data-feather="arrow-left" ></i> -->
     <app-feather-icons [icon]="'arrow-left'"></app-feather-icons>
+    
   </div>
   <div id="sidebar-menu">
     <ul class="sidebar-links custom-scrollbar">
@@ -32,16 +34,23 @@
                   <a href="javascript:void(0)">
                     <img class="img-fluid" src="assets/images/logo/logo-icon.png" alt="" />
                   </a>
+                  
                   <div class="mobile-back text-end" (click)="sidebarToggle()">
                     <span>Back</span>
                     <i class="fa fa-angle-right ps-2" aria-hidden="true"></i>
                   </div>
+                </li>
+                <li>
+                  <ng-container *ngIf="role !==1" >
+                    <h6 class="text-dark fw-bold mb-0 p-2">Branch: {{branch}}</h6>
+                </ng-container>
                 </li>
 
                 <li [class]="menuItem.headTitle1 ? 'sidebar-main-title' : 'sidebar-list'" *ngFor="let menuItem of menuItems" [ngClass]="{ active: menuItem.active }">
                   <div *ngIf="menuItem.headTitle1">
                     <h6 class="lan-1">{{ menuItem.headTitle1 | translate }}</h6>
                     <!-- <p class="lan-2">{{ menuItem.headTitle2 | translate }}</p> -->
+                    
                   </div>
 
                   <label class="badge badge-{{ menuItem.badgeType }}" *ngIf="menuItem.badgeType && menuItem.badgeValue">{{ menuItem.badgeValue }}</label>
@@ -117,6 +126,8 @@
                             {{ childrenSubItem.title | translate }}
                           </a>
                         </li>
+
+                        <ng-container  ngbAccordionItem="hb"></ng-container>
                       </ul>
                     </li>
                   </ul>

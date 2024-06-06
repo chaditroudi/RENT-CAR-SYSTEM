@@ -1,7 +1,8 @@
-import { Component, ViewEncapsulation, HostListener } from '@angular/core';
+import { Component, ViewEncapsulation, HostListener, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Menu, NavService } from '../../services/nav.service';
 import { LayoutService } from '../../services/layout.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,7 +10,7 @@ import { LayoutService } from '../../services/layout.service';
   styleUrls: ['./sidebar.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
 
   public iconSidebar;
   public menuItems: Menu[];
@@ -21,9 +22,15 @@ export class SidebarComponent {
   public width: any = window.innerWidth;
   public leftArrowNone: boolean = true;
   public rightArrowNone: boolean = false;
-
-  constructor(private router: Router, public navServices: NavService,
+  branch: string;
+  
+  office:string;
+  role:number
+  constructor(private router: Router, public navServices: NavService,private readonly storageSer:StorageService,
     public layout: LayoutService) {
+
+
+
     this.navServices.items.subscribe(menuItems => {
       this.menuItems = menuItems;
       this.router.events.subscribe((event) => {
@@ -50,6 +57,11 @@ export class SidebarComponent {
     });
 
   }
+  ngOnInit(): void {
+    this.office =this.storageSer.getOffice();
+this.role = this.storageSer.getRole();
+    this.branch=this.storageSer.getBranchName();
+    }
 
 
   

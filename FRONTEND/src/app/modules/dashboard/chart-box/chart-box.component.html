@@ -1,20 +1,118 @@
-<div class="card widget-1">
-    <div class="card-body">
-      <div class="widget-content">
-        <div class="widget-round {{data.font}}">
-          <div class="bg-round">
-            <svg class="svg-fill">
-              <use attr.xlink:href="../../../../assets/svg/icon-sprite.svg#{{data.icon}}"></use>
-            </svg>
-            <svg class="half-circle svg-fill">
-              <use href="../../../../assets/svg/icon-sprite.svg#halfcircle"></use>
-            </svg>
+<div class="container">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12 col-xl-12">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <div class="row align-items-center">
+                  <div class="col-12 col-md-10">
+                    <app-search></app-search>
+                  </div>
+                  <div class="col-12 col-md-2 text-md-right text-center mt-2 mt-md-0">
+
+                  <div class="col-sm-3">
+                    <div class="text-end">
+                      <button
+                        appGeneratePdf
+                        [dataValidIns]="validInss"
+                        [dataValidReg]="validRegist"
+                        printVCarInss="printVCarInss"
+                        printVCarRegist="printVCarRegist"
+                        class="btn btn-info"
+                      >
+                        <i class="icon-printer mb-3"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                </div>
+              </div>
+
+              <div class="card-body">
+                <ul class="nav nav-tabs">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      [class.active]="activeTab === 'tab1'"
+                      (click)="setActiveTabs('tab1')"
+                      >Registration Expiry</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      [class.active]="activeTab === 'tab2'"
+                      (click)="setActiveTabs('tab2')"
+                      >Car insurance</a
+                    >
+                  </li>
+                </ul>
+                <div class="mt-3" *ngIf="activeTab === 'tab1'">
+                  <div *ngIf="validRegist && validRegist.length > 0; else noData">
+                    <div class="table-responsive" id="printVCarRegist">
+                      <table id="car-registery-table" class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">Car</th>
+                            <th scope="col">Year</th>
+                            <th scope="col">Plate</th>
+                            <th scope="col">Registration expiry</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let car of validRegist">
+                            <td>{{ car.car }}</td>
+                            <td>{{ car.year }}</td>
+                            <td>{{ car.plate }}</td>
+                            <td>{{ car.registration | date }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <ng-template #noData>
+                    <div class="alert alert-light">
+                      <p>Registration car valid not found.</p>
+                    </div>
+                  </ng-template>
+                </div>
+
+                <div class="mt-3" *ngIf="activeTab === 'tab2'">
+                  <div *ngIf=" validInss && validInss.length > 0; else noData">
+                    <div class="table-responsive" id="printVCarInss">
+                      <table id="car-insurance-table" class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">Car</th>
+                            <th scope="col">Year</th>
+                            <th scope="col">Plate</th>
+                            <th scope="col">Insurance expiry</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let car of validInss">
+                            <td>{{ car.car }}</td>
+                            <td>{{ car.year }}</td>
+                            <td>{{ car.plate }}</td>
+                            <td>{{ car.insurance | date }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <ng-template #noData>
+                    <div class="alert alert-light">
+                      <p>Inssurance valid not found.</p>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div>
-          <h4>{{data.counter}}</h4>
-          <span class="f-light">{{data.name}}</span>
         </div>
       </div>
     </div>
   </div>
+</div>

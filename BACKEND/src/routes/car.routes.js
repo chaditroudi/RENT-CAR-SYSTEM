@@ -118,6 +118,8 @@ carRouter.get("/get-car/:id",auth,OnlyEditorAdminCanAccess, carController.getCar
 
 
 carRouter.get('/by-branchs', auth,OnlyEditorAdminCanAccess,carController.getAllCarsByBranch);
+carRouter.get('/insurance/valid', auth,OnlyEditorAdminCanAccess,carController.fetchValidInssu);
+carRouter.get('/registration/valid', auth,OnlyEditorAdminCanAccess,carController.fetchCarsWithValidRegist);
 
 
 

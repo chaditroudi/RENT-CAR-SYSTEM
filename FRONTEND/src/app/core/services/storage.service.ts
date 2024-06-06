@@ -44,7 +44,7 @@ export class StorageService {
   }
 
   getCurrentUser():any | null {
-      return localStorage.getItem('user');
+      return localStorage.getItem('user') ?? null; 
     
     
   }
@@ -58,7 +58,10 @@ export class StorageService {
  
 
   getRole() {
-    return this.role = JSON.parse(this.getCurrentUser()).data.role;
+    if(this.getCurrentUser()) {
+      return this.role = JSON.parse(this.getCurrentUser()).data.role ;
+
+    }
 
   }
   getBranchName() {

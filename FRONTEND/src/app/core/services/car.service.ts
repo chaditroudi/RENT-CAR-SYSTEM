@@ -99,7 +99,17 @@ export class CarService {
   findByTitle(title: any): Observable<Car[]> {
     return this.http.get<Car[]>(`${baseUrl}?title=${title}`);
   }
+
+
+
+getCarsWithValidInsurance(): Observable<any[]> {
+  const headers = this.getHeaders();
+  return this.http.get<Car[]>(`${baseUrl}/car/insurance/valid`,{headers});
 }
 
-
+getCarsWithValidRegistration(): Observable<any[]> {
+  const headers = this.getHeaders();
+  return this.http.get<Car[]>(`${baseUrl}/car/registration/valid`,{headers});
+}
+}
 

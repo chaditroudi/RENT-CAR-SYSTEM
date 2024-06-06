@@ -1,6 +1,9 @@
 import { StatisticsService } from './../../../core/services/statistics.service';
 import { Component, OnInit } from '@angular/core';
+import { Car } from 'src/app/core/models/car.model';
+import { CarService } from 'src/app/core/services/car.service';
 import { ContractService } from 'src/app/core/services/contract.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
   selector: 'app-main',
@@ -10,13 +13,28 @@ import { ContractService } from 'src/app/core/services/contract.service';
 export class MainComponent implements OnInit {
 
 
+
   openContractCount:number = 0;
   closedContractCount:number = 0;
+  validInss: Car[];
+  validRegist: Car[];
 
+  role:number;
   
 
 
 
+  getCarsWithValidInsurance(): void {
+    this.carService.getCarsWithValidInsurance().subscribe(data => {
+      this.validInss = data;
+    });
+  }
+
+  getCarsWithValidRegistration(): void {
+    this.carService.getCarsWithValidRegistration().subscribe(data => {
+      this.validRegist = data;
+    });
+  }
   countContractOpen() {
     this.statisService.countContractOpen().subscribe((data)=>{
 
@@ -36,12 +54,21 @@ export class MainComponent implements OnInit {
   ngOnInit() {
     this.countContractOpen();
     this.countContractClosed();
+    this.getCarsWithValidInsurance();
+    this.getCarsWithValidRegistration();
+    this.role = this.storageServ.getRole();
    
   }
 
 
 
-  constructor(private statisService:StatisticsService){}
+  constructor(private statisService:StatisticsService,private readonly carService:CarService,private storageServ:StorageService){
+    
+  }
+
+
+
+
 
     
    

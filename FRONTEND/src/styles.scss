@@ -3,80 +3,75 @@
 
 @import "./assets/scss/utils/variables.scss";
 
-.router-wrapper  {
-    position:  relative;
-    overflow:  hidden;
-    width:  100vw;
-    height:  calc(100%  -  47px);
-    perspective:  1200px;
-    transform-style:  preserve-3d;
+.router-wrapper {
+  position: relative;
+  overflow: hidden;
+  width: 100vw;
+  height: calc(100% - 47px);
+  perspective: 1200px;
+  transform-style: preserve-3d;
 }
 
-span ,strong,li{
-  color:$font-gray-color;
+span,
+strong,
+li {
+  color: $font-gray-color;
 }
-
-
-
 
 button {
-    cursor: pointer;
+  cursor: pointer;
 }
-:host  {
-    display: block;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #60d7a9;
+:host {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #60d7a9;
 }
-
 
 .action {
-    display: flex;
-    i {
-        cursor: pointer;
-        display:inline-block;
-        border:2px solid transparent;
-        border-radius: 50%;
-        transition:  all 0.3s ease;
-    
-        padding: 8px;
+  display: flex;
+  i {
+    cursor: pointer;
+    display: inline-block;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    transition: all 0.3s ease;
 
-        &:hover {
-            background-color: $light-gray;
-            color:gray;
-        }
-    
+    padding: 8px;
 
-    }
-    .pdf {
-      i {
-        font-size: 20px;
-        color: $dark-color;
-      }
-    }
-    .edit {
-      margin-right: 5px;
-      i {
-        color: $success-color;
-      }
-      [dir="rtl"] & {
-        margin-left: 5px;
-      }
-    }
-    .plus {
-        margin-right: 5px;
-        i {
-          color: $primary-color;
-        }
-        [dir="rtl"] & {
-          margin-left: 5px;
-        }
-      }
-    .delete {
-      i {
-        color: $danger-color;
-      }
+    &:hover {
+      background-color: $light-gray;
+      color: gray;
     }
   }
-
+  .pdf {
+    i {
+      font-size: 20px;
+      color: $dark-color;
+    }
+  }
+  .edit {
+    margin-right: 5px;
+    i {
+      color: $success-color;
+    }
+    [dir="rtl"] & {
+      margin-left: 5px;
+    }
+  }
+  .plus {
+    margin-right: 5px;
+    i {
+      color: $primary-color;
+    }
+    [dir="rtl"] & {
+      margin-left: 5px;
+    }
+  }
+  .delete {
+    i {
+      color: $danger-color;
+    }
+  }
+}

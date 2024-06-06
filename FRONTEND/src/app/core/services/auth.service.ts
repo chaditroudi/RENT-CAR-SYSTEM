@@ -46,23 +46,6 @@ export class AuthService {
       .post<AuthResponse>(
         `${baseUrl}/auth/login`,
         { email: email, password: password },
-        httpOptions
-      )
-      .pipe(
-        tap((res) => {
-
-          if(res.success) {
-
-            (this.storageService);
-            this.storageService.setToken(res.accessToken);
-            this.storageService.setCurrentUser(res);
-            this.storageService.storeUserRole(res.data.role);
-          }
-
-          
-        
-        }),
-        shareReplay() 
       );
   }
 

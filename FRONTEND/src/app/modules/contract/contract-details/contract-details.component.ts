@@ -84,11 +84,16 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
   annual = "";
   daily_val1: any;
   daily_val2: any;
-  result: any;
+  daily_result: any;
   advance: any;
   payable: any;
   discount: any;
   sum: any;
+  currentData: any[] = []; 
+
+  currentPage: number = 1;
+  selectedFeatures: any[];
+  select: any;
 
   @ViewChild("confirmationModal")
   private modalComponent!: ConfirmationModalComponent;
@@ -118,6 +123,7 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
   formattedaddress: any;
 
   show_pdf = false;
+  checkVidange: boolean = false;
 
   onCarBackEvent(checked) {
     this.isDisabled = checked;
@@ -270,7 +276,6 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
     }
   }
 
-  checkVidange: boolean = false;
 
   checkKM(contract: Contract) {
     let array = [];
@@ -313,7 +318,10 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
           //   this.checkVidange = false;
           // }
 
-          console.log(this.daily_val1);
+        this.inputsValue[22] = this.ContractForm.controls['daily_val2'].value;
+        this.inputsValue[21] = this.ContractForm.controls['daily_val1'].value;
+        this.inputsValue[23] = this.ContractForm.controls['daily_result'].value;
+
 
           const updatedContract = createUpdatedContract(
             this.inputsValue,
@@ -483,10 +491,15 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
     this.selectedRadioValue = event.target.value;
 
     let res = this.dateService.convertDaysToMWY(days, this.selectedRadioValue);
+    console.log('res',res)
+
 
     if (this.selectedRadioValue == "daily") {
       this.daily_val1 = days;
       this.daily_val2 = daily_val2;
+      console.log('daily_val1',this.daily_val1)
+      console.log('daily_val2',this.daily_val2)
+
     } else if (this.selectedRadioValue == "weekly") {
       this.daily_val1 = res;
       this.daily_val2 = daily_val2;
@@ -499,21 +512,25 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
       this.daily_val2 = daily_val2;
     }
 
-    this.result = this.daily_val1 * this.daily_val2;
-    this.payable = this.result - this.advance - this.discount;
-    this.sum = this.result;
+    this.daily_result = this.daily_val1 * this.daily_val2;
+    this.inputsValue[23] = this.daily_result;
+    this.payable = this.daily_result - this.advance - this.discount;
+    this.sum = this.daily_result;
   }
   calculateResult(event: any) {
-    this.result = this.daily_val1 * event.target.value;
-    this.inputsValue[23] = this.result;
+    this.daily_result = this.daily_val1 * event.target.value;
+   // this.inputsValue[23] = this.daily_result;
+    this.inputsValue[22] =  this.ContractForm.controls['daily_val2'].value;
+    
   }
 
   calculate() {
     if (this.inputsValue[26] == null || this.inputsValue[25] === null) {
-      this.inputpayable.nativeElement.value = this.result;
+      this.inputpayable.nativeElement.value = this.daily_result;
+      this.inputsum.nativeElement.value= this.daily_result;
     }
     this.inputpayable.nativeElement.value =
-      this.result -
+      this.daily_result -
       this.inputadv.nativeElement.value -
       this.inputdis.nativeElement.value;
 
@@ -626,9 +643,7 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
       });
   }
 
-  currentData: any[] = []; // Define currentData array
 
-  currentPage: number = 1;
   pageChanged(event: any, p: any) {
     this.currentPage = event;
 
@@ -638,8 +653,7 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
     this.loadData();
   }
 
-  selectedFeatures: any[];
-  select: any;
+
 
   shareCheckedList(item: any[]) {
     item = item.map((res) => {

@@ -30,6 +30,8 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { LoginComponent } from './modules/auth/login/login.component';
 import { BaseModule } from './ui/base/base.module';
 import { BranchsListComponent } from './modules/branchs/branchs-list-user/branchs-list.component';
+import { RoleResolver } from './core/resolver/role-resolver.service';
+import { RoleRedirectGuard } from './core/guards/role-redirect.guard';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -51,7 +53,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     FormsModule,
     BrowserAnimationsModule,
     BaseModule,
-    
+
 
     
     ReactiveFormsModule,
@@ -82,7 +84,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     LoadingBarModule
 
   ],
-  providers: [ CookieService,AuthGuard],
+  providers: [ CookieService,AuthGuard,RoleResolver,RoleRedirectGuard],
   bootstrap: [AppComponent],
   
 })
