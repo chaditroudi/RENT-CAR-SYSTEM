@@ -22,13 +22,23 @@
               <div class="card-body">
                 <div *ngIf="rentedCars.length > 0; else noData">
                   <div class="table-responsive">
-                    <table class="table">
+                    <table class="table table-striped">
                       <thead>
+
+                      
                         <tr>
                           <th scope="col">Car</th>
                           <th scope="col">Plate</th>
                           <th scope="col">Year</th>
                           <th scope="col">Insurance</th>
+                          <th scope="col">Car_out</th>
+                          <th scope="col">Car_back</th>
+                          <th scope="col">Days</th>
+                          <th scope="col">Price</th>
+                          <th scope="col">Sum</th>
+                          <th scope="col">payable</th>
+                          <th scope="col">Status</th>
+                          <th scope="col">Contracy_type</th>
                           <th scope="col">customer</th>
                           "
                         </tr>
@@ -54,6 +64,24 @@
                             }} -->
                           </td>
                           <td>{{ customer.car.insurance | date }}</td>
+                          <td>{{ customer.car_out | date }}</td>
+                          <td>{{ customer.car_back | date }}</td>
+                          <td>{{ customer.daily_val1 }}</td>
+                          <td>{{ customer.daily_val2 }}</td>
+                          <td>{{ customer.daily_result }}</td>
+                          <td>{{ customer.payable }}</td>
+                        
+                          <td>
+                            <span class="badge rounded-pill d-inline"
+                                  [class.badge-warning]="customer.payable === customer.sum"
+                                  [class.badge-primary]="customer.payable !== customer.sum">
+                              <span *ngIf="customer.payable !== customer.sum" style="color: white;">{{ 'Paid Contract' }}</span>
+                              <span *ngIf="customer.payable === customer.sum" style="color:white">{{ 'Not completed' }}</span>
+                            </span>
+                          </td>
+                          
+                        
+                          <td>{{ customer.status_contract  }}</td>
                           <td>{{ customer.car.fullName  }}</td>
 
                           <td>

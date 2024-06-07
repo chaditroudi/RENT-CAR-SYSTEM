@@ -71,10 +71,22 @@ exports.getRentalHistory = async (req, res) => {
         {
           $project: {
             _id: 1, 
+
+
+              car_out:1,
+              car_back:1,
+              daily_val1:1,
+              daily_val2:1,
+              daily_result:1,
+              status_contract:1,
+              sum:1,
+              payable:1,
+
            
 
             car: {
               _id: 1,
+              
               model: '$carDetails.car', 
               insurance: '$carDetails.insurance', 
               plate: '$carDetails.plate',
@@ -83,6 +95,8 @@ exports.getRentalHistory = async (req, res) => {
               rented: '$carDetails.rented', 
               daily: '$carDetails.daily',
               monthly:'$carDetails.monthly',
+              car_out:'$carDetails.car_out',
+              car_back:'$carDetails.car_back',
               weekly:'$carDetails.weekly',
               annual:'$carDetails.annual',
               year:'$carDetails.year',  
