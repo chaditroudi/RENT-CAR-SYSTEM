@@ -8,8 +8,11 @@ const carSchema = new Schema({
         type:Number,
         default:0
     },
-    code:Number,
-    car:String,
+    code:{
+      type:Number,
+      unique:true
+    },
+    car:{type:String,unique:true},
     year:Number,
     plate:{
       type:Number,

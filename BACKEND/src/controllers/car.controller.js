@@ -10,14 +10,14 @@ exports.createCar = async (req, res) => {
 
     const{car,code,plate} = req.body
 
-    const isCarExist = await Car.findOne({car,code,plate});
+    // const isCarExist = await Car.findOne({car,code,plate});
 
-    if (isCarExist) {
-      return res.status(200).send({
-        success: false,
-        msg: "Car already exists!",
-      });
-    }
+    // if (isCarExist) {
+    //   return res.status(200).send({
+    //     success: false,
+    //     msg: "Car already exists!",
+    //   });
+    // }
 
 
     
@@ -31,6 +31,14 @@ exports.createCar = async (req, res) => {
 
     return res.status(201).json(result);
   } catch (err) {
+
+    console.log(err.errorResponse.code)
+
+    if (err.errorResponse.code === 11000) {
+      return  res.status(400).send({ message: 'plate  or code or model car already exists.' });
+ 
+     }
+
     return res.status(400).json({ status: 400, message: err.message });
   }
 
@@ -78,6 +86,8 @@ exports.updateCar = async (req, res) => {
   const updateCar = {...req.body,updatedBy:req.user.email,branch_id:req.user.branch_id}
   await Car.findByIdAndUpdate(req.params.id, {$set: updateCar})
   .then((car) => {
+
+    
     if(car) {
       return res.status(200).json({
         status: 200,
@@ -89,6 +99,13 @@ exports.updateCar = async (req, res) => {
 
 
   }).catch((error) => {
+
+
+    if (error.code === 11000) {
+     return  res.status(400).send({ message: 'plate  or code or model car already exists.' });
+
+    }
+
     return res.status(400).json({
       status: 400,
       message: error.message

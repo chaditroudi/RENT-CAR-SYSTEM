@@ -192,12 +192,13 @@
                         <div class="row g-2">
                           <div class="col-md-6">
                             <div class="mb-3">
-                              <label class="col-form-label">Code</label>
+                              <label class="col-form-label">Serial(code)</label>
                               <input
                                 class="form-control"
                                 type="text"
                                 placeholder="Car code"
                                 [value]="c.serial"
+                                disabled
                                 (change)="onChangeInputValue($event, 0)"
                               />
                             </div>

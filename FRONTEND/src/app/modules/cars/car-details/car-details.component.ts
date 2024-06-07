@@ -109,7 +109,8 @@ export class CarDetailsComponent implements OnInit, OnChanges {
         }
       },
       (err) => {
-        (err);
+        this.toastr.showError(err.error.message);
+        return;
       }
     );
   }
@@ -133,6 +134,31 @@ export class CarDetailsComponent implements OnInit, OnChanges {
       (res);
     });
   }
+
+
+  private createNewCarObject(res: Car): Car {
+    const inputMap = [
+      'code', 'car', 'year', 'plate', 'daily', 'weekly', 'monthly', 'annual', 
+      'current', 'next_service', 'insurance', 'registration', 'engine_no', 
+      'chassis_no', 'fuel', 'petrol_charge', 'color', 'category', 'origin', 
+      'doors', 'seats', 'cylinders', 'insurance_company', 'type_of_insurance', 
+      'owner_name', 'owner_id', 'nationality'
+    ];
+  
+    const newCar = {};
+  
+    inputMap.forEach((field, index) => {
+      newCar[field] = this.inputsValue[index] || res[field];
+    });
+  
+    // Ensure plate is parsed as an integer
+    if (this.inputsValue[3]) {
+      newCar['plate'] = parseInt(this.inputsValue[3]);
+    }
+  
+    return newCar as Car;
+  }
+  
   updateCar(carId: number) {
     let newCar = {};
   
