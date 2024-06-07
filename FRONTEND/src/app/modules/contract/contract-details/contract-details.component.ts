@@ -486,7 +486,6 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
   }
 
   async onChangeRadioValue(event: any, days, daily_val2) {
-    let array = [];
 
     this.selectedRadioValue = event.target.value;
 
