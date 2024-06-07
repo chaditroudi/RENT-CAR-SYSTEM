@@ -37,7 +37,11 @@ exports.countCarRented = async (req, res) => {
 
 
   exports.getRentalHistory = async (req, res) => {
+    const branchObjectId = new mongoose.Types.ObjectId(req.user.branch_id);
+
     try {
+
+      console.log("branch id",req.user.branch_id);
       const rentals = await Contract.aggregate([
         {
           $lookup: {
@@ -59,7 +63,9 @@ exports.countCarRented = async (req, res) => {
         { $unwind: '$customerDetails' },
         {
           $match: {
-            'carDetails.rented': true
+            'carDetails.rented': true,
+            'branch_id': branchObjectId  
+
           }
         },
         {
@@ -105,6 +111,7 @@ exports.countCarRented = async (req, res) => {
               color: '$carDetails.color',
               category: '$carDetails.category',
               rented: '$carDetails.rented',
+              branch_id:'$carDetails.branch_id',
               
               year: '$carDetails.year',
               registration: '$carDetails.registration',

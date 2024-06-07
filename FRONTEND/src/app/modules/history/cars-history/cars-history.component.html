@@ -39,8 +39,8 @@
                           <th scope="col">payable</th>
                           <th scope="col">Status</th>
                           <th scope="col">Contracy_type</th>
-                          <th scope="col">customer</th>
                           <th scope="col">Rent Count</th> 
+                          <!-- <th scope="col">Customer</th>  -->
                           "
                         </tr>
                       </thead>
@@ -76,14 +76,14 @@
                             <span class="badge rounded-pill d-inline"
                                   [class.badge-warning]="customer.payable === customer.sum"
                                   [class.badge-primary]="customer.payable !== customer.sum">
-                              <span *ngIf="customer.payable !== customer.sum" style="color: white;">{{ 'Paid Contract' }}</span>
-                              <span *ngIf="customer.payable === customer.sum" style="color:white">{{ 'Not completed' }}</span>
+                              <span *ngIf="customer.payable === customer.sum" style="color: white;">{{ 'Paid Contract' }}</span>
+                              <span *ngIf="customer.payable !== customer.sum" style="color:white">{{ 'Not completed' }}</span>
                             </span>
                           </td>
                           
                         
                           <td>{{ customer.status_contract  }}</td>
-                          <td>{{ customer.customer.fullName  }}</td>
+                          <!-- <td>{{ customer.customer.fullName  }}</td> -->
 
                           <td>{{customer.count}}</td>
                         </tr>
