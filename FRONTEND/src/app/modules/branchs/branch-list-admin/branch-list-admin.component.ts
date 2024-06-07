@@ -87,6 +87,7 @@ export class BranchListAdminComponent implements OnInit {
 
     this.branchService.branchs$.subscribe((data) => {
       this.branchs = data;
+      console.log(data)
     });
   }
 

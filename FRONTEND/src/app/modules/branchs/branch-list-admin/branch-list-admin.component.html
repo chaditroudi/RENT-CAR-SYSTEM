@@ -38,7 +38,7 @@
                           <ng-container *ngIf="showAllUsers[branch._id]">
                             <h4>list of users:</h4>
                             <div class="w-100 flex p-4">
-                              <li *ngFor="let user of branch.users; let i = index" [class.d-none]="i >1">
+                              <li *ngFor="let user of branch.users; let i = index" >
                                   <p>User Email: {{ user.email }}</p>
                                   <p>Office: {{user.administration}}</p>
                                   <hr/>
