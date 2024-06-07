@@ -20,9 +20,8 @@ export class CarsHistoryComponent implements OnInit {
   constructor(private readonly staticsService: StatisticsService) {}
 
   fetchRentedCars() {
-    this.staticsService.getRentalCarsHistory();
 
-    this.staticsService.cars$.subscribe((res) => {
+    this.staticsService.getRentalCarsHistory().subscribe((res) => {
       console.log(res)
       this.rentedCars = JSON.parse(JSON.stringify(res));
       console.log(this.rentedCars);

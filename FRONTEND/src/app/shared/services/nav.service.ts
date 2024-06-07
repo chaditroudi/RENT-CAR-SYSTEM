@@ -288,7 +288,6 @@ export class NavService implements OnDestroy {
     }
     // VIEWER
     else {
-      ("viewer user");
       menuItems.push(
         {
           headTitle1: "Pages",
@@ -304,46 +303,50 @@ export class NavService implements OnDestroy {
           children: [
             { path: "/modules/reports", title: "Reports Page", type: "link" },
           ],
-        }
+        },
+       { title: "History",
+        icon: "layout",
+        type: "sub",
+        badgeType: "light-primary",
+        badgeValue: "5",
+        active: false,
+        children: [
+          {
+            path: "/modules/history/cars",
+            title: "Rented Cars",
+            type: "link",
+          },
+          {
+            path: "/modules/contracts/contract/contract-backups",
+            title: "Open Contract(Doing)",
+            type: "link",
+          },
+          {
+            path: "/modules/contracts/contract/contract-backups",
+            title: "Closed Contract(Doing)",
+            type: "link",
+          },
+          {
+            path: "/modules/contracts/contract/contract-backups",
+            title: "Customers(Doing)",
+            type: "link",
+          },
+          {
+            path: "/modules/contracts/contract/contract-backups",
+            title: "Avaliable Cars(Doing)",
+            type: "link",
+          },
+        ],
+      }
       );
+
+
+
+
+
     }
 
-    
-    menuItems.push({
-      title: "History",
-      icon: "layout",
-      type: "sub",
-      badgeType: "light-primary",
-      badgeValue: "5",
-      active: false,
-      children: [
-        {
-          path: "/modules/history/cars",
-          title: "Rented Cars",
-          type: "link",
-        },
-        {
-          path: "/modules/contracts/contract/contract-backups",
-          title: "Open Contract",
-          type: "link",
-        },
-        {
-          path: "/modules/contracts/contract/contract-backups",
-          title: "Closed Contract",
-          type: "link",
-        },
-        {
-          path: "/modules/contracts/contract/contract-backups",
-          title: "Customers",
-          type: "link",
-        },
-        {
-          path: "/modules/contracts/contract/contract-backups",
-          title: "Avaliable Cars",
-          type: "link",
-        },
-      ],
-    });
+
     return menuItems;
   }
 

@@ -13,10 +13,10 @@ router.get('/get-reports', auth, reportController.getAllReports);
 router.get('/get-monthly-reports', auth, reportController.fetchMonthlyRep);
 router.delete('/delete-permission/:id', auth, reportController.deleteReport);
 router.put('/update-report/:id', auth, reportController.updateReport);
-router.post('/getWeeklyReports', reportController.getWeeklyReports);
-router.post('/getMonthlyReports', reportController.getMonthlyReports);
-router.post('/getYearlyReports', reportController.getYearlyReports);
-router.get('/getContractCount', reportController.getContractCount);
+router.post('/getWeeklyReports',auth, reportController.getWeeklyReports);
+router.post('/getMonthlyReports', auth,reportController.getMonthlyReports);
+router.post('/getYearlyReports',auth, reportController.getYearlyReports);
+router.get('/getContractCount',auth, reportController.getContractCount);
 
 
 

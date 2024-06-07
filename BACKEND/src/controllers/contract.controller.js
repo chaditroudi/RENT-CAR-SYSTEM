@@ -6,7 +6,9 @@ const { autoIncrement } = require("../utils/auto-increment");
 const { formatDateTime } = require("../utils/date-format");
 const socket = require("../utils/socket");
 const Notification = require("../models/notification.model");
-const { ObjectId } = require('mongodb');
+const { ObjectId } = require("mongodb");
+
+var check_oil = false;
 
 const Backup = mongoose.model(
   "backup_contract",
@@ -32,7 +34,7 @@ function sendWhatsAppMessage(to, message) {
 exports.createContract = async (req, res) => {
   try {
     // autoinc
-    const autoInc = await autoIncrement(Contract, "serial",);
+    const autoInc = await autoIncrement(Contract, "serial");
     const car_out = formatDateTime(req.body.car_out);
     const car_back = formatDateTime(req.body.car_back);
 
@@ -55,14 +57,10 @@ exports.createContract = async (req, res) => {
         });
       }
 
-     
-
-    //  console.log("branch id in contract",req.user.branch_id)
+      //  console.log("branch id in contract",req.user.branch_id)
       car.rented = true;
 
       await car.save();
-
-      
 
       const contract = new Contract({
         ...req.body,
@@ -70,12 +68,11 @@ exports.createContract = async (req, res) => {
         car_out: car_out,
         car_back: car_back,
         status: "Contract is Open",
-        branch_id:!req.user.branch_id ? null : req.user.branch_id,
+        branch_id: !req.user.branch_id ? null : req.user.branch_id,
       });
       const result = await contract.save();
 
       if (result) {
-        
         // sendWhatsAppMessage("+21690130686", " Hello from Doha Vision Rent Car, We are happy to inform that our Contract has added sucessfully.");
 
         return res.status(200).json({
@@ -137,44 +134,47 @@ async function getAdmin() {
   return await User.findOne({ role: 1 });
 }
 
-
 exports.getAllContractsByBranch = async (req, res) => {
   try {
-    const cars= await Contract.find({branch_id: req.user.branch_id}).populate("car").populate("owner");
-    console.log(cars)
+    const cars = await Contract.find({ branch_id: req.user.branch_id })
+      .populate("car")
+      .populate("owner");
+    console.log(cars);
     return res.status(200).json(cars);
   } catch (error) {
     return res.status(400).json({ status: 400, message: error.message });
   }
-}
-
+};
 
 exports.updateDamageCar = async (req, res) => {
   const id = req.params.id;
-  
-  try {
 
+  try {
     let nameArray = [];
 
-   
-    for(i = 0 ; i<req.files.length;i++) {
+    for (i = 0; i < req.files.length; i++) {
       nameArray.push(req.files[i].filename);
     }
-    console.log(nameArray)
+    console.log(nameArray);
 
-    const updatedContract = await Contract.findByIdAndUpdate(id,{files:nameArray}, { new: true });
+    const updatedContract = await Contract.findByIdAndUpdate(
+      id,
+      { files: nameArray },
+      { new: true }
+    );
 
     if (!updatedContract) {
-      return res.status(404).send('Contract not found');
+      return res.status(404).send("Contract not found");
     }
 
-    res.status(200).json({ message: 'File uploaded successfully', filePath: filePath });
+    res
+      .status(200)
+      .json({ message: "File uploaded successfully", filePath: filePath });
   } catch (error) {
-    console.error('Error updating image:', error);
-    res.status(500).send('Internal server error');
+    console.error("Error updating image:", error);
+    res.status(500).send("Internal server error");
   }
-}
-
+};
 
 exports.updateContract = async (req, res) => {
   const contract = await Contract.findById(req.params.id);
@@ -211,10 +211,6 @@ exports.updateContract = async (req, res) => {
   //     });
   // }
 
-  
-
-
-
   const updatedBody = {
     ...req.body,
 
@@ -222,12 +218,7 @@ exports.updateContract = async (req, res) => {
     no_km_out: req.body.no_km_out,
     version: contract.version + 1,
     createdBy: req.user.email,
-
-  
-  
-  }
-  
-  ;
+  };
 
   await Contract.findByIdAndUpdate(req.params.id, { $set: updatedBody })
     .then(async (contract) => {
@@ -260,27 +251,22 @@ exports.updateContract = async (req, res) => {
             });
           }
 
-          
-
           const km_back_val =
             req.body.no_km_back !== null
               ? req.body.no_km_back
               : contract.km_back;
 
+          const current = car.current !== null ? car.current : 0;
 
-
-              const current = car.current !== null ? car.current : 0;
-
-          const checkVidangeFunc= checkKM(current,km_back_val);
+          const checkVidangeFunc = checkKM(current, km_back_val);
 
           console.log("km_back", km_back_val);
           console.log("valeur current avant comparaison", current);
           if (current > 0) {
+            console.log("valeur  current apres comparaison:", current);
+            console.log("valeur  checkKM funct:", checkVidangeFunc);
 
-            console.log("valeur  current apres comparaison:",current);
-            console.log("valeur  checkKM funct:",checkVidangeFunc);
-
-            if(checkVidangeFunc) {
+            if (checkVidangeFunc) {
               const notification = new Notification({
                 title: "change oil for car :" + car.car,
                 message: "Oil Changed  is Created Successfully",
@@ -292,12 +278,10 @@ exports.updateContract = async (req, res) => {
                 car: req.body.car,
               });
               socket.getIo().emit("send-notification", notification);
-    
-              await notification.save();
-            } 
-          }
 
-        
+              await notification.save();
+            }
+          }
 
           return res.status(200).json({
             status: 200,
@@ -359,18 +343,14 @@ exports.getAllContracts = async (req, res) => {
   }
 };
 
-exports.  getAllContractsBackups = async (req, res) => {
+exports.getAllContractsBackups = async (req, res) => {
   try {
-    
-    console.log(req.user.branch_id)
+    console.log(req.user.branch_id);
     const contracts = await Backup.aggregate([
-
-
       {
-
-        $match:{
-          'data.branch_id':new  ObjectId(req.user.branch_id)
-        }
+        $match: {
+          "data.branch_id": new ObjectId(req.user.branch_id),
+        },
       },
       {
         $group: {
@@ -391,7 +371,7 @@ exports.  getAllContractsBackups = async (req, res) => {
       },
     ]);
 
-    console.log("XXXXXXXXXXXXXxxxx",contracts);
+    console.log("XXXXXXXXXXXXXxxxx", contracts);
     return res.status(200).json(contracts);
   } catch (error) {
     return res.status(400).json({ status: 400, message: error.message });
@@ -400,7 +380,7 @@ exports.  getAllContractsBackups = async (req, res) => {
 
 exports.getAutoInc = async (req, res) => {
   try {
-    const autoInc = await autoIncrement(Contract, "serial",);
+    const autoInc = await autoIncrement(Contract, "serial");
 
     return res.status(200).json(autoInc);
   } catch (error) {
@@ -408,30 +388,26 @@ exports.getAutoInc = async (req, res) => {
   }
 };
 
-let checkVidange = false;
 async function checkKM(current, km_back) {
-  const array = [];
+  const oilChangeInterval = 5000;
 
-  const start = 5000;
-  const end = 50000;
-  const inc = 5000;
+  const currentKM = parseInt(current, 10);
+  const km_back_val = parseInt(km_back, 10);
+
+  var distance = currentKM - km_back_val;
+
+  console.log("Current KM:", currentKm);
+  console.log("Distance Since Last Service:", distance);
+
+  if (distance % oilChangeInterval === 0) {
+    check_oil = true;
+  } else check_oil = false;
 
 
-  const res = parseInt(current,10) + parseInt(km_back,10); 
-  console.log("currenttt",current)
-  console.log("RESULTAT check vidange difference between current et km_back",res);
+  console.log("Check Vidange:", check_oil);
 
 
+  return check_oil
 
-  for (let i = start; i <= end; i += inc) {
-    array.push(i);
-  }
 
-  if (array.includes(res)) {
-    checkVidange = true;
-  } else {
-    checkVidange = false;
-  }
-
-  return checkVidange;
 }

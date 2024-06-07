@@ -11,6 +11,7 @@ const generateAccessToken = (user) => {
   const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' });
 
   console.log("TOKEN GENERATED",token)
+  console.log("PAYLOAD",payload)
 
   // Return the token in an object
   return { token };

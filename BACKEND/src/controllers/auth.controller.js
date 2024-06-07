@@ -136,13 +136,14 @@ const loginUser = async (req, res) => {
         branch_name: userData.branch_id.branch_name,
         administration:userData.administration
       };
-    } else {
+    } else  {
        user = {
         email: userData.email,
         role: userData.role,
         _id: userData._id,
       };
     }
+    console.log("user",user)
 
     const gat = await generateAccessToken(user);
 
@@ -240,6 +241,7 @@ const updateBranch = async (req, res) => {
   try {
     const { branch_id } = req.body;
     const userId = req.user._id;
+    console.log(req.user)
 
     // Update user with branch_id
     const updatedUser = await User.findByIdAndUpdate(

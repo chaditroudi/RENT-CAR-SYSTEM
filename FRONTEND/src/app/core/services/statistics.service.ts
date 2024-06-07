@@ -70,9 +70,7 @@ export class StatisticsService {
     const headers = this.headers;
     
     return this.http.get<any>(`${baseUrl}/statistics/get-rental-history
-    ` ,{headers}).subscribe((data)=> {
-      this.carSource.next(data);
-    });
+    ` ,{headers})
 
   }
 

@@ -50,6 +50,7 @@ export class BranchsListComponent implements OnInit {
     else if(this.role === 3) {
       this.auth.updateBranch({branch_id:branchId}).subscribe((res)=> {
       
+        alert(JSON.stringify(res))
         this.toastr.showSuccess(`You are affected to branch ${branchName}`)
         })
         

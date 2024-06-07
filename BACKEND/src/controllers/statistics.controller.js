@@ -37,7 +37,7 @@ exports.countCarRented = async (req, res) => {
 
 
   exports.getRentalHistory = async (req, res) => {
-    const branchObjectId = new mongoose.Types.ObjectId(req.user.branch_id);
+    var branchObjectId = new mongoose.Types.ObjectId(req.user.branch_id);
 
     try {
 
@@ -63,10 +63,11 @@ exports.countCarRented = async (req, res) => {
         { $unwind: '$customerDetails' },
         {
           $match: {
-            'carDetails.rented': true,
-            'branch_id': branchObjectId  
-
+              'carDetails.rented': true,
+              'carDetails.branch_id': branchObjectId,
+              'branch_id': branchObjectId
           }
+      
         },
         {
           $group: {

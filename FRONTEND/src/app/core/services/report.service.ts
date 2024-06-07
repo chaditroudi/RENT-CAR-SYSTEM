@@ -77,7 +77,8 @@ export class ReportService {
   }
 
   fetchCountContract() {
-    return this.http.get(`${baseUrl}/report/getContractCount`);
+    const headers = this.getHeaders();
+    return this.http.get(`${baseUrl}/report/getContractCount`,{headers});
   }
 
 
