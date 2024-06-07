@@ -36,72 +36,78 @@ exports.countCarRented = async (req, res) => {
 
 
 
-
-exports.getRentalHistory = async (req, res) => {
+  exports.getRentalHistory = async (req, res) => {
     try {
-  
       const rentals = await Contract.aggregate([
-        
         {
           $lookup: {
-            from: 'customers', // Replace 'cars' with your car model name (if different)
-            localField: 'owner', // Field in Rental model referencing the car
-            foreignField: '_id', // Field in Car model that holds the car ID
-            as: 'customerDetails' // Name for the lookup results in the aggregation output
+            from: 'customers',
+            localField: 'owner',
+            foreignField: '_id',
+            as: 'customerDetails'
           }
         },
-        
         {
-
           $lookup: {
-            from: 'cars', // Replace 'cars' with your car model name (if different)
-            localField: 'car', // Field in Rental model referencing the car
-            foreignField: '_id', // Field in Car model that holds the car ID
-            as: 'carDetails' // Name for the lookup results in the aggregation output
+            from: 'cars',
+            localField: 'car',
+            foreignField: '_id',
+            as: 'carDetails'
           }
         },
-        { $unwind: '$carDetails', },
-        {$unwind: '$customerDetails', },
-        
+        { $unwind: '$carDetails' },
+        { $unwind: '$customerDetails' },
         {
-          $match:{
-            'carDetails.rented':true
+          $match: {
+            'carDetails.rented': true
+          }
+        },
+        {
+          $group: {
+            _id: '$carDetails.car',
+            count: { $sum: 1 },
+            carDetails: { $first: '$carDetails' },
+            customerDetails: { $first: '$customerDetails' },
+            daily: { $first: '$daily' },
+            car_out: { $first: '$car_out' },
+            car_back: { $first: '$car_back' },
+            daily_val1: { $first: '$daily_val1' },
+            daily_val2: { $first: '$daily_val2' },
+            daily_result: { $first: '$daily_result' },
+            status_contract: { $first: '$status_contract' },
+            sum: { $first: '$sum' },
+            payable: { $first: '$payable' }
           }
         },
         {
           $project: {
             _id: 1, 
+            count: 1,
+            car_out: 1,
+            car_back: 1,
+            daily_val1: 1,
+            daily_val2: 1,
+            daily_result: 1,
+            status_contract: 1,
+            sum: 1,
+            payable: 1,
 
+            customer:{
+              _id:1,
+              fullName: '$customerDetails.fullName'
 
-              car_out:1,
-              car_back:1,
-              daily_val1:1,
-              daily_val2:1,
-              daily_result:1,
-              status_contract:1,
-              sum:1,
-              payable:1,
-
-           
-
+            },
             car: {
               _id: 1,
-              
-              model: '$carDetails.car', 
-              insurance: '$carDetails.insurance', 
+              model: '$_id',
+              insurance: '$carDetails.insurance',
               plate: '$carDetails.plate',
-              color: '$carDetails.color', 
-              category: '$carDetails.category', 
-              rented: '$carDetails.rented', 
-              daily: '$carDetails.daily',
-              monthly:'$carDetails.monthly',
-              car_out:'$carDetails.car_out',
-              car_back:'$carDetails.car_back',
-              weekly:'$carDetails.weekly',
-              annual:'$carDetails.annual',
-              year:'$carDetails.year',  
-              registration: '$carDetails.registration', 
-              fullName:'$customerDetails.fullName'
+              color: '$carDetails.color',
+              category: '$carDetails.category',
+              rented: '$carDetails.rented',
+              
+              year: '$carDetails.year',
+              registration: '$carDetails.registration',
             }
           }
         }
@@ -114,6 +120,8 @@ exports.getRentalHistory = async (req, res) => {
       res.status(500).json({ message: 'Error fetching rental history' });
     }
   };
+  
+  
 
   exports.getOpenContracts = async (req, res) => {
     try {

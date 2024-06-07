@@ -40,6 +40,7 @@
                           <th scope="col">Status</th>
                           <th scope="col">Contracy_type</th>
                           <th scope="col">customer</th>
+                          <th scope="col">Rent Count</th> 
                           "
                         </tr>
                       </thead>
@@ -82,10 +83,9 @@
                           
                         
                           <td>{{ customer.status_contract  }}</td>
-                          <td>{{ customer.car.fullName  }}</td>
+                          <td>{{ customer.customer.fullName  }}</td>
 
-                          <td>
-                            </td>
+                          <td>{{customer.count}}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -101,6 +101,13 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div id="chart-container" style="height: 400px;"></div>
     </div>
   </div>
 </div>
