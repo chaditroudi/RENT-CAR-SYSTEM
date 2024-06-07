@@ -22,6 +22,8 @@ export class CarModalComponent implements OnInit {
 
   ngOnInit(): void {
 
+    
+    console.log(this.carData)
     this.carInfo = this.carData
   }
 

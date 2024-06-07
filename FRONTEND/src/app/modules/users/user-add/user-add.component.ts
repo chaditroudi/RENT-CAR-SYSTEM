@@ -32,7 +32,7 @@ export class UserAddComponent implements OnInit {
     private formBuilder: FormBuilder,
     private readonly userService: UserService
   ) {
-    this.role$ = of(["Admin", "Editor", "Viewer"]);
+    this.role$ = of([ "Editor", "Viewer"]);
     this.administrations$ = of([
       "Administration 1",
       "Administration 2",

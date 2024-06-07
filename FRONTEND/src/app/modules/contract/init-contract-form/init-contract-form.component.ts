@@ -64,15 +64,6 @@ export class InitContractFormComponent implements OnInit {
     this.modal = new ModalComponent(config, modalService);
   }
 
-  loadData() {
-    this.carService.getCars();
-    this.carService.cars$.subscribe((res) => {
-      this.carData = res;
-
-      this.carData;
-    });
-  }
-
   autoInc = 0;
   getAutoInc() {
     this.contractService.getAutoInc().subscribe((res) => {
@@ -108,8 +99,17 @@ export class InitContractFormComponent implements OnInit {
     if (this.storageService.getRole() == 1) {
       this.carService.getCars();
 
-      this.carService.cars$.subscribe((res) => {
-        this.carData = res;
+      
+      this.carService.cars$.subscribe((res: Car[]) => {
+      
+            // Clear the carData array to avoid duplication
+            this.carData = [];
+
+            const availableCars = res.filter((car: Car) => !car.rented);
+      
+            this.carData.push(...availableCars);
+      
+         
       });
     } else if (
       this.storageService.getRole() == 2 ||
@@ -117,6 +117,7 @@ export class InitContractFormComponent implements OnInit {
     ) {
       this.carService.getCarsByBranch();
       this.carService.cars$.subscribe((res) => {
+        alert(JSON.stringify(res));
         this.carData = res;
       });
     }
@@ -207,6 +208,7 @@ export class InitContractFormComponent implements OnInit {
 
   
   async createContract() {
+    
     this.contractForm.controls["car"].setValue(this.car_id);
     this.contractForm.controls["owner"].setValue(this.customer_id);
     this.contractForm.controls["location"].setValue(this.formattedaddress);

@@ -75,6 +75,7 @@ exports.createContract = async (req, res) => {
       const result = await contract.save();
 
       if (result) {
+        
         // sendWhatsAppMessage("+21690130686", " Hello from Doha Vision Rent Car, We are happy to inform that our Contract has added sucessfully.");
 
         return res.status(200).json({

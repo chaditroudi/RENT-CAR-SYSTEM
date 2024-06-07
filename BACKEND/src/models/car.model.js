@@ -11,7 +11,10 @@ const carSchema = new Schema({
     code:Number,
     car:String,
     year:Number,
-    plate:Number,
+    plate:{
+      type:Number,
+      unique:true
+    },
     next_service: Number,
     current:Number,
     insurance: Date,
