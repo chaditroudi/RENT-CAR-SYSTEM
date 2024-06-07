@@ -38,7 +38,10 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   @ViewChild("monthlyChartContainer") monthlyChartContainer: ElementRef;
   @ViewChild("yearlyChartContainer") yearlyChartContainer: ElementRef;
 
-  constructor(private reportService: ReportService, private router: Router, private reportManager:ReportManager) {}
+  constructor(private reportService: ReportService,
+    
+    
+    private router: Router, private reportManager:ReportManager) {}
   ngAfterViewInit(): void {
     this.fetchWeeklyReports();
     this.fetchMonthlyReports();

@@ -24,4 +24,11 @@ export const content: Routes = [
     loadChildren: () => import("../../modules/contract/contract.module").then((m) => m.ContractModule),
   },
 
+  {
+    path:"modules/history",
+    loadChildren: () => import("../../modules/history/history.module").then((m) => m.HistoryModule)
+  }
+
+
+
 ];

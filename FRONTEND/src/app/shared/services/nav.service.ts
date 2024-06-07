@@ -24,15 +24,15 @@ export interface Menu {
 })
 export class NavService implements OnDestroy {
   private unsubscriber: Subject<any> = new Subject();
-  public screenWidth: BehaviorSubject<number> = new BehaviorSubject(window.innerWidth);
+  public screenWidth: BehaviorSubject<number> = new BehaviorSubject(
+    window.innerWidth
+  );
 
   // Search Box
   public search: boolean = false;
 
   // Language
   public language: boolean = false;
-
-
 
   // role :
 
@@ -51,7 +51,7 @@ export class NavService implements OnDestroy {
   // Full screen
   public fullScreen: boolean = false;
 
-  constructor(private router: Router, private userServMang:StorageService) {
+  constructor(private router: Router, private userServMang: StorageService) {
     this.setScreenWidth(window.innerWidth);
     fromEvent(window, "resize")
       .pipe(debounceTime(1000), takeUntil(this.unsubscriber))
@@ -84,24 +84,27 @@ export class NavService implements OnDestroy {
     this.screenWidth.next(width);
   }
 
-
   getMenuItems(role: number): Menu[] {
     // Generate menu items based on role
     let menuItems: Menu[] = [];
 
-
-    if(this.userServMang.getCurrentUser() ) {
+    if (this.userServMang.getCurrentUser()) {
       role = JSON.parse(this.userServMang.getCurrentUser()).data.role;
-
     }
 
 
-     if (role == 1) {
+    if (role == 1) {
       menuItems.push(
         {
           headTitle1: "Pages",
         },
-        { path: "/modules/dashboard", icon: "home", title: "Dashboard", type: "link", bookmark: true },
+        {
+          path: "/modules/dashboard",
+          icon: "home",
+          title: "Dashboard",
+          type: "link",
+          bookmark: true,
+        },
 
         {
           title: "Cars",
@@ -111,7 +114,11 @@ export class NavService implements OnDestroy {
           badgeValue: "1",
           active: true,
           children: [
-            { path: "/modules/cars/car-details", title: "Cars Details", type: "link" },
+            {
+              path: "/modules/cars/car-details",
+              title: "Cars Details",
+              type: "link",
+            },
           ],
         },
         {
@@ -122,12 +129,17 @@ export class NavService implements OnDestroy {
           badgeValue: "2",
           active: false,
           children: [
-            { path: "/modules/contracts/contract/contract-details", title: "Contract Page", type: "link"
-          },
-          { path: "/modules/contracts/contract/contract-backups", title: "Backup Contract", type: "link"
-          
-        },
-        ],
+            {
+              path: "/modules/contracts/contract/contract-details",
+              title: "Contract Page",
+              type: "link",
+            },
+            {
+              path: "/modules/contracts/contract/contract-backups",
+              title: "Backup Contract",
+              type: "link",
+            },
+          ],
         },
         {
           title: "Customers",
@@ -137,22 +149,32 @@ export class NavService implements OnDestroy {
           badgeValue: "1",
           active: false,
           children: [
-            { path: "/modules/customers/customers-list", title: "Customers Page", type: "link" },
+            {
+              path: "/modules/customers/customers-list",
+              title: "Customers Page",
+              type: "link",
+            },
           ],
         },
-       
+
         {
           headTitle1: "Permissions Users",
         },
-        {  title: "Permission",
-        icon: "list",
-        type: "sub",
-        badgeType: "light-primary",
-        badgeValue: "1",
-        active: false,
-        children: [
-          { path: "/modules/permissions/permissions-details", title: "Permission Page", type: "link" },
-        ],},
+        {
+          title: "Permission",
+          icon: "list",
+          type: "sub",
+          badgeType: "light-primary",
+          badgeValue: "1",
+          active: false,
+          children: [
+            {
+              path: "/modules/permissions/permissions-details",
+              title: "Permission Page",
+              type: "link",
+            },
+          ],
+        },
 
         {
           title: "Branchs",
@@ -162,7 +184,11 @@ export class NavService implements OnDestroy {
           badgeValue: "1",
           active: true,
           children: [
-            { path: "/modules/branchs/branch-list-admin", title: "Branchs Details", type: "link" },
+            {
+              path: "/modules/branchs/branch-list-admin",
+              title: "Branchs Details",
+              type: "link",
+            },
           ],
         },
         {
@@ -173,21 +199,29 @@ export class NavService implements OnDestroy {
           badgeValue: "1",
           active: true,
           children: [
-            { path: "/modules/users/users-list", title: "Users Details", type: "link" },
+            {
+              path: "/modules/users/users-list",
+              title: "Users Details",
+              type: "link",
+            },
           ],
-        },
-
+        }
       );
     }
 
-
     // EDITOR USER
-    else if(role == 2) {
+    else if (role == 2) {
       menuItems.push(
         {
           headTitle1: "Pages",
         },
-        { path: "/modules/dashboard", icon: "home", title: "Dashboard", type: "link", bookmark: true },
+        {
+          path: "/modules/dashboard",
+          icon: "home",
+          title: "Dashboard",
+          type: "link",
+          bookmark: true,
+        },
 
         {
           title: "Cars",
@@ -197,7 +231,11 @@ export class NavService implements OnDestroy {
           badgeValue: "1",
           active: true,
           children: [
-            { path: "/modules/cars/car-details", title: "Cars Details", type: "link" },
+            {
+              path: "/modules/cars/car-details",
+              title: "Cars Details",
+              type: "link",
+            },
           ],
         },
         {
@@ -208,8 +246,16 @@ export class NavService implements OnDestroy {
           badgeValue: "1",
           active: false,
           children: [
-            { path: "/modules/contracts/contract/contract-details", title: "Contract Page", type: "link" },
-            { path: "/modules/contracts/contract/contract-backups", title: "Contract Backups", type: "link" },
+            {
+              path: "/modules/contracts/contract/contract-details",
+              title: "Contract Page",
+              type: "link",
+            },
+            {
+              path: "/modules/contracts/contract/contract-backups",
+              title: "Contract Backups",
+              type: "link",
+            },
           ],
         },
         {
@@ -220,9 +266,13 @@ export class NavService implements OnDestroy {
           badgeValue: "1",
           active: true,
           children: [
-            { path: "/modules/customers/customers-list", title: "Users Details", type: "link" },
+            {
+              path: "/modules/customers/customers-list",
+              title: "Users Details",
+              type: "link",
+            },
           ],
-        },
+        }
         // {
         //   title: "Reports",
         //   icon: "layout",
@@ -234,43 +284,73 @@ export class NavService implements OnDestroy {
         //     { path: "/modules/customers/customers-list", title: "Customers Page", type: "link" },
         //   ],
         // },
-        
       );
     }
-    // VIEWER 
+    // VIEWER
     else {
-      ("viewer user")
+      ("viewer user");
       menuItems.push(
         {
           headTitle1: "Pages",
         },
-        
+
         {
           title: "Reports",
           icon: "layout",
-          type: "sub" ,
+          type: "sub",
           badgeType: "light-primary",
           badgeValue: "1",
           active: false,
           children: [
             { path: "/modules/reports", title: "Reports Page", type: "link" },
           ],
-        },
-        
+        }
       );
     }
 
+    
+    menuItems.push({
+      title: "History",
+      icon: "layout",
+      type: "sub",
+      badgeType: "light-primary",
+      badgeValue: "5",
+      active: false,
+      children: [
+        {
+          path: "/modules/history/cars",
+          title: "Rented Cars",
+          type: "link",
+        },
+        {
+          path: "/modules/contracts/contract/contract-backups",
+          title: "Open Contract",
+          type: "link",
+        },
+        {
+          path: "/modules/contracts/contract/contract-backups",
+          title: "Closed Contract",
+          type: "link",
+        },
+        {
+          path: "/modules/contracts/contract/contract-backups",
+          title: "Customers",
+          type: "link",
+        },
+        {
+          path: "/modules/contracts/contract/contract-backups",
+          title: "Avaliable Cars",
+          type: "link",
+        },
+      ],
+    });
     return menuItems;
   }
 
-
-  items = new BehaviorSubject<Menu[]>(this.getMenuItems(this.role)); 
+  items = new BehaviorSubject<Menu[]>(this.getMenuItems(this.role));
   updateMenuItems(role: number): void {
     this.role = role;
     const updatedMenuItems = this.getMenuItems(role);
     this.items.next(updatedMenuItems);
   }
-
-
-
 }

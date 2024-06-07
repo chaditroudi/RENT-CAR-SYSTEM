@@ -1,0 +1,78 @@
+<app-breadcrumb
+  [title]="'Rented Cars'"
+  [items]="['Forms', 'Form Layout']"
+  [active_item]="'Rented cars Page'"
+></app-breadcrumb>
+
+<div class="container">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12 col-xl-12">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <div class="row">
+                  <div class="col-md-6">
+                    <app-search></app-search>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-body">
+                <div *ngIf="rentedCars.length > 0; else noData">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Car</th>
+                          <th scope="col">Plate</th>
+                          <th scope="col">Year</th>
+                          <th scope="col">Insurance</th>
+                          <th scope="col">customer</th>
+                          "
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          *ngFor="
+                            let customer of rentedCars
+                              | filter
+                                : searchQuery
+                                : ['car', 'code', 'plate', 'customer']
+                          "
+                        >
+                          <th scope="row">{{ customer.car.model }}</th>
+                          <td>{{ customer.car.plate }}</td>
+                          <td>{{customer.car.year}}
+                            <!-- {{
+                              customer.role === 1
+                                ? "Admin"
+                                : customer.role === 2
+                                ? "Editor"
+                                : "Viewer"
+                            }} -->
+                          </td>
+                          <td>{{ customer.car.insurance | date }}</td>
+                          <td>{{ customer.car.fullName  }}</td>
+
+                          <td>
+                            </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <ng-template #noData>
+                  <div class="alert alert-light">
+                    <p>Rented cars not found.</p>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -12,6 +12,11 @@ export class StatisticsService {
 
   private contractSource = new BehaviorSubject<any[]>([]);
   contracts$ = this.contractSource.asObservable();
+
+
+  private carSource = new BehaviorSubject<any[]>([]);
+  cars$ = this.carSource.asObservable();
+
   public accessToken ='';
 
   public headers :HttpHeaders;
@@ -61,6 +66,17 @@ export class StatisticsService {
     return this.http.get<any>(`${baseUrl}/statistics/count-available-car` ,{headers});
 
   }
+  getRentalCarsHistory() {
+    const headers = this.headers;
+    
+    return this.http.get<any>(`${baseUrl}/statistics/get-rental-history
+    ` ,{headers}).subscribe((data)=> {
+      this.carSource.next(data);
+    });
+
+  }
+
+
 
   
   

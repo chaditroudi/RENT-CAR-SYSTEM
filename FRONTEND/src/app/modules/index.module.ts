@@ -31,6 +31,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { BranchsListComponent } from './branchs/branchs-list-user/branchs-list.component';
 import { BranchListAdminComponent } from './branchs/branch-list-admin/branch-list-admin.component';
 import { CustomerDetailsComponent } from './customers/customer-details/customer-details.component';
+import { CarsHistoryComponent } from './history/cars-history/cars-history.component';
+import { ContractsHistoryComponent } from './history/contracts-history/contracts-history.component';
+import { CustomersHistoryComponent } from './history/customers-history/customers-history.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +64,9 @@ import { CustomerDetailsComponent } from './customers/customer-details/customer-
       UserUpdateComponent,
       BranchListAdminComponent,
       CustomerDetailsComponent,
+      CarsHistoryComponent,
+      ContractsHistoryComponent,
+      CustomersHistoryComponent,
   ],
   imports: [
     CommonModule,

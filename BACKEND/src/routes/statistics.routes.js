@@ -5,9 +5,11 @@ const router = express.Router();
 const auth = require('../middleware/auth.middleware');
 const { OnlyAdminCanAccess } = require('../middleware/admin.midlleware');
 
-router.get('/count-open-contract', statisticsController.countContractOpen,auth, OnlyAdminCanAccess);
-router.get('/count-closed-contract', statisticsController.countContractClosed,auth, OnlyAdminCanAccess);
-router.get('/count-rented-car', statisticsController.countCarRented,auth, OnlyAdminCanAccess);
-router.get('/count-available-car', statisticsController.countCarAvailable,auth, OnlyAdminCanAccess);
+router.get('/count-open-contract', auth, OnlyAdminCanAccess, statisticsController.countContractOpen);
+router.get('/count-closed-contract', auth, OnlyAdminCanAccess, statisticsController.countContractClosed);
+router.get('/count-rented-car', auth, OnlyAdminCanAccess, statisticsController.countCarRented);
+router.get('/count-available-car', auth, OnlyAdminCanAccess, statisticsController.countCarAvailable);
+
+router.get('/get-rental-history', auth,statisticsController.getRentalHistory);
 
 module.exports = router;
