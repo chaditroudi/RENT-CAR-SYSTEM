@@ -173,7 +173,7 @@ export class NavService implements OnDestroy {
           badgeValue: "1",
           active: true,
           children: [
-            { path: "/modules/users/user-add", title: "Users Details", type: "link" },
+            { path: "/modules/users/users-list", title: "Users Details", type: "link" },
           ],
         },
 
