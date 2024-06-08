@@ -50,8 +50,8 @@ export class DrawingComponent implements AfterViewInit {
       // this.bgCtx.fillText((3 * this.backgroundCanvas.nativeElement.width) / 4, 30);
     };
 
-    carOutImg.src = '/assets/images/cars/car_out.png';
-    carBackImg.src = '/assets/images/cars/car_back.png';
+    carOutImg.src = '/assets/images/car/car_out.png';
+    carBackImg.src = '/assets/images/car/car_back.png';
   }
 
   setupTouchEvents(): void {
@@ -162,8 +162,8 @@ export class DrawingComponent implements AfterViewInit {
       this.bgCtx.fillText('Car back', (3 * scaledWidth) / 4, 30);
     };
 
-    carOutImg.src = '/assets/images/cars/car_out.png';
-    carBackImg.src = '/assets/images/cars/car_back.png';
+    carOutImg.src = '/assets/images/car/car_out.png';
+    carBackImg.src = '/assets/images/car/car_back.png';
   }
   saveImage(): void {
     const mergedCanvas = document.createElement('canvas');
