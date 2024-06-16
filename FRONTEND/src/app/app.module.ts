@@ -1,3 +1,4 @@
+import { RedirectGuard } from './core/guards/redirect-route.guard';
 import { NgSelectModule } from '@ng-select/ng-select';
 
 import { AuthGuard } from './core/guards/auth.guard';
@@ -67,8 +68,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     HttpClientModule,
     NgbModule,
     BaseModule,
-    ToastrModule.forRoot(),
-    TranslateModule.forRoot({
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-center', 
+    }),
+        TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
@@ -84,7 +87,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     LoadingBarModule
 
   ],
-  providers: [ CookieService,AuthGuard,RoleResolver,RoleRedirectGuard],
+  providers: [ CookieService,AuthGuard,RoleResolver,RoleRedirectGuard,RedirectGuard],
   bootstrap: [AppComponent],
   
 })

@@ -44,6 +44,7 @@ import {ReportManager} from "./components/report-manager/report-manager";
 import { MultiSelectDropdownComponent } from "../lib/multi-select-dropdown/multi-select-dropdown.component";
 import { MainComponent } from '../modules/dashboard/main/main.component';
 import { ChartBoxComponent } from '../modules/dashboard/chart-box/chart-box.component';
+import { ImageUrlPipe } from './pipe/image-url.pipe';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,7 @@ import { ChartBoxComponent } from '../modules/dashboard/chart-box/chart-box.comp
     UnauthorizedPageComponent,
     NotFoundPageComponent,
     MainComponent,
-    ChartBoxComponent
+    ChartBoxComponent,
       
   ],
   imports: [

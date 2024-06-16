@@ -14,7 +14,7 @@ require("./src/utils/mongo-connection");
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./src/utils/swagger');
-
+  
 const socketIo = require('./src/utils/socket');
 const appRoutes = require("./src/routes");
 const path = require("path");

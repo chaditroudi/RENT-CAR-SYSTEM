@@ -57,7 +57,6 @@ const getBranch = async (req, res) => {
 
     const permissions = await Branch.find({}).populate('users').exec();
   
-    console.log(permissions)
 
     return res.status(200).json(permissions );
   } catch (error) {

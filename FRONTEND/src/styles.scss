@@ -3,6 +3,13 @@
 
 @import "./assets/scss/utils/variables.scss";
 
+
+.toast-bottom-center {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  position: fixed;
+}
 .router-wrapper {
   position: relative;
   overflow: hidden;

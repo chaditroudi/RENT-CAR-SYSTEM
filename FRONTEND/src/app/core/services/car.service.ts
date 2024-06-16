@@ -54,6 +54,9 @@ export class CarService {
   getCarsByBranch() {
     const headers = this.getHeaders();
 
+
+    
+
     return this.http.get<any[]>(`${baseUrl}/car/by-branchs`,{headers}).subscribe(data => {
       this.carSource.next(data);
     })
@@ -102,14 +105,14 @@ export class CarService {
 
 
 
-getCarsWithValidInsurance(): Observable<any[]> {
+getCarsWithValidInsurance(branchName:any): Observable<any[]> {
   const headers = this.getHeaders();
-  return this.http.get<Car[]>(`${baseUrl}/car/insurance/valid`,{headers});
+  return this.http.get<Car[]>(`${baseUrl}/car/insurance/valid/${branchName}`,{headers});
 }
 
-getCarsWithValidRegistration(): Observable<any[]> {
+getCarsWithValidRegistration(branchName:any): Observable<any[]> {
   const headers = this.getHeaders();
-  return this.http.get<Car[]>(`${baseUrl}/car/registration/valid`,{headers});
+  return this.http.get<Car[]>(`${baseUrl}/car/registration/valid/${branchName}`,{headers});
 }
 }
 

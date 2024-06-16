@@ -30,15 +30,12 @@ exports.displayNotification = async (req, res) => {
     
     const user = await User.findById(req.user._id);
 
-    console.log(req.user.email)
     if(!user){
         throw new ApiError('Invalid User', HttpStatusCode.BAD_REQUEST, 'Please Login Again', true);
     }
 
-    console.log(req.user)
     const notifications = await Notification.find({reciever: req.user._id}).populate('car');
 
-    console.log(notifications)
     return res.status(200).json(notifications );
   } catch (error) {
     return res.status(400).json({
@@ -87,7 +84,6 @@ exports.deleteNotificationById = async (req, res, next) => {
 exports.deleteAllNotifications = async (req, res, next) => {
     try {
 
-        console.log("notificationsssssssssssssssssssss",req.user)
         const notifications = await Notification.deleteMany({ user: req.user._id });
         res.json({ message: 'All Notifications Deleted Successfully' });
     } catch (error) {

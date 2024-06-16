@@ -13,7 +13,6 @@ exports.createCustomer = async (req, res) => {
     for(i = 0 ; i<req.files.length;i++) {
       nameArray.push(req.files[i].filename);
     }
-    console.log(nameArray)
     
     const newCustomer = new Customer({...req.body,code:autoInc,files:nameArray,branch_id:req.user.branch_id});
 
@@ -23,18 +22,21 @@ exports.createCustomer = async (req, res) => {
 
     return res.status(201).json(savedCustomer);
   } catch (error) {
-    //console.log(error);
   }
 };
 
 exports.getAllCustomers = async (req, res) => {
   try {
-    const customers = await Customer.find();
+    const customers = await Customer.find({});
     res.status(200).json(customers);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
 };
+
+
+
+
 
 exports.getCustomerById = async (req, res) => {
   try {

@@ -122,6 +122,7 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
   currentData1: { label: string; checked: boolean }[][];
   formattedaddress: any;
 
+  filteredData=[];
   show_pdf = false;
   checkVidange: boolean = false;
 
@@ -230,6 +231,54 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
       payable: [0],
     });
   }
+
+
+  
+
+
+  
+  updateFilteredData(searchQuery: string) {
+    
+    if (searchQuery.trim() === '') {
+      this.filteredData = this.formData; // If search query is empty, show all data
+    } else {
+    
+      const searchTerms = searchQuery.trim().toLowerCase().split(' ');
+      this.filteredData = this.formData.filter(car =>
+     
+        searchTerms.every(term =>
+          Object.values(car).some(value =>
+            value && value.toString().toLowerCase().includes(term)
+          )
+        )
+        
+      );   
+
+    }
+    this.currentPage = 1; 
+  }
+
+  pageChanged(event: number) {
+    // Update current page when pagination changes
+    this.currentPage = event;
+  }
+
+
+
+
+
+  onSearchChange(query: string) {
+    this.filteredData = this.formData.filter(item =>
+      item.sponsor.toLowerCase().includes(query.toLowerCase()) ||  item.days.toLowerCase().includes(query.toLowerCase())
+    );
+
+
+}
+
+
+
+
+
 
   onChangeInputValue(event: Event, index: number) {
     const target = event.target as HTMLInputElement;
@@ -462,6 +511,7 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
 
         // this.filteredData = [...this.formData]
         this.formData = res;
+        this.filteredData=[...this.formData];
         this.selectedItems = [...checkboxItems];
         this.selectedItemsBackCar = [...checkboxItemsBack];
         this.getCurrentData();
@@ -479,7 +529,7 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
         this.selectedItems = [...checkboxItems];
         this.selectedItemsBackCar = [...checkboxItemsBack];
 
-        // this.filteredData = [...this.formData]
+         this.filteredData = [...this.formData]
         this.getCurrentData();
       });
     }
@@ -643,14 +693,14 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
   }
 
 
-  pageChanged(event: any, p: any) {
-    this.currentPage = event;
+  // pageChanged(event: any, p: any) {
+  //   this.currentPage = event;
 
-    console.log("data", event);
-    console.log("p", p);
+  //   console.log("data", event);
+  //   console.log("p", p);
 
-    this.loadData();
-  }
+  //   this.loadData();
+  // }
 
 
 

@@ -11,7 +11,7 @@ router.post('/register', registerValidator, authController.registerUser);
 router.post('/login', loginValidator, authController.loginUser);
 
 // Authenticated Routes
-router.put('/update-branch', auth, authController.updateBranch); // Secure route
+router.put('/update-branch/:branch_id', auth, authController.updateBranch);
 
 
 module.exports = router;

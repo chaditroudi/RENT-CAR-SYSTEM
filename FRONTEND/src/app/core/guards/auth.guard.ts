@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable, from } from "rxjs";
 import { AuthService } from "../services/auth.service";
-import { StorageService } from "../services/storage.service";
 import {
   ActivatedRouteSnapshot,
   CanActivate,
@@ -34,6 +33,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
 
     try {
       const isAuthenticated = localStorage.getItem("user_connected");
+
 
       if (isAuthenticated) {
         const requiredRole = route.data["roles"] ;

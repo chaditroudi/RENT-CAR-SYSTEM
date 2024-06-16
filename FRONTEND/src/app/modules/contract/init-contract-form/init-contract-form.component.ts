@@ -58,7 +58,7 @@ export class InitContractFormComponent implements OnInit {
     private carService: CarService,
     private customerService: CustomerService,
     private reportService: ReportService,
-    private storageService:StorageService,
+    private storageService: StorageService
   ) {
     this.initForm(formBuilder);
     this.modal = new ModalComponent(config, modalService);
@@ -88,10 +88,10 @@ export class InitContractFormComponent implements OnInit {
     this.getAutoInc();
     this.fetchAllCustomers();
     this.fetchAllCars();
-   // this.loadData();
+    // this.loadData();
 
     this.contractForm.valueChanges.subscribe(() => {
-            this.calculateReturnDate();
+      this.calculateReturnDate();
     });
   }
 
@@ -99,46 +99,35 @@ export class InitContractFormComponent implements OnInit {
     if (this.storageService.getRole() == 1) {
       this.carService.getCars();
 
-      
       this.carService.cars$.subscribe((res: Car[]) => {
-      
-            // Clear the carData array to avoid duplication
-            this.carData = [];
+        this.carData = [];
 
-            const availableCars = res.filter((car: Car) => !car.rented);
-      
-            this.carData.push(...availableCars);
-      
-         
+        this.carData.push(res);
       });
     } else if (
       this.storageService.getRole() == 2 ||
       this.storageService.getRole() == 3
-    ) {
+      ) {
       this.carService.getCarsByBranch();
       this.carService.cars$.subscribe((res) => {
-        alert(JSON.stringify(res));
         this.carData = res;
       });
     }
   }
-  
 
-
-
-  
   calculateReturnDate() {
     const checkOutDate = this.contractForm.get("car_out").value;
     const numberOfDays = this.contractForm.get("days").value;
-  
+
     if (checkOutDate && numberOfDays) {
       const checkOutDateTime = new Date(checkOutDate).getTime();
-      const returnDateTime = checkOutDateTime + numberOfDays * 24 * 60 * 60 * 1000;
+      const returnDateTime =
+        checkOutDateTime + numberOfDays * 24 * 60 * 60 * 1000;
       const returnDate = new Date(returnDateTime);
-      const formattedDate = returnDate.toISOString().split('T')[0];
-      const formattedTime = returnDate.toTimeString().split(' ')[0];
+      const formattedDate = returnDate.toISOString().split("T")[0];
+      const formattedTime = returnDate.toTimeString().split(" ")[0];
       const formattedDateTime = `${formattedDate}T${formattedTime}`;
-      
+
       this.contractForm.patchValue(
         { car_back: formattedDateTime },
         { emitEvent: false }
@@ -146,16 +135,13 @@ export class InitContractFormComponent implements OnInit {
     }
   }
 
-    //Local Variable defined 
-    formattedaddress=" "; 
-    options={ 
-      
-    } 
-    public AddressChange(address: any) { 
-    //setting address from API to local variable 
-     this.formattedaddress=address.formatted_address 
-     
-  } 
+  //Local Variable defined
+  formattedaddress = " ";
+  options = {};
+  public AddressChange(address: any) {
+    //setting address from API to local variable
+    this.formattedaddress = address.formatted_address;
+  }
 
   onNavChange1(changeEvent: NgbNavChangeEvent) {
     if (changeEvent.nextId === 4) {
@@ -206,17 +192,17 @@ export class InitContractFormComponent implements OnInit {
     });
   }
 
-  
   async createContract() {
-    
     this.contractForm.controls["car"].setValue(this.car_id);
     this.contractForm.controls["owner"].setValue(this.customer_id);
     this.contractForm.controls["location"].setValue(this.formattedaddress);
     this.contractService.create(this.contractForm.value).subscribe(
       async (response: any) => {
-        if(response.rented == true) {
+        if (response.rented == true) {
           this.toastr.showError("Car is already rented");
-          return;
+
+          this.contractForm.controls["car"];
+          this.contractForm.controls["owner"];
         }
 
         this.reportData = {
@@ -224,15 +210,11 @@ export class InitContractFormComponent implements OnInit {
           contract: response.data._id,
         };
 
-
-
-
         await this.reportService.createReport(this.reportData).toPromise();
         this.contractForm.reset({
           car: this.car_id,
-          owner: this.customer_id
+          owner: this.customer_id,
         });
-
 
         this.toastr.showSuccess("Contract added successfully");
         this.router.navigate(["/modules/contracts/contract/contract-details"]);
@@ -275,10 +257,10 @@ export class InitContractFormComponent implements OnInit {
     });
   }
 
-  fullname="";
-  selectedCust :Customer
+  fullname = "";
+  selectedCust: Customer;
 
-  showDetailsHirer:boolean = false;
+  showDetailsHirer: boolean = false;
   openCustomerModal() {
     // this.openSearchModal();
     const modalRef = this.modalService.open(CustomerModalComponent, {
@@ -289,7 +271,11 @@ export class InitContractFormComponent implements OnInit {
     modalRef.componentInstance.customerSelected.subscribe(
       (selectedCust: Customer) => {
         this.contractForm.controls["owner"].setValue(
-          selectedCust.fullName + " " + selectedCust.mobile +" "+selectedCust.QAR_address
+          selectedCust.fullName +
+            " " +
+            selectedCust.mobile +
+            " " +
+            selectedCust.QAR_address
         );
         this.fullname = selectedCust.fullName;
 
@@ -304,7 +290,7 @@ export class InitContractFormComponent implements OnInit {
           title: selectedCust.title,
           date_birth: selectedCust.date_birth,
           license_number: selectedCust.license_number,
-          code:selectedCust.code,
+          code: selectedCust.code,
           issued_by: selectedCust.issued_by,
           issued_on: selectedCust.issued_on,
           expiry_date: selectedCust.expiry_date,
@@ -314,15 +300,11 @@ export class InitContractFormComponent implements OnInit {
           permanent_address: selectedCust.permanent_address,
           person_name: selectedCust.person_name,
           home_country: selectedCust.home_country,
-      
-
-        }
-        
+        };
 
         this.customer_id = selectedCust._id;
 
         this.showDetailsHirer = true;
-
       }
     );
   }

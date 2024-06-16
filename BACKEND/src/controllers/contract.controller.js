@@ -182,35 +182,35 @@ exports.updateContract = async (req, res) => {
   // create Backup :
   const contractBackup = { ...contract.toObject() };
 
-  "contract backup", contractBackup;
 
   await storeBackup(contractBackup);
 
   count = 0;
 
-  // await   Backup.find({})
-  //     .sort({ timestamp: -1 })
-  //     .then((result) => {
-  //       ("result", result);
+     Backup.find({})
+      .sort({ timestamp: -1 })
+      .then(async(result) => {
+        ("result", result);
 
-  // result.map((item) => {
-  //   if ((item.data.serial === contract.serial) && count >2) {
-  //     ("yes");
-  //     return res.status(200).json({
-  //       status: 200,
-  //       message: "you can't update this contract",
-  //       attempts: true,
-  //     });
-  //   }
+  result.map((item) => {
+    if ((item.data.serial === contract.serial) && count >2) {
+      ("yes");
+      return res.status(200).json({
+        status: 200,
+        message: "you can't update this contract",
+        attempts: true,
+      });
+    }
 
-  // if(contract.version > 2) {
-  //        return res.status(200).json({
-  //       status: 200,
-  //       message: "you can't update this contract",
-  //       attempts: true,
-  //     });
-  // }
+  if(contract.version > 3) {
+         return res.status(200).json({
+        status: 200,
+        message: "you can't update this contract",
+        attempts: true,
+      });
+  }
 
+});
   const updatedBody = {
     ...req.body,
 
@@ -298,7 +298,8 @@ exports.updateContract = async (req, res) => {
     .catch((error) => {
       error;
     });
-};
+  });
+}
 
 exports.getContractById = async (req, res) => {
   try {
@@ -380,9 +381,16 @@ exports.getAllContractsBackups = async (req, res) => {
 
 exports.getAutoInc = async (req, res) => {
   try {
-    const autoInc = await autoIncrement(Contract, "serial");
 
-    return res.status(200).json(autoInc);
+    if(req.user.role === "admin"){
+      const autoInc = await autoIncrement(Contract, "serial","admin",null);
+
+      return res.status(200).json(autoInc);
+    }else  {
+      const autoInc = await autoIncrement(Contract, "serial","editor",req.user.branch_id);
+      return res.status(200).json(autoInc);
+    }  
+
   } catch (error) {
     return res.status(400).json({ status: 400, message: error.message });
   }
@@ -396,7 +404,7 @@ async function checkKM(current, km_back) {
 
   var distance = currentKM - km_back_val;
 
-  console.log("Current KM:", currentKm);
+  console.log("Current KM:", currentKM);
   console.log("Distance Since Last Service:", distance);
 
   if (distance % oilChangeInterval === 0) {

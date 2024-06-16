@@ -177,6 +177,7 @@ export class DrawingComponent implements AfterViewInit {
     mergedCtx.drawImage(this.drawingCanvas.nativeElement, 0, 0);
   
     
+    
 
     mergedCanvas.toBlob((b)=>{
         const formData = new FormData();

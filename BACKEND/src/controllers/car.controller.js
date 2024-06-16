@@ -1,11 +1,13 @@
 const { default: mongoose } = require("mongoose");
 const Car = require("../models/car.model");
+const User = require("../models/user.model");
 const { autoIncrement } = require("../utils/auto-increment");
 
 exports.createCar = async (req, res) => {
   try {
 
-    const autoInc = await autoIncrement(Car,'code');
+    const autoInc = await autoIncrement(Car, "code","editor",req.user.branch_id);
+
 
 
     const{car,code,plate} = req.body
@@ -32,12 +34,11 @@ exports.createCar = async (req, res) => {
     return res.status(201).json(result);
   } catch (err) {
 
-    console.log(err.errorResponse.code)
 
-    if (err.errorResponse.code === 11000) {
-      return  res.status(400).send({ message: 'plate  or code or model car already exists.' });
+    // if (err.errorResponse.code === 11000) {
+    //   return  res.status(400).send({ message: 'plate  or code or model car already exists.' });
  
-     }
+    //  }
 
     return res.status(400).json({ status: 400, message: err.message });
   }
@@ -123,10 +124,13 @@ exports.getAllCars = async (req, res) => {
 }
 
 
+exports.fetchCars
+
+
 exports.getAllCarsByBranch = async (req, res) => {
   try {
-    console.log(req.user.branch_id);
-    const cars= await Car.find({branch_id: req.user.branch_id});
+    const cars= await Car.find({branch_id: req.user.branch_id
+    });
     return res.status(200).json(cars);
   } catch (error) {
     return res.status(400).json({ status: 400, message: error.message });
@@ -145,8 +149,12 @@ exports.totalCar = async (req, res) => {
 
 exports.fetchValidInssu =  async(req, res) =>{ 
   try {
-    const cars = await fetchCarsWithValidInsurance(req.user.branch_id);
-    console.log(cars);
+
+    
+
+    const  user = await User.findOne({branchName: req.body.branchName});
+
+    const cars = await fetchCarsWithValidInsurance(user.branchName);
 
     res.json(cars);
 } catch (err) {
@@ -155,7 +163,12 @@ exports.fetchValidInssu =  async(req, res) =>{
 }
 exports.fetchCarsWithValidRegist =  async(req, res) => { 
   try {
-    const cars = await fetchCarsWithValidRegistration(req.user.branch_id);
+
+
+
+    const  user = await User.findOne({branchName: req.body.branchName});
+
+    const cars = await fetchCarsWithValidRegistration(user.branchName);
     res.json(cars);
 } catch (err) {
     res.status(500).json({ message: err.message });
@@ -163,20 +176,21 @@ exports.fetchCarsWithValidRegist =  async(req, res) => {
 }
 
 
-async function fetchCarsWithValidRegistration(branch_id) {
+async function fetchCarsWithValidRegistration(branchName) {
   const today = new Date();
   try {
 
 
 
-    if(branch_id) {
+    if(branchName) {
       const cars = await Car.find({ 
-        branch_id:branch_id, 
+        branchName:branchName, 
         registration: { 
             $gte: today,
    
         } 
-    });      console.log(cars)
+    });     
+    
         return cars;
     }else {
       const cars = await Car.find({ 
@@ -184,7 +198,7 @@ async function fetchCarsWithValidRegistration(branch_id) {
             $gte: today,
    
         } 
-    });      console.log(cars)
+    });      
         return cars;
     }
     
@@ -193,7 +207,7 @@ async function fetchCarsWithValidRegistration(branch_id) {
   }
 }
 
-async function fetchCarsWithValidInsurance(branch_id) {
+async function fetchCarsWithValidInsurance(branchName) {
   const today = new Date();
   const nextMonth = new Date(today);
   nextMonth.setMonth(nextMonth.getMonth() + 1);
@@ -201,18 +215,18 @@ async function fetchCarsWithValidInsurance(branch_id) {
   const nextWeek = new Date(today);
   nextWeek.setDate(today.getDate() + 7);
 
+
   try {
-    if(branch_id) {
+    if(branchName) {
 
       const cars = await Car.find({ 
-        branch_id:branch_id, 
+        branchName:branchName, 
   
           insurance: { 
               $gte: today,
      
           } 
       });
-      console.log("Found cars with valid insurance:", cars);
       return cars;
     }else {
       const cars = await Car.find({ 
@@ -222,7 +236,6 @@ async function fetchCarsWithValidInsurance(branch_id) {
      
           } 
       });
-      console.log("Found cars with valid insurance:", cars);
       return cars;
     }
   } catch (err) {

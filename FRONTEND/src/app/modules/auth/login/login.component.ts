@@ -62,7 +62,6 @@ export class LoginComponent implements OnInit {
         if (res.success ) {
           this.toastr.showSuccess(res.msg);
           res.data.role == 1 ? this.router.navigate(["/modules/dashboard"]) :
-          res.data.branch_id == null ? this.router.navigate(["/branchs/branch-list"]) :
           res.data.role == 2 ? this.router.navigate(["/modules/dashboard"]) :
           res.data.role == 3 ? this.router.navigate(["/modules/reports"]) : null;
 

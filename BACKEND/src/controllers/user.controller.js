@@ -22,7 +22,8 @@ const createUser = async (req, res) => {
     }
 
 
-    const { name, email,administration,password } = req.body;
+    const { name, email,administration,password,branch_id } = req.body;
+
 
     const isExists = await User.findOne({
       email: email,
@@ -40,6 +41,7 @@ const createUser = async (req, res) => {
     var obj = {
       name,
       email,
+      branch_id,
       password: hashedPassword,
       administration:administration,
     };
@@ -85,6 +87,7 @@ const createUser = async (req, res) => {
 
       await userPermission.save();
     }
+
 
     return res.status(200).json({
       success: true,

@@ -102,10 +102,8 @@ const loginUser = async (req, res) => {
 
     const { email, password } = req.body;
 
-    console.log(email)
     let userData = await User.findOne({ email });
 
-    console.log(userData)
 
     if (!userData) {
       return res.status(400).json({
@@ -125,9 +123,8 @@ const loginUser = async (req, res) => {
     }
 
 
-    if (userData.branch_id) {
+    if (userData.role == 2 || userData.role == 3) {
       userData = await userData.populate("branch_id");
-      console.log(userData)
        user = {
         email: userData.email,
         role: userData.role,
@@ -143,7 +140,6 @@ const loginUser = async (req, res) => {
         _id: userData._id,
       };
     }
-    console.log("user",user)
 
     const gat = await generateAccessToken(user);
 
@@ -239,11 +235,14 @@ const getProfile = async (req, res) => {
 };
 const updateBranch = async (req, res) => {
   try {
-    const { branch_id } = req.body;
     const userId = req.user._id;
-    console.log(req.user)
 
-    // Update user with branch_id
+    const branch_id = req.params.branch_id;
+    if (!branch_id) {
+      return res.status(400).send({ message: "Branch ID is required" });
+    }
+
+
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { branch_id },

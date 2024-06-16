@@ -10,12 +10,24 @@ export class ToastService {
 
 
   showSuccess(message:string) {
-    this.toastr.success(message);
-
+    this.toastr.success(message, "success", {
+      positionClass: 'toast-bottom-center',  
+      progressBar: true, 
+      closeButton: true, 
+      timeOut: 5000,
+      extendedTimeOut: 2000,
+    });
   }
-
+  
   showError(message:string) {
-    this.toastr.error(message);
-
+    this.toastr.error(message, "error", {
+      positionClass: 'toast-bottom-center',  
+      progressBar: true, 
+      closeButton: true, 
+      timeOut: 5000,
+      extendedTimeOut: 2000,
+    });
   }
+
+  
 }

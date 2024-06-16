@@ -43,6 +43,8 @@ export class CustomersListComponent implements OnInit {
       this.customerService.fetchAllCustomersByBranch();
       this.customerService.customers$.subscribe((res) => {
         this.customers = res;
+
+        console.log(res);
       });
     }
   }

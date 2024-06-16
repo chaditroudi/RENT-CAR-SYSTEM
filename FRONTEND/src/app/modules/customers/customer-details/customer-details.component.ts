@@ -9,6 +9,9 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class CustomerDetailsComponent {
   @Input() customer: any; 
 
+
+  
+
   constructor(public activeModel:NgbActiveModal) {
 
   }

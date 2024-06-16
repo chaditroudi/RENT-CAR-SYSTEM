@@ -84,6 +84,9 @@
         <div class="col-sm-12">
           <div class="card" *ngIf="formData.length > 0; else noDataFound">
             <div class="card-header">
+              <div class="text-start">
+                <a href="#" class="router-link-active">Backup</a>
+              </div>
               <div class="text-end">
                 <button (click)="goToAddContract()" class="btn btn-success">
                   {{ buttonAdd }}
@@ -91,15 +94,19 @@
               </div>
             </div>
 
-            <form [formGroup]="ContractForm" class="theme-form mega-form">
-              <div class="card-body">
-                <div *ngIf="formData.length > 0; else noDataFound">
-                  <div
-                    *ngFor="
-                      let c of formData
-                        | paginate : { itemsPerPage: 1, currentPage: p }
-                    "
-                  >
+            <div class="card-header">
+              <div class="text-end">
+                <app-search (searchChange)="updateFilteredData($event)"></app-search>
+
+              </div>
+            </div>
+            <div class="card-body">
+              <form [formGroup]="ContractForm" class="theme-form mega-form">
+                
+                <div *ngIf="filteredData.length > 0; else noDataFound">
+                  <div *ngFor="let c of filteredData | paginate: { itemsPerPage: 1, currentPage: currentPage, totalItems: filteredData.length, id: paginationId }">
+   
+                
                     <div class="row">
                       <div class="col-md-12">
                         <h5 class="text-center">
@@ -1185,24 +1192,24 @@
                     </nav>
                   </div>
                 </div>
-              </div>
+             
             </form>
+            
           </div>
-          <ng-template #noDataFound>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="card">
-                  <div class="card-body">
-                    <span>No contract added yet .</span>
-                    <button class="btn btn-primary" (click)="goToAddContract()">
-                      Add Contract
-                    </button>
-                  </div>
+          
+        </div>
+        <ng-template #noDataFound>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-body">
+                  <span>No contract added yet .</span>
+                    <a [routerLink]="['/modules/contracts/contract/contract-add']" routerLinkActive="router-link-active" >Add contract</a>
                 </div>
               </div>
             </div>
-          </ng-template>
-        </div>
+          </div>
+        </ng-template>
       </div>
     </div>
   </div>

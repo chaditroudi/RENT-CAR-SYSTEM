@@ -41,7 +41,6 @@ exports.countCarRented = async (req, res) => {
 
     try {
 
-      console.log("branch id",req.user.branch_id);
       const rentals = await Contract.aggregate([
         {
           $lookup: {
@@ -121,7 +120,6 @@ exports.countCarRented = async (req, res) => {
         }
       ]);
   
-      console.log(rentals);
       res.json(rentals);
     } catch (error) {
       console.error('Error getting rental history:', error);

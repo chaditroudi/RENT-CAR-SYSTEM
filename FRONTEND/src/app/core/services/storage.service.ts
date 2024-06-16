@@ -39,7 +39,8 @@ export class StorageService {
   }
 
   getIsLoggedIn() {
-    return localStorage.getItem('user_connected');
+    if (localStorage.getItem('user_connected')) return true;
+    else return false;
 
   }
 

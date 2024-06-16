@@ -3,7 +3,7 @@ import { baseUrl, httpOptions } from "./../api/base.url";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 import { map, shareReplay, tap } from "rxjs/operators";
 import { StorageService } from "./storage.service";
 
@@ -26,6 +26,8 @@ interface AuthResponse {
 export class AuthService {
 
   private user: User;
+  private branchSubject = new BehaviorSubject<string>(null);
+  branch$ = this.branchSubject.asObservable();
   role =0;
   accessToken: any;
   constructor(
@@ -76,12 +78,16 @@ export class AuthService {
   }
 
   updateBranch(branchData: any) {
+    alert(JSON.stringify(branchData.branch_id));
+    alert(branchData.branch_id);
     const headers = this.getHeaders();
     return this.http.put<any>(
       
-      `${baseUrl}/auth/update-branch`,
+      `${baseUrl}/auth/update-branch/${branchData.branch_id}`,{},
 
-      branchData, { headers });
+       { headers }).pipe(tap(() => {
+        this.branchSubject.next(branchData)
+      }));
   }
 
   logout() {

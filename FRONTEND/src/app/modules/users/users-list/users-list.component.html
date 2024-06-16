@@ -12,29 +12,21 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-        
-      
                 <div class="row">
                   <div class="col-md-6">
-                    
-<app-search  ></app-search>
+                    <app-search></app-search>
                   </div>
                   <div class="col-md-6">
                     <div class="text-end">
-                  
                       <button class="btn btn-primary" (click)="goToListCus()">
                         Add User
                       </button>
                     </div>
                   </div>
                 </div>
-               
               </div>
-              
 
               <div class="card-body">
-                
-          
                 <div *ngIf="customers.length > 0; else noData">
                   <div class="table-responsive">
                     <table class="table">
@@ -44,19 +36,32 @@
                           <th scope="col">Name</th>
                           <th scope="col">Role</th>
                           <th scope="col">Administration</th>
-                          <th scope="col">Actions</th>"
-                         
+                          <th scope="col">Actions</th>
+                          "
                         </tr>
                       </thead>
                       <tbody>
-                    
-                        <tr *ngFor="let customer of customers| filter: searchQuery: ['email','name','role','administration']">
-
+                        <tr
+                          *ngFor="
+                            let customer of customers
+                              | filter
+                                : searchQuery
+                                : ['email', 'name', 'role', 'administration']
+                          "
+                        >
                           <th scope="row">{{ customer.name }}</th>
                           <td>{{ customer.email }}</td>
-                          <td>{{ customer.role ===1 ? "Admin" : customer.role ===2 ? "Editor" : "Viewer" }}</td>
+                          <td>
+                            {{
+                              customer.role === 1
+                                ? "Admin"
+                                : customer.role === 2
+                                ? "Editor"
+                                : "Viewer"
+                            }}
+                          </td>
                           <td>{{ customer.administration }}</td>
-                         
+
                           <td>
                             <ul class="action">
                               <li class="edit">

@@ -11,13 +11,14 @@
                 <div class="image-scroll">
             <div class="col-md-12 d-flex flex-wrap">
               <div *ngFor="let image of customer.files" class="p-2">
-                <img [src]="'http://localhost:3200/backend/uploads/' + image" class="img-fluid rounded shadow-sm resized-image" alt="Customer Image">
+                <img [src]="image | uploads" class="img-fluid rounded shadow-sm resized-image" alt="Customer Image">
               </div>
             </div>
             </div>
         </div>
             <div class="col-md-8">
               <ul class="list-group list-group-flush">
+              <div class="shadow-sm">
                 <li class="list-group-item"><strong>Code:</strong> {{ customer.code }}</li>
                 <li class="list-group-item"><strong>Passport Number:</strong> {{ customer.passport_number }}</li>
                 <li class="list-group-item"><strong>ID Number:</strong> {{ customer.id_number }}</li>
@@ -35,6 +36,7 @@
                 <li class="list-group-item"><strong>Person Name:</strong> {{ customer.person_name }}</li>
                 <li class="list-group-item"><strong>Home Country:</strong> {{ customer.home_country }}</li>
                 <li class="list-group-item"><strong>Nationality:</strong> {{ customer.nationality }}</li>
+              </div>
               </ul>
             </div>
           </div>

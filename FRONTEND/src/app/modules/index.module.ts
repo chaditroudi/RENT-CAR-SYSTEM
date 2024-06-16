@@ -34,6 +34,7 @@ import { CustomerDetailsComponent } from './customers/customer-details/customer-
 import { CarsHistoryComponent } from './history/cars-history/cars-history.component';
 import { ContractsHistoryComponent } from './history/contracts-history/contracts-history.component';
 import { CustomersHistoryComponent } from './history/customers-history/customers-history.component';
+import { ImageUrlPipe } from '../shared/pipe/image-url.pipe';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,8 @@ import { CustomersHistoryComponent } from './history/customers-history/customers
     ReportsComponent,
     
     UserAddComponent,
+
+    ImageUrlPipe,
 
     FilterPipe,
       NotificationsListComponent,

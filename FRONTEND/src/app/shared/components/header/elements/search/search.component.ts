@@ -14,6 +14,10 @@ export class SearchComponent {
   }
 
   onSearchChange() {
+
+    console.log(this.searchChange.emit(this.searchQuery.trim()));
     this.searchChange.emit(this.searchQuery.trim());
+
+  
   }
 }

@@ -25,13 +25,14 @@ export class MainComponent implements OnInit {
 
 
   getCarsWithValidInsurance(): void {
-    this.carService.getCarsWithValidInsurance().subscribe(data => {
+    console.log(JSON.parse(this.storageServ.getCurrentUser()).data)
+    this.carService.getCarsWithValidInsurance(JSON.parse(this.storageServ.getCurrentUser()).branch_name).subscribe(data => {
       this.validInss = data;
     });
   }
 
   getCarsWithValidRegistration(): void {
-    this.carService.getCarsWithValidRegistration().subscribe(data => {
+    this.carService.getCarsWithValidRegistration(JSON.parse(this.storageServ.getCurrentUser()).branch_name).subscribe(data => {
       this.validRegist = data;
     });
   }

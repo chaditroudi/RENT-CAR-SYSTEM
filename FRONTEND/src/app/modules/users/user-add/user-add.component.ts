@@ -9,6 +9,9 @@ import {
   FormControl,
 } from "@angular/forms";
 import { Observable, of } from "rxjs";
+import { BranchService } from "src/app/core/services/branch.service";
+import { ToastService } from "src/app/shared/services/toast.service";
+import { Branch } from "src/app/core/models";
 
 @Component({
   selector: "app-user-add",
@@ -18,21 +21,25 @@ import { Observable, of } from "rxjs";
 export class UserAddComponent implements OnInit {
   role$: Observable<String[]>;
   administrations$: Observable<String[]>;
+  branchNames$: Observable<String[]>;
 
   userForm = this.formBuilder.group({
     administration: [""],
     email: [""],
     name: [""],
     role: [0],
-    password:[""]
+    password: [""],
+    _id: [""],
   });
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: FormBuilder,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private branchService: BranchService,
+    private toasterService:ToastService
   ) {
-    this.role$ = of([ "Editor", "Viewer"]);
+    this.role$ = of(["Editor", "Viewer"]);
     this.administrations$ = of([
       "Administration 1",
       "Administration 2",
@@ -40,49 +47,65 @@ export class UserAddComponent implements OnInit {
     ]);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.branchService.getAllBranches();
+
+    this.branchService.branchs$.subscribe((res) => {
+
+      console.log(res)
+      this.branchNames$ = of(res);
+
+      console.log(res);
+    });
+  }
 
   adddUser(): void {
 
-   
     const userObj = {
       administration: this.userForm.value.administration,
       email: this.userForm.value.email,
       name: this.userForm.value.name,
       role: this.role,
-      password: this.userForm.value.password
+      password: this.userForm.value.password,
+      branch_id: this.userForm.value._id,
+      
     };
     if (this.userForm.valid) {
-
-      
       this.userService.createCustomer(userObj).subscribe(
         (response) => {
+
+         this.toasterService.showSuccess(response.message);
           this.userForm.reset();
           this.router.navigate(["modules/users/users-list"]);
         },
-        (error) => {
-          console.error("Error addinguser", error);
+        (err) => {
+          console.log(err);
+          this.toasterService.showError(err.error.msg);
         }
       );
-    }
-  }
-
-  role:number;
+    }}    
+  role: number;
   getValueRole(event: string) {
-    this.userForm.value.role = event === 'Editor' ? 2 :
-   
-    event === 'Admin' ? 1:
-    event ==='Viewer' ? 3 : 0
-    console.log(this.userForm.value.role)
+    this.userForm.value.role =
+      event === "Editor"
+        ? 2
+        : event === "Admin"
+        ? 1
+        : event === "Viewer"
+        ? 3
+        : 0;
+    console.log(this.userForm.value.role);
     this.role = this.userForm.value.role;
-
-
-
   }
 
-  getValueAdmin(event:Event) {
+  getValueAdmin(event: Event) {
     console.log("administration", event);
-    this.userForm.controls['administration'].setValue(event.toString())
+    this.userForm.controls["administration"].setValue(event.toString());
+  }
 
+  getValueBranch(event: Branch) {
+    this.userForm.controls['_id'].setValue(event._id);
+
+    
   }
 }

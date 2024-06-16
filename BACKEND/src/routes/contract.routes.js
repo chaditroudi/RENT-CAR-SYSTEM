@@ -21,7 +21,7 @@ const { OnlyAdminCanAccess, OnlyEditorAdminCanAccess } = require('../middleware/
 const { uploadSingleMiddleware, uploadMultipleMiddleware } = require('../middleware/update.middlleware');
 router.get('/backups-contracts',auth, OnlyEditorAdminCanAccess,contractController.getAllContractsBackups);
 
-router.get('/autoinc', auth, OnlyAdminCanAccess,contractController.getAutoInc);
+router.get('/autoinc', auth, OnlyEditorAdminCanAccess,contractController.getAutoInc);
 
 
 
