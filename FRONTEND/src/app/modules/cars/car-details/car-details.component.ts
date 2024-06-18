@@ -232,7 +232,7 @@ export class CarDetailsComponent implements OnInit, OnChanges {
       },
       (err) => {
         console.error(err);
-        this.toastr.showError("Error in deleting the car");
+        this.toastr.showError(err.error.msg);
       }
     );
   

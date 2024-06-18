@@ -2,29 +2,28 @@ const { default: mongoose } = require("mongoose");
 const Car = require("../models/car.model");
 const User = require("../models/user.model");
 const { autoIncrement } = require("../utils/auto-increment");
+const { MessageContextImpl } = require("twilio/lib/rest/chat/v2/service/channel/message");
 
 exports.createCar = async (req, res) => {
   try {
 
     const autoInc = await autoIncrement(Car, "code","editor",req.user.branch_id);
-
-
-
     const{car,code,plate} = req.body
 
-    // const isCarExist = await Car.findOne({car,code,plate});
 
-    // if (isCarExist) {
-    //   return res.status(200).send({
-    //     success: false,
-    //     msg: "Car already exists!",
-    //   });
-    // }
+    const isCarExist = await Car.findOne({plate});
 
+    if (isCarExist) {
+      return res.status(200).send({
+        success: false,
+        msg: "Car plate already exists!",
+      });
+    }
 
+  
     
     const newcar = new Car({
-      ...req.body,code:autoInc,createdBy:req.user.email,branch_id:req.user.branch_id
+      ...req.body,code:autoInc,createdBy:req.user.email,branch_id:req.user.branch_id,rented:false
     });
     
 
@@ -152,9 +151,10 @@ exports.fetchValidInssu =  async(req, res) =>{
 
     
 
-    const  user = await User.findOne({branchName: req.body.branchName});
 
-    const cars = await fetchCarsWithValidInsurance(user.branchName);
+
+    const cars = await fetchCarsWithValidInsurance(req.body.branch_id);
+
 
     res.json(cars);
 } catch (err) {
@@ -166,9 +166,8 @@ exports.fetchCarsWithValidRegist =  async(req, res) => {
 
 
 
-    const  user = await User.findOne({branchName: req.body.branchName});
 
-    const cars = await fetchCarsWithValidRegistration(user.branchName);
+    const cars = await fetchCarsWithValidRegistration(req.body.branch_id);
     res.json(cars);
 } catch (err) {
     res.status(500).json({ message: err.message });
@@ -176,15 +175,15 @@ exports.fetchCarsWithValidRegist =  async(req, res) => {
 }
 
 
-async function fetchCarsWithValidRegistration(branchName) {
+async function fetchCarsWithValidRegistration(branch_id) {
   const today = new Date();
   try {
 
 
 
-    if(branchName) {
+    if(branch_id) {
       const cars = await Car.find({ 
-        branchName:branchName, 
+        branch_id:branch_id, 
         registration: { 
             $gte: today,
    
@@ -207,7 +206,7 @@ async function fetchCarsWithValidRegistration(branchName) {
   }
 }
 
-async function fetchCarsWithValidInsurance(branchName) {
+async function fetchCarsWithValidInsurance(branch_id) {
   const today = new Date();
   const nextMonth = new Date(today);
   nextMonth.setMonth(nextMonth.getMonth() + 1);
@@ -217,10 +216,10 @@ async function fetchCarsWithValidInsurance(branchName) {
 
 
   try {
-    if(branchName) {
+    if(branch_id) {
 
       const cars = await Car.find({ 
-        branchName:branchName, 
+        branch_id:branch_id, 
   
           insurance: { 
               $gte: today,

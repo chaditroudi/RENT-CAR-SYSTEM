@@ -166,8 +166,10 @@ exports.getContractCount = async (req, res) => {
   Report.aggregate(aggragationPip).then((item) => {
     openContracts =
       item.find((result) => result._id === "Contract is Open")?.count || 0;
+    console.log("open contract", openContracts);
     closedContracts =
     item.find((result) => result._id === "Contract is Closed")?.count || 0;
+    console.log("closed contract", closedContracts);
   
   return res.status(200).json({ openContracts, closedContracts });
   })
@@ -260,6 +262,97 @@ async function getMonthlyReports(startDate, endDate) {
       },
       {
         $addFields: {
+          carOutDate: {
+            $toDate: "$contractDetails.car_out",
+          },
+          carBackDate: {
+            $toDate: "$contractDetails.car_back",
+          },
+          incomeField: "$contractDetails.payable",
+          month: { $month: { $toDate: "$contractDetails.car_out" } },
+          year: { $year: { $toDate: "$contractDetails.car_out" } },
+        },
+      },
+      {
+        $match: {
+          carOutDate: { $gte: new Date(startDate) },
+          carBackDate: { $lte: new Date(endDate) },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            serial:"$serial",
+            month: "$month",
+            year: "$year",
+          },
+          totalContracts: { $sum: 1 },
+          totalIncome: { $sum: "$incomeField" },
+        },
+      },
+      {
+        $addFields: {
+          monthString: {
+            $let: {
+              vars: {
+                months: [
+                  "",
+                  "January",
+                  "February",
+                  "March",
+                  "April",
+                  "May",
+                  "June",
+                  "July",
+                  "August",
+                  "September",
+                  "October",
+                  "November",
+                  "December",
+                ],
+              },
+              in: { $arrayElemAt: ["$$months", "$_id.month"] },
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          month: "$monthString",
+          year: "$_id.year",
+          totalIncome: 1,
+          totalContracts: 1,
+        },
+      },
+    ];
+
+    const reports = await Report.aggregate(aggregationPipeline);
+
+    return reports;
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+}
+
+
+async function getWeeklyReports(startDate, endDate) {
+  try {
+    const aggregationPipeline = [
+      {
+        $lookup: {
+          from: "contracts",
+          localField: "contract",
+          foreignField: "_id",
+          as: "contractDetails",
+        },
+      },
+      {
+        $unwind: "$contractDetails",
+      },
+      {
+        $addFields: {
           incomeField: {
             $subtract: [
               "$contractDetails.sum",
@@ -271,9 +364,8 @@ async function getMonthlyReports(startDate, endDate) {
               },
             ],
           },
-          carOutDate: {
-            $toDate: "$contractDetails.car_out",
-          },
+          carOutDate: { $toDate: "$contractDetails.car_out" },
+          week: { $week: { $toDate: "$contractDetails.car_out" } },
           monthString: {
             $switch: {
               branches: [
@@ -389,8 +481,78 @@ async function getMonthlyReports(startDate, endDate) {
               default: "Invalid Month",
             },
           },
-
           year: { $year: { $toDate: "$contractDetails.car_out" } },
+
+          dayOfWeek: {
+            $switch: {
+              branches: [
+                {
+                  case: {
+                    $eq: [
+                      { $dayOfWeek: { $toDate: "$contractDetails.car_out" } },
+                      1,
+                    ],
+                  },
+                  then: "Sunday",
+                },
+                {
+                  case: {
+                    $eq: [
+                      { $dayOfWeek: { $toDate: "$contractDetails.car_out" } },
+                      2,
+                    ],
+                  },
+                  then: "Monday",
+                },
+                {
+                  case: {
+                    $eq: [
+                      { $dayOfWeek: { $toDate: "$contractDetails.car_out" } },
+                      3,
+                    ],
+                  },
+                  then: "Tuesday",
+                },
+                {
+                  case: {
+                    $eq: [
+                      { $dayOfWeek: { $toDate: "$contractDetails.car_out" } },
+                      4,
+                    ],
+                  },
+                  then: "Wednesday",
+                },
+                {
+                  case: {
+                    $eq: [
+                      { $dayOfWeek: { $toDate: "$contractDetails.car_out" } },
+                      5,
+                    ],
+                  },
+                  then: "Thursday",
+                },
+                {
+                  case: {
+                    $eq: [
+                      { $dayOfWeek: { $toDate: "$contractDetails.car_out" } },
+                      6,
+                    ],
+                  },
+                  then: "Friday",
+                },
+                {
+                  case: {
+                    $eq: [
+                      { $dayOfWeek: { $toDate: "$contractDetails.car_out" } },
+                      7,
+                    ],
+                  },
+                  then: "Saturday",
+                },
+              ],
+              default: "Invalid Day",
+            },
+          },
         },
       },
       {
@@ -404,8 +566,10 @@ async function getMonthlyReports(startDate, endDate) {
       {
         $group: {
           _id: {
+            week: "$week",
             month: "$monthString",
             year: "$year",
+            dayOfWeek: "$dayOfWeek",
           },
           totalContracts: { $sum: 1 },
           totalIncome: { $sum: "$incomeField" },
@@ -414,8 +578,10 @@ async function getMonthlyReports(startDate, endDate) {
       {
         $project: {
           _id: 0,
+          week: "$_id.week",
           month: "$_id.month",
           year: "$_id.year",
+          dayOfWeek: "$_id.dayOfWeek",
           totalIncome: 1,
           totalContracts: 1,
         },
@@ -434,76 +600,6 @@ async function getMonthlyReports(startDate, endDate) {
     return [];
   }
 }
-
-async function getWeeklyReports(startDate, endDate) {
-  try {
-    const aggregationPipeline = [
-      {
-        $lookup: {
-          from: "contracts",
-          localField: "contract",
-          foreignField: "_id",
-          as: "contractDetails",
-          pipeline: [
-            { $project: { sum: 1, discount: 1 } }, // Project only needed fields
-          ],
-        },
-      },
-      {
-        $unwind: "$contractDetails",
-      },
-      {
-        $addFields: {
-          incomeField: { $subtract: ["$contractDetails.sum", { $multiply: ["$contractDetails.sum", "$contractDetails.discount"] }] },
-          carOutDate: { $toDate: "$contractDetails.car_out" },
-          week: { $week: { $toDate: "$contractDetails.car_out" } },
-          monthString: {
-            $month: { $toDate: "$contractDetails.car_out" }, // Use $month directly
-          },
-          dayOfWeek: { $dayOfWeek: { $toDate: "$contractDetails.car_out" } }, // Use $dayOfWeek directly
-        },
-      },
-      {
-        $match: {
-          carOutDate: {
-            $gte: new Date(startDate),
-            $lte: new Date(endDate),
-          },
-        },
-      },
-      {
-        $group: {
-          _id: {
-            week: "$week",
-            month: "$monthString",
-            year: { $year: { $toDate: "$contractDetails.car_out" } }, // Use $year directly
-            dayOfWeek: "$dayOfWeek",
-          },
-          totalContracts: { $sum: 1 },
-          totalIncome: { $sum: "$incomeField" },
-        },
-      },
-      {
-        $project: {
-          _id: 0,
-          week: "$_id.week",
-          month: { $month: "$_id.month" }, // Use $month for month number (1-12)
-          year: "$_id.year",
-          dayOfWeek: "$_id.dayOfWeek",
-          totalIncome: 1,
-          totalContracts: 1,
-        },
-      },
-    ];
-
-    const reports = await Report.aggregate(aggregationPipeline);
-    return reports;
-  } catch (err) {
-    console.error(err);
-    return [];
-  }
-}
-
 
 // async function getWeeklyReports(startDate, endDate) {
 

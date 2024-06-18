@@ -40,7 +40,7 @@
                           <th scope="col">Status</th>
                           <th scope="col">Contracy_type</th>
                           <th scope="col">Rent Count</th> 
-                          <!-- <th scope="col">Customer</th>  -->
+                          <th scope="col">Customer</th> 
                           "
                         </tr>
                       </thead>
@@ -83,9 +83,10 @@
                           
                         
                           <td>{{ customer.status_contract  }}</td>
-                          <!-- <td>{{ customer.customer.fullName  }}</td> -->
 
                           <td>{{customer.count}}</td>
+                          <td>{{ customer.customer.fullName  }}</td>
+
                         </tr>
                       </tbody>
                     </table>

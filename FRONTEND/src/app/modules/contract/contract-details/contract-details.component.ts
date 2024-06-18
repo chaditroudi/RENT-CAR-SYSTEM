@@ -402,7 +402,7 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
           if (response) {
             if(response.attempts){
 
-              return this.toastr.showError("You cannot update contract more than 2 times");
+              return this.toastr.showError("You cannot update contract more ...");
 
             }
 

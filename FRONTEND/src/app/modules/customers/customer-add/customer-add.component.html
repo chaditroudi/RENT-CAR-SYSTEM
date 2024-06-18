@@ -16,23 +16,22 @@
       class="theme-form mega-form"
     >
       <div class="row">
-        <div class="col-xl-4">
+        <div class="col-xl-12">
           <div class="card-body">
             <div class="row mb-2">
               <div class="profile-title">
-                <div class="media">
                   <ngx-dropzone (change)="onSelect1($event)" [multiple]="true">
                     <ngx-dropzone-label>
-                        <div class="dz-message needsclick">
-                          <i class="icon-cloud-up"></i>
-                          <h6>Drop files here or click to upload.</h6>
-                        </div>
+                      <div class="dz-message needsclick">
+                        <i class="icon-cloud-up"></i>
+                        <h6>Drop files here or click to upload.</h6>
+                      </div>
                     </ngx-dropzone-label>
-                    <ngx-dropzone-preview *ngFor="let f of nameArray" [removable]="true" (removed)="onRemove(f)">
-                        <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
-                    </ngx-dropzone-preview>
-                </ngx-dropzone>
-                </div>
+
+                    <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of nameArray" [file]="f"[removable]="true" (removed)="onRemove(f)">
+                    </ngx-dropzone-image-preview>
+                  </ngx-dropzone>
+                  
               </div>
             </div>
 
@@ -52,7 +51,7 @@
             </div> -->
           </div>
         </div>
-        <div class="col-xl-8">
+        <div class="col-xl-12">
           <div class="card-body">
             <div class="row">
               <div class="info-block">

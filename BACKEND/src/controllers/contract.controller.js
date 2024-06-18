@@ -57,10 +57,11 @@ exports.createContract = async (req, res) => {
         });
       }
 
-      //  console.log("branch id in contract",req.user.branch_id)
       car.rented = true;
 
       await car.save();
+    });
+
 
       const contract = new Contract({
         ...req.body,
@@ -70,6 +71,10 @@ exports.createContract = async (req, res) => {
         status: "Contract is Open",
         branch_id: !req.user.branch_id ? null : req.user.branch_id,
       });
+
+
+      
+      
       const result = await contract.save();
 
       if (result) {
@@ -86,7 +91,6 @@ exports.createContract = async (req, res) => {
           message: "Failed to update Contract",
         });
       }
-    });
   } catch (err) {
     return res.status(400).json({ status: 400, message: err.message });
   }
@@ -202,7 +206,7 @@ exports.updateContract = async (req, res) => {
       });
     }
 
-  if(contract.version > 3) {
+  if(contract.version > 5) {
          return res.status(200).json({
         status: 200,
         message: "you can't update this contract",
@@ -231,6 +235,7 @@ exports.updateContract = async (req, res) => {
           // if (car.rented == true) {
           //   console.log("hello")
           //   return res.status(200).json({
+
           //     message: "Car already rented ",
           //     rented: true,
           //   });

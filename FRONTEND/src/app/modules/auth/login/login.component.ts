@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
   public loginForm: FormGroup;
   public show: boolean = false;
   public errorMessage: any;
+  isLoading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -41,6 +42,7 @@ export class LoginComponent implements OnInit {
   role = 0;
 
   login() {
+    this.isLoading= true;
     this.authService
       .login(this.loginForm.value.email, this.loginForm.value.password)
       .subscribe((res) => {
@@ -51,6 +53,7 @@ export class LoginComponent implements OnInit {
 
     
         if(res.success === false) {
+          this.isLoading=false;
           this.toastr.showError(res.msg);
           return;
         }
@@ -60,7 +63,9 @@ export class LoginComponent implements OnInit {
 
 
         if (res.success ) {
+          
           this.toastr.showSuccess(res.msg);
+          this.isLoading=false;
           res.data.role == 1 ? this.router.navigate(["/modules/dashboard"]) :
           res.data.role == 2 ? this.router.navigate(["/modules/dashboard"]) :
           res.data.role == 3 ? this.router.navigate(["/modules/reports"]) : null;
@@ -69,6 +74,7 @@ export class LoginComponent implements OnInit {
       },(error) => {
         if (error instanceof HttpErrorResponse && error.error.msg) {
           this.errorMessage = error.error.msg;
+          this.isLoading=false;
           this.toastr.showError(this.errorMessage);
         } else {
           this.errorMessage = 'An error occurred. Please try again later.';

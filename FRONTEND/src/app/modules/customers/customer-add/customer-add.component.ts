@@ -72,8 +72,12 @@ export class CustomerAddComponent implements OnInit {
 
   onSelect1(event: any): void {
     this.nameArray.push(...event.addedFiles);
+
+    
     this.customerForm.controls['files'].setValue(this.nameArray.map((res)=>res.name))
-    console.log(this.customerForm.value)
+
+
+
   }
 
   onRemove(file: File): void {

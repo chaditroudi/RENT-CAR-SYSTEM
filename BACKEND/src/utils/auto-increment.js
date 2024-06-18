@@ -14,7 +14,7 @@ const autoIncrement = async (model, serial,role,branch_id) => {
         return autoInc;
         }else {
             const highestSerial = await model
-            .findOne({ branch_id: branch_id }, { [serial]: 1, _id: 0 })
+            .findOne({  }, { [serial]: 1, _id: 0 })
             .sort({ [serial]: -1 })
             .exec();
 

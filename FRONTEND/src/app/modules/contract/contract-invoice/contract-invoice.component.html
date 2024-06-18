@@ -7,19 +7,40 @@
   <div class="text-start mb-3">
     <button class="btn btn-dark-outline">Return</button>
   </div>
-  <div class="text-end mb-3">
-    <button
-      class="btn btn-primary"
-      appGeneratePdf
-      [contentToConvert]="contentToConvert"
-    >
-      Generate Invoice
-    </button>
-  </div>
-  <div id="contentToConvert">
-    <div class="invoice-header">
-      <h1>INVOICE</h1>
+
+  <div class="card-body grid-showcase grid-align">
+    <div class="row justify-content-start">
+      <div class="col-6"><span class="bg-white text-dark">
+        <button
+        class="btn btn-secondary"
+        appGeneratePdf
+        [contentToConvert]="contentToConvert"
+        >
+        Generate Invoice
+        </button>
+      </span></div>
+      <div class="col-6"><span class="bg-white text-dark">
+        
+
+
+  <button
+  class="btn btn-primary"
+  appGeneratePdf
+  [contentToConvertContract]="contentToConvertContract"
+>
+  Generate Contract
+</button>
+      </span></div>
     </div>
+
+  
+ 
+  
+
+
+  
+    <div id="contentToConvert">
+
     <div class="invoice-body">
       <!-- Customer Section -->
       <div class="customer-section">
@@ -77,17 +98,17 @@
           <thead>
             <tr>
               <th>Payment</th>
-              <th>30</th>
+              <th>{{contract.daily_val1}}</th>
               <th>x</th>
-              <th>10000</th>
+              <th>{{contract.daily_val2}}</th>
               <th>=</th>
-              <th>300000</th>
+              <th>{{contract.daily_result}}</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>Monthly</td>
-              <td colspan="5" class="highlight">1 500,00</td>
+              <td>Status contract</td>
+              <td colspan="5" class="highlight">{{contract.status_contract}}</td>
             </tr>
             <tr>
               <td>Overtime</td>
@@ -130,37 +151,33 @@
       </div>
     </div>
     <div class="invoice-footer">
-      <p style="text-align: left">The lessor: DHOA VISION RENT A CAR</p>
+      <p style="text-align: left">Office: DHOA VISION RENT A CAR</p>
       <p style="text-align: right">The lessee: Customer</p>
     </div>
   </div>
 </div>
 
 <div class="container">
-
-  <div class="text-end mb-3">
-    <button
-      class="btn btn-primary"
-      appGeneratePdf
-      [contentToConvertContract]="contentToConvertContract"
-    >
-      Generate Contract
-    </button>
-  </div>
-  <div id="contentToConvertContract">
+ <div id="contentToConvertContract">
     <div class="row">
-      <div class="invoice-header">
-        <h1>Contract</h1>
-       
-      </div>
+   
       <div class="col-md-6">
         <div class="invoice-body">
           <!-- Customer Section -->
           <div class="customer-section">
             <div class="section-header customer-id">
-              <span
-                >CONTRACT {{ contract.serial }} - {{ contract.version }}</span
-              >
+            
+              
+                <div class="row">
+                  <div class="info-row">
+                    <span class="info-label">Serial:</span>
+                    <span class="info-value">{{ contract.serial }}</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Version:</span>
+                    <span class="info-value">{{ contract.version }}</span>
+                  </div>
+                </div>
               <qr-code
                 value="{{ contract.serial }} - {{ contract.version }}"
                 size="50"
@@ -193,8 +210,11 @@
                   {{ contract.car.year }} {{ contract.car.plate }}</span
                 >
               </div>
-              <!-- Uncomment below if you want to include a car image -->
-              <!-- <img src="../../../../assets/images/invoice/car_invoice.png" alt="Car" class="car-image"> -->
+              <img
+            src="../../../../assets/images/invoice/car_invoice.png"
+            alt="Car"
+            class="car-image"
+          />
             </div>
           </div>
         </div>
@@ -204,8 +224,10 @@
         <!-- Contract Section -->
         <div class="contract-section">
           <div class="section-header contract-id">
-            <span>CUSTOMER {{ contract.owner?.code }}</span>
-            <qr-code
+            <div class="info-row">
+              <span class="info-label">Code customer:</span>
+              <span class="info-value">{{ contract.owner?.code}}</span>
+            </div>            <qr-code
               value="{{ contract.car?.plate }}"
               size="50"
               errorCorrectionLevel="M"
@@ -273,17 +295,17 @@
               <thead>
                 <tr>
                   <th>Payment</th>
-                  <th>30</th>
+                  <th>{{contract.daily_val1}}</th>
                   <th>x</th>
-                  <th>10000</th>
+                  <th>{{contract.daily_val2}}</th>
                   <th>=</th>
-                  <th>300000</th>
+                  <th>{{contract.daily_result}}</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>Monthly</td>
-                  <td colspan="5" class="highlight">1 500,00</td>
+                  <td>Status Contract </td>
+                  <td colspan="5" class="highlight">{{contract.status_contract}}</td>
                 </tr>
                 <tr>
                   <td>Overtime</td>
@@ -330,11 +352,12 @@
       <div class="row mt-4">
         <div class="col-md-12">
           <div class="invoice-footer">
-            <p class="text-start">The lessor: DHOA VISION RENT A CAR</p>
-            <p class="text-end">The lessee: Customer</p>
+            <p class="text-start">Office: DHOA VISION RENT A CAR</p>
+            <p class="text-end"> Customer</p>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 </div>
