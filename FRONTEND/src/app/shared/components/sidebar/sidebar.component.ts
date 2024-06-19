@@ -3,6 +3,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Menu, NavService } from '../../services/nav.service';
 import { LayoutService } from '../../services/layout.service';
 import { StorageService } from 'src/app/core/services/storage.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -26,7 +27,7 @@ export class SidebarComponent implements OnInit {
   
   office:string;
   role:number
-  constructor(private router: Router, public navServices: NavService,private readonly storageSer:StorageService,
+  constructor(private router: Router, public navServices: NavService,private readonly storageSer:StorageService,private authService:AuthService,
     public layout: LayoutService) {
 
 
@@ -137,5 +138,8 @@ this.role = this.storageSer.getRole();
     }
   }
 
-
+  logoutFunc() {
+    this.authService.logout();
+    
+      }
 }
