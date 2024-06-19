@@ -189,7 +189,7 @@ export class CarDetailsComponent implements OnInit, OnChanges {
           seats:this.inputsValue[21] || res.seats,
           cylinders: this.inputsValue[22] || res.cylinders,
           insurance_company: this.inputsValue[23] || res.insurance_company,
-          type_of_insurance:this.inputsValue[24] || res.type_of_insurance,
+          type_insurance:this.inputsValue[24] || res.type_insurance,
           owner_name:this.inputsValue[25] ||res.owner_name,
           owner_id:this.inputsValue[26] ||res.owner_id,
           nationality:this.inputsValue[27] || res.nationality

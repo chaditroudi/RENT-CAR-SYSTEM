@@ -46,6 +46,7 @@ const carSchema = new Schema({
     seats:Number,
     cylinders:Number,
     insurance_company:String,
+    type_insurance:String,
 
     owner_name:String,
     owner_id:Number,

@@ -224,14 +224,22 @@ exports.updateContract = async (req, res) => {
     createdBy: req.user.email,
   };
 
-  await Contract.findByIdAndUpdate(req.params.id, { $set: updatedBody })
-    .then(async (contract) => {
-      if (contract) {
-        Car.findById(req.body.car).then(async (car) => {
-          if (!car) {
-            return;
-          }
 
+  const car = await Car.findById(contract.car);
+  if (!car) {
+    return res.status(404).json({ status: 404, message: "Car not found" });
+  }
+
+
+  if (req.body.status === "Contract is Closed") {
+    car.rented = false;
+  } else {
+    car.rented = true;
+  }
+  await car.save();
+
+  Object.assign(contract, updatedBody);
+  const updatedContract = await contract.save();
           // if (car.rented == true) {
           //   console.log("hello")
           //   return res.status(200).json({
@@ -294,17 +302,8 @@ exports.updateContract = async (req, res) => {
             message: "Successfully updated Contract",
           });
         });
-      } else {
-        return res
-          .status(404)
-          .json({ status: 404, message: "Contract not found" });
-      }
-    })
-    .catch((error) => {
-      error;
-    });
-  });
-}
+      
+    } 
 
 exports.getContractById = async (req, res) => {
   try {

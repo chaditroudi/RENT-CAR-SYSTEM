@@ -26,7 +26,7 @@ export interface Car {
     seats:number,
     cylinders:number,
     insurance_company:string,
-    type_of_insurance:string,
+    type_insurance:string,
     owner_name:string,
     owner_id:number,
     nationality:string,
