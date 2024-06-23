@@ -127,7 +127,7 @@ export class NavService implements OnDestroy {
           icon: "layout",
           type: "sub",
           badgeType: "light-primary",
-          badgeValue: "2",
+          badgeValue: "1",
           active: false,
           children: [
             {
@@ -135,11 +135,7 @@ export class NavService implements OnDestroy {
               title: "Contract Page",
               type: "link",
             },
-            {
-              path: "/modules/contracts/contract/contract-backups",
-              title: "Backup Contract",
-              type: "link",
-            },
+      
           ],
         },
         {
@@ -252,11 +248,7 @@ export class NavService implements OnDestroy {
               title: "Contract Page",
               type: "link",
             },
-            {
-              path: "/modules/contracts/contract/contract-backups",
-              title: "Contract Backups",
-              type: "link",
-            },
+          
           ],
         },
         {

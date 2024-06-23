@@ -33,6 +33,7 @@ import { BaseModule } from './ui/base/base.module';
 import { BranchsListComponent } from './modules/branchs/branchs-list-user/branchs-list.component';
 import { RoleResolver } from './core/resolver/role-resolver.service';
 import { RoleRedirectGuard } from './core/guards/role-redirect.guard';
+import { ImageUrlPipe } from './shared/pipe/image-url.pipe';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -45,6 +46,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
     LoginComponent,
     BranchsListComponent,
+
     
     
   ],

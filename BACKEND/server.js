@@ -12,6 +12,7 @@ const mongoose  = require('mongoose')
 require("./src/utils/mongo-connection");
 
 
+const Contract =require("./src/models/contract.model");
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./src/utils/swagger');
   
@@ -60,6 +61,7 @@ const Notification = mongoose.model('Notification', notificationSchema);
 httpServer.listen(PORT, () => console.log(`listening on port ${PORT}`   ));
 
 const io = require('./src/utils/socket').init(httpServer);
+
 
 
 io.on('connection', socket=>{

@@ -49,6 +49,7 @@ export class ReportManager {
     const chartElement = document.getElementById(chartElementId);
     const chart = echarts.init(chartElement);
 
+    console.log("REPORTS",reports);
     const chartOptions = {
       xAxis: {
         type: "category",

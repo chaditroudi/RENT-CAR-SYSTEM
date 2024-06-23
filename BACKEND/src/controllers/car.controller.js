@@ -128,7 +128,7 @@ exports.fetchCars
 
 exports.getAllCarsByBranch = async (req, res) => {
   try {
-    const cars= await Car.find({branch_id: req.user.branch_id
+    const cars= await Car.find({branch_id: req.user.branch_id,rented:false
     });
     return res.status(200).json(cars);
   } catch (error) {
@@ -153,7 +153,7 @@ exports.fetchValidInssu =  async(req, res) =>{
 
 
 
-    const cars = await fetchCarsWithValidInsurance(req.body.branch_id);
+    const cars = await fetchCarsWithValidInsurance(req.user.branch_id);
 
 
     res.json(cars);
@@ -167,7 +167,7 @@ exports.fetchCarsWithValidRegist =  async(req, res) => {
 
 
 
-    const cars = await fetchCarsWithValidRegistration(req.body.branch_id);
+    const cars = await fetchCarsWithValidRegistration(req.user.branch_id);
     res.json(cars);
 } catch (err) {
     res.status(500).json({ message: err.message });

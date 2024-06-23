@@ -4,57 +4,66 @@
   [active_item]="'Contracts Page'"
 ></app-breadcrumb>
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="card">
-        <div class="card-header">
-          <h5>Backup Contracts</h5>
-        </div>
-        <div class="card-body">
-          <div class="product-list-custom custom-datatable">
-            <div *ngIf="contracts.length > 0; else noData">
-              <div class="table-responsive">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">Serial</th>
-                      <th scope="col">Version</th>
-                      <th scope="col">Days</th>
-                      <th scope="col">car Back</th>
-                      <th scope="col">Car out</th>
-                      <th scope="col">Location</th>
-                      <th scope="col">Daily</th>
-                      <th scope="col">Weekly</th>
-                      <th scope="col">Monthly</th>
-                      <th scope="col">Annual</th>
-                    </tr>
-                  </thead>
-                  <tbody *ngFor="let item of contracts">
-                    <tr>
-                      <td>{{ item.data?.serial }}</td>
-                      <td>{{ item.data?.version }}</td>
-                      <td>{{ item.data?.days }}</td>
-                      <td>{{  item.data?.car_back | date : "yyyy-mm-dd" }}</td>
-                      <td>{{ item.data?.car_out | date : "yyyy-mm-dd" }}</td>
-                      <td>{{ item.data?.location }}</td>
-                      <td>{{ item.data?.daily }}</td>
-                      <td>{{ item.data?.weekly }}</td>
-                      <td>{{ item.data?.monthly }}</td>
-                      <td>{{ item.data?.annual }}</td>
-                    </tr>
-                  </tbody>
-                </table>
+
+  
+  <div class="container-fluid">
+    <div class="row">
+  
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xl-12 xl-100 box-col-12">
+          <div *ngIf="contracts.length > 0; else noData">
+            <div class="card" *ngFor="let item of contracts">
+              <div class="job-search">
+                <div class="card-body">
+                  <div class="media">
+                    <div class="media-body">
+                      <h6 class="f-w-600">
+                        <span>Serial: {{ item.data?.serial }}</span>
+                        <span class="badge badge-primary pull-right">Status: {{ item.data?.status }}</span>
+                      </h6>
+                      <p>Version: {{ item.data?.version }}</p>
+                      <p>Location: {{ item.data?.location }}</p>
+                      <p>Car Out: {{ item.data?.car_out | date : 'yyyy-MM-dd' }}</p>
+                      <p>Car Back: {{ item.data?.car_back | date : 'yyyy-MM-dd' }}</p>
+                
+                  <p>
+                    Sponsor: {{ item.data?.sponsor }}
+                  </p>
+                  <p>
+                    Days: {{ item.data?.days }}
+                  </p>
+            
+                
+                          <p>Daily: {{ item.data?.car.daily | currency }}</p>
+                          <p>Weekly: {{ item.data?.car.weekly | currency }}</p>
+                          <p>Monthly: {{ item.data?.car.monthly | currency }}</p>
+                          <p>Annual: {{ item.data?.car.annual | currency }}</p>
+     
+                  
+                  <div class="row">
+                    <div  class="alert bg-light">
+                   <span class="text-black">
+                    Rent Type : {{
+                      item.data?.status_contract
+                    }}
+                   </span>
+                    </div>
+                  </div>
+                </div>    </div>
+              </div>
               </div>
             </div>
-            <ng-template #noData>
-              <div class="alert alert-light">
-                <p>Backup contract not found.</p>
-              </div>
-            </ng-template>
           </div>
+          <ng-template #noData>
+            <div class="alert alert-light">
+              <p>Backup contract not found.</p>
+            </div>
+          </ng-template>
         </div>
       </div>
     </div>
+    
+    </div>
   </div>
-</div>
+  

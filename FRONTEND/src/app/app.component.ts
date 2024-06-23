@@ -1,7 +1,8 @@
-import { Component, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, PLATFORM_ID, Inject, AfterViewInit } from '@angular/core';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { map, delay, withLatestFrom } from 'rxjs/operators';
 import { fadeInAnimation } from './shared/data/router-animation/router-animation';
+import * as feather from 'feather-icons';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,7 @@ import { fadeInAnimation } from './shared/data/router-animation/router-animation
   styleUrls: ['./app.component.scss'],
   
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit  {
   
   // For Progressbar
   loaders = this.loader.progress$.pipe(
@@ -22,4 +23,7 @@ export class AppComponent {
     private loader: LoadingBarService) {
   }
 
+  ngAfterViewInit() {
+    feather.replace();
+  }
 }

@@ -83,11 +83,11 @@ export class ContractService {
   
 
   backups:any;
-  getContractsBackup() {
+  getContractsBackup(id:string) {
 
     const headers = this.getHeaders();
     
-    return this.http.get<any[]>(`${baseUrl}/contract/backups-contracts` ,{headers}).subscribe((data) => {
+    return this.http.get<any[]>(`${baseUrl}/contract/backups-contracts/${id}` ,{headers}).subscribe((data) => {
       
       this.contractSource.next(data)
   });
@@ -100,7 +100,9 @@ export class ContractService {
     return this.http.get(`${baseUrl}/contract/${id}`,{headers});
   } 
 
-  
+  getImages(contractId: string): Observable<any> {
+    return this.http.get(`${baseUrl}/contract/get-images/${contractId}`);
+  }
 
   create(data: any) {
     const headers = this.getHeaders();

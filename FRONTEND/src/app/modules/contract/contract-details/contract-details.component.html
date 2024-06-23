@@ -84,9 +84,7 @@
         <div class="col-sm-12">
           <div class="card" *ngIf="formData.length > 0; else noDataFound">
             <div class="card-header">
-              <div class="text-start">
-                <a href="#" class="router-link-active">Backup</a>
-              </div>
+             
               <div class="text-end">
                 <button (click)="goToAddContract()" class="btn btn-success">
                   {{ buttonAdd }}
@@ -106,6 +104,9 @@
                 <div *ngIf="filteredData.length > 0; else noDataFound">
                   <div *ngFor="let c of filteredData | paginate: { itemsPerPage: 1, currentPage: currentPage, totalItems: filteredData.length, id: paginationId }">
    
+                    <div class="text-start">
+                      <a [routerLink]="['/modules/contracts/contract/contract-backups',c._id]" class="router-link-active">Backup</a>
+                    </div>
                 
                     <div class="row">
                       <div class="col-md-12">
@@ -1202,9 +1203,13 @@
           <div class="row">
             <div class="col-md-12">
               <div class="card">
-                <div class="section">
+                <div class="card-body">
                   <span>No contract added yet .</span>
-                    <a [routerLink]="['/modules/contracts/contract/contract-add']" routerLinkActive="router-link-active" >Add contract</a>
+                    <a style="color: #fff;" [routerLink]="['/modules/contracts/contract/contract-add']" routerLinkActive="router-link-active" >
+                    <button class="btn btn-primary">
+                      Add contract
+                  </button>
+                  </a>
                 </div>
               </div>
             </div>

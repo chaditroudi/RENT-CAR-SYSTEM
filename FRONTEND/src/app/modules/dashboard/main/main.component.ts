@@ -16,6 +16,8 @@ export class MainComponent implements OnInit {
 
   openContractCount:number = 0;
   closedContractCount:number = 0;
+  countRented:number = 0;
+  countAva:number = 0;
   validInss: Car[];
   validRegist: Car[];
 
@@ -25,6 +27,7 @@ export class MainComponent implements OnInit {
 
 
   getCarsWithValidInsurance(): void {
+    console.log(JSON.parse(this.storageServ.getCurrentUser()));
     this.carService.getCarsWithValidInsurance(JSON.parse(this.storageServ.getCurrentUser()).branch_id).subscribe(data => {
       this.validInss = data;
     });
@@ -35,12 +38,27 @@ export class MainComponent implements OnInit {
       this.validRegist = data;
     });
   }
-  countContractOpen() {
+  async countContractOpen() {
     this.statisService.countContractOpen().subscribe((data)=>{
 
+      console.log(data)
       this.openContractCount = data;
 
     })
+  }
+
+  countRentedCar() {
+    this.statisService.countRentedCar().subscribe((data)=>{ 
+        this.countRented = data;
+    });
+  }
+
+  countAvailableCar() {
+
+    this.statisService.countAvailableCar().subscribe((data)=>{
+      console.log(data);
+      this.countAva = data;
+    });
   }
 
   countContractClosed() {
@@ -53,6 +71,8 @@ export class MainComponent implements OnInit {
   }
   ngOnInit() {
     this.countContractOpen();
+    this.countAvailableCar();
+    this.countRentedCar();
     this.countContractClosed();
     this.getCarsWithValidInsurance();
     this.getCarsWithValidRegistration();

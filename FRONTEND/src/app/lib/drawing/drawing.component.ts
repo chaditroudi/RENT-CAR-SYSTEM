@@ -1,14 +1,15 @@
-import { Component, ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit, Input, OnInit } from '@angular/core';
 import * as Hammer from 'hammerjs';
 import { HttpClient } from '@angular/common/http';
 import { ContractService } from 'src/app/core/services/contract.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
   selector: 'app-drawing',
   templateUrl: './drawing.component.html',
   styleUrls: ['./drawing.component.scss']
 })
-export class DrawingComponent implements AfterViewInit {
+export class DrawingComponent implements AfterViewInit ,OnInit{
   @ViewChild('backgroundCanvas', { static: true }) backgroundCanvas: ElementRef<HTMLCanvasElement>;
   @ViewChild('drawingCanvas', { static: true }) drawingCanvas: ElementRef<HTMLCanvasElement>;
 
@@ -24,7 +25,12 @@ export class DrawingComponent implements AfterViewInit {
   opacity: number = 1;
   isErasing: boolean = false;
 
-  constructor(private http: HttpClient,private readonly contractService:ContractService) {}
+  constructor(private http: HttpClient,
+    private storageServ:StorageService,
+    private readonly contractService:ContractService) {}
+  ngOnInit(): void {
+    this.loadContractImages();
+  }
 
   ngAfterViewInit(): void {
     this.bgCtx = this.backgroundCanvas.nativeElement.getContext('2d');
@@ -48,7 +54,7 @@ export class DrawingComponent implements AfterViewInit {
       this.bgCtx.font = '20px Arial';
       this.bgCtx.textAlign = 'center';
       // this.bgCtx.fillText((3 * this.backgroundCanvas.nativeElement.width) / 4, 30);
-    };
+    };  
 
     carOutImg.src = '/assets/images/car/car_out.png';
     carBackImg.src = '/assets/images/car/car_back.png';
@@ -165,6 +171,20 @@ export class DrawingComponent implements AfterViewInit {
     carOutImg.src = '/assets/images/car/car_out.png';
     carBackImg.src = '/assets/images/car/car_back.png';
   }
+  images: string[] = [];
+
+  loadContractImages(): void {
+    this.contractService.getImages(this.idContract).subscribe(
+      (response) => {
+        this.images = response.files;
+
+        this.loadImages();
+      },
+      (error) => {
+        console.error('Error loading contract images:', error);
+      }
+    );
+  }
   saveImage(): void {
     const mergedCanvas = document.createElement('canvas');
     mergedCanvas.width = this.backgroundCanvas.nativeElement.width;
@@ -189,6 +209,7 @@ export class DrawingComponent implements AfterViewInit {
         this.contractService.updateImage(this.idContract,formData).subscribe(
           (response) => {
             console.log('Image saved to MongoDB:', response);
+            
           },
           (error) => {
             console.error('Error saving image to MongoDB:', error);

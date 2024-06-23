@@ -25,7 +25,7 @@ const routes: Routes = [
 
 
       {
-        path: "contract/contract-backups",
+        path: "contract/contract-backups/:id",
         component: ContractBackupsComponent,
         canActivate: [AuthGuard],
         data: { roles: ["1", "2"] },

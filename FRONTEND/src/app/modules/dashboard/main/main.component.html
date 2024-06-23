@@ -8,56 +8,51 @@
     <div class="row widget-grid">
       <div class="container">
         <div class="row">
-          <!-- <div class="four col-md-3">
+          <div class="four col-md-3">
         <div class="card">
           
           <div class="counter-box">
-            <i class="fa fa-users"></i>
-            <span class="counter">0</span>
-            <p>Users</p>
+            <i class="fa fa-car" style="color:green;"></i>
+            <span class="counter">{{countAva}}</span>
+            <p>Cars Available</p>
           </div>
         </div>
        
-      </div> -->
-
-          <div class="four col-md-3">
-            <div class="card">
-              <div class="counter-box">
-                <i class="fa fa-file"></i>
-                <span class="counter">{{ openContractCount }}</span>
-                <p>Open Contracts</p>
-              </div>
-            </div>
+      </div>
+      <div class="four col-md-3">
+        <div class="card">
+          
+          <div class="counter-box">
+            <i class="fa fa-car" style="color:crimson;"></i>
+            <span class="counter">{{countRented}}</span>
+            <p>Car Rented</p>
           </div>
-          <div class="four col-md-3">
-            <div class="card">
-              <div class="counter-box">
-                <i class="fa fa-file"></i>
-                <span class="counter">{{ closedContractCount }}</span>
-                <p>Closed Contracts</p>
-              </div>
-            </div>
+        </div>
+       
+      </div>
+      <div class="four col-md-3">
+        <div class="card">
+          
+          <div class="counter-box">
+            <i class="fa fa-file" style="color:darkcyan;"></i>
+            <span class="counter">{{openContractCount}}</span>
+            <p>Open Contract</p>
           </div>
-
-          <div class="four col-md-3">
-            <div class="card">
-              <div class="counter-box">
-                <i class="fa fa-check"></i>
-                <span class="counter">2147</span>
-                <p>Rented Cars</p>
-              </div>
-            </div>
+        </div>
+       
+      </div>
+      <div class="four col-md-3">
+        <div class="card">
+          
+          <div class="counter-box">
+            <i class="fa fa-file-archive-o" style="color:crimson;"></i>
+            <span class="counter">{{closedContractCount}}</span>
+            <p>Closed Contract</p>
           </div>
-
-          <div class="four col-md-3">
-            <div class="card">
-              <div class="counter-box">
-                <i class="fa fa-thumbs-o-up"></i>
-                <span class="counter">2147</span>
-                <p>Available Cars</p>
-              </div>
-            </div>
-          </div>
+        </div>
+       
+      </div>
+      
 
           <app-chart-box
             [validInss]="validInss"

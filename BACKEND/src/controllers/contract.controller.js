@@ -17,19 +17,8 @@ const Backup = mongoose.model(
 
 const accountSid = process.env.TWILIO_ACCOUNT;
 const authToken = process.env.TWILIO_AUTH;
-const client = require("twilio")(accountSid, authToken);
 
 // Function to send WhatsApp message
-function sendWhatsAppMessage(to, message) {
-  client.messages
-    .create({
-      from: "whatsapp:+14155238886", // Twilio WhatsApp number
-      body: message,
-      to: `whatsapp:${to}`,
-    })
-    .then((message) => console.log(message.sid))
-    .catch((error) => console.log(error));
-}
 
 exports.createContract = async (req, res) => {
   try {
@@ -128,7 +117,7 @@ async function storeBackup(backupContract) {
     // Save the backup document
     await backup.save();
 
-    ("contract backup stored successfully");
+    console.log("contract backup stored successfully");
   } catch (error) {
     console.error("Error contractBackup backup:", error);
   }
@@ -144,7 +133,7 @@ exports.getAllContractsByBranch = async (req, res) => {
       .populate("car")
       .populate("owner");
     console.log(cars);
-    return res.status(200).json(cars);
+      return res.status(200).json(cars);
   } catch (error) {
     return res.status(400).json({ status: 400, message: error.message });
   }
@@ -171,9 +160,8 @@ exports.updateDamageCar = async (req, res) => {
       return res.status(404).send("Contract not found");
     }
 
-    res
-      .status(200)
-      .json({ message: "File uploaded successfully", filePath: filePath });
+    return     res.status(200).json({ message: "File uploaded successfully", files: nameArray });
+
   } catch (error) {
     console.error("Error updating image:", error);
     res.status(500).send("Internal server error");
@@ -181,7 +169,7 @@ exports.updateDamageCar = async (req, res) => {
 };
 
 exports.updateContract = async (req, res) => {
-  const contract = await Contract.findById(req.params.id);
+  const contract = await Contract.findById(req.params.id).populate("car").populate("owner");
 
   // create Backup :
   const contractBackup = { ...contract.toObject() };
@@ -198,7 +186,6 @@ exports.updateContract = async (req, res) => {
 
   result.map((item) => {
     if ((item.data.serial === contract.serial) && count >2) {
-      ("yes");
       return res.status(200).json({
         status: 200,
         message: "you can't update this contract",
@@ -206,15 +193,16 @@ exports.updateContract = async (req, res) => {
       });
     }
 
-  if(contract.version > 5) {
-         return res.status(200).json({
-        status: 200,
-        message: "you can't update this contract",
-        attempts: true,
-      });
-  }
-
+  
 });
+if(contract.version >4) {
+  return res.status(200).json({
+ status: 200,
+ message: "you can't update this contract",
+ attempts: true,
+});
+}
+
   const updatedBody = {
     ...req.body,
 
@@ -305,6 +293,22 @@ exports.updateContract = async (req, res) => {
       
     } 
 
+      exports.getImages = async (req, res, next) =>{
+      const id = req.params.contractId;
+      try {
+        const contract = await Contract.findById(id);
+    
+        if (!contract) {
+          return res.status(404).send("Contract not found");
+        }
+    
+        res.status(200).json({ files: contract.files });
+      } catch (error) {
+        console.error("Error fetching images:", error);
+        res.status(500).send("Internal server error");
+      }
+    }
+
 exports.getContractById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -350,24 +354,19 @@ exports.getAllContracts = async (req, res) => {
 
 exports.getAllContractsBackups = async (req, res) => {
   try {
-    console.log(req.user.branch_id);
+
+    console.log("hii",req.params.id)
     const contracts = await Backup.aggregate([
       {
         $match: {
-          "data.branch_id": new ObjectId(req.user.branch_id),
+          "data._id":new ObjectId(req.params.id)
         },
       },
+  
+      
+    
       {
-        $group: {
-          _id: "$data.serial",
-          doc: { $first: "$$ROOT" },
-        },
-      },
-      {
-        $replaceRoot: { newRoot: "$doc" },
-      },
-      {
-        $lookup: {
+          $lookup: {
           from: "Car",
           localField: "data.car",
           foreignField: "_id",
@@ -423,3 +422,7 @@ async function checkKM(current, km_back) {
 
 
 }
+
+
+
+

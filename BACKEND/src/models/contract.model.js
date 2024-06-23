@@ -142,8 +142,11 @@ const contractSchema = new mongoose.Schema({
       createdBy:{
         type:String
       },
-      files:[String],
 
+      files:{
+        data: Buffer,
+    contentType: String
+      },
       
   
       branch_id: { type: Schema.Types.ObjectId, ref: 'Branch' }

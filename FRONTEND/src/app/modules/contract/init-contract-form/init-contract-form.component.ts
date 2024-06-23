@@ -100,9 +100,8 @@ export class InitContractFormComponent implements OnInit {
       this.carService.getCars();
 
       this.carService.cars$.subscribe((res: Car[]) => {
-        this.carData = [];
-
-        this.carData.push(res);
+     
+        this.carData = res.filter(car => !car.rented);
       });
     } else if (
       this.storageService.getRole() == 2 ||
@@ -110,7 +109,7 @@ export class InitContractFormComponent implements OnInit {
       ) {
       this.carService.getCarsByBranch();
       this.carService.cars$.subscribe((res) => {
-        this.carData = res;
+        this.carData = res.filter(car => !car.rented);
       });
     }
   }
@@ -247,14 +246,26 @@ export class InitContractFormComponent implements OnInit {
   }
 
   fetchAllCustomers() {
-    this.customerService.fetchAllCustomers();
+    
+    if(JSON.parse(this.storageService.getCurrentUser()).data.role === 1) {
+      this.customerService.fetchAllCustomers();
     this.customerService.customers$.subscribe((res) => {
       this.customerData = res;
     });
 
-    this.carService.cars$.subscribe((res) => {
-      this.carData = res;
+    // this.carService.cars$.subscribe((res) => {
+    //   this.carData = res;
+    // });
+    }else {
+      this.customerService.fetchAllCustomersByBranch();
+    this.customerService.customers$.subscribe((res) => {
+      this.customerData = res;
     });
+
+    // this.carService.cars$.subscribe((res) => {
+    //   this.carData = res;
+    // });
+    }
   }
 
   fullname = "";

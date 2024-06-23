@@ -258,10 +258,6 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
     this.currentPage = 1; 
   }
 
-  pageChanged(event: number) {
-    // Update current page when pagination changes
-    this.currentPage = event;
-  }
 
 
 
@@ -476,17 +472,28 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
       });
     }
   }
-  async fetchAllCustomers() {
-    this.customerService.fetchAllCustomers();
+  fetchAllCustomers() {
+    
+    if(JSON.parse(this.storageService.getCurrentUser()).data.role === 1) {
+      this.customerService.fetchAllCustomers();
     this.customerService.customers$.subscribe((res) => {
       this.customerData = res;
     });
 
-    this.carService.cars$.subscribe((res) => {
-      this.carData = res;
+    // this.carService.cars$.subscribe((res) => {
+    //   this.carData = res;
+    // });
+    }else {
+      this.customerService.fetchAllCustomersByBranch();
+    this.customerService.customers$.subscribe((res) => {
+      this.customerData = res;
     });
-  }
 
+    // this.carService.cars$.subscribe((res) => {
+    //   this.carData = res;
+    // });
+    }
+    }
   // async loadData() {
 
   //   this.contractService.getContracts();
@@ -693,14 +700,14 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
   }
 
 
-  // pageChanged(event: any, p: any) {
-  //   this.currentPage = event;
+  pageChanged(event: any, p: any) {
+    this.currentPage = event;
 
-  //   console.log("data", event);
-  //   console.log("p", p);
+    console.log("data", event);
+    console.log("p", p);
 
-  //   this.loadData();
-  // }
+    this.loadData();
+  }
 
 
 

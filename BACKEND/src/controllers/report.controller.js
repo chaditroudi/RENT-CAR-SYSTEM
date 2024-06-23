@@ -1,5 +1,6 @@
 const { default: mongoose } = require("mongoose");
 const Report = require("../models/report.model");
+const Contract = require("../models/contract.model");
 const Car = require("../models/car.model");
 
 const moment = require("moment");
@@ -177,429 +178,159 @@ exports.getContractCount = async (req, res) => {
 
 async function getYearlyReports(startDate, endDate) {
   try {
-    const aggregationPipeline = [
-      {
-        $lookup: {
-          from: "contracts",
-          localField: "contract",
-          foreignField: "_id",
-          as: "contractDetails",
-        },
-      },
-      {
-        $unwind: "$contractDetails",
-      },
+    const reports = await Contract.aggregate([
       {
         $addFields: {
-          incomeField: {
-            $subtract: [
-              "$contractDetails.sum",
-              {
-                $multiply: [
-                  "$contractDetails.sum",
-                  "$contractDetails.discount",
-                ],
-              },
-            ],
-          },
           carOutDate: {
-            $toDate: "$contractDetails.car_out",
-          },
-          year: { $year: { $toDate: "$contractDetails.car_out" } },
-        },
+            $toDate: "$car_out"
+          }
+        }
       },
       {
         $match: {
           carOutDate: {
             $gte: new Date(startDate),
-            $lte: new Date(endDate),
-          },
-        },
+            $lte: new Date(endDate)
+          }
+        }
       },
       {
         $group: {
-          _id: "$year",
-          totalContracts: { $sum: 1 },
-          totalIncome: { $sum: "$incomeField" },
-        },
+          _id: { $dateToString: { format: "%Y", date: "$carOutDate" } }, // Group by year
+          totalIncome: { $sum: "$payable" }
+        }
       },
       {
         $project: {
           _id: 0,
-          year: "$_id",
-          totalIncome: 1,
-          totalContracts: 1,
-        },
+          year: { $toInt: "$_id" }, // Convert _id to integer (year)
+          totalIncome: 1
+        }
       },
-    ];
+      {
+        $sort: { year: 1 } // Sort by year
+      }
+    ]);
 
-    "Initial Pipeline:", aggregationPipeline;
-
-    const reports = await Report.aggregate(aggregationPipeline);
-
-    "Reports:", reports;
+    console.log("Yearly Reports:", reports);
 
     return reports;
   } catch (err) {
     console.error(err);
-    return [];
+    return []; // Return empty array on error
   }
 }
 
 async function getMonthlyReports(startDate, endDate) {
   try {
-    const aggregationPipeline = [
-      {
-        $lookup: {
-          from: "contracts",
-          localField: "contract",
-          foreignField: "_id",
-          as: "contractDetails",
-        },
-      },
-      {
-        $unwind: "$contractDetails",
-      },
+    const reports = await Contract.aggregate([
       {
         $addFields: {
           carOutDate: {
-            $toDate: "$contractDetails.car_out",
-          },
-          carBackDate: {
-            $toDate: "$contractDetails.car_back",
-          },
-          incomeField: "$contractDetails.payable",
-          month: { $month: { $toDate: "$contractDetails.car_out" } },
-          year: { $year: { $toDate: "$contractDetails.car_out" } },
-        },
+            $toDate: "$car_out"
+          }
+        }
       },
       {
         $match: {
-          carOutDate: { $gte: new Date(startDate) },
-          carBackDate: { $lte: new Date(endDate) },
-        },
+          carOutDate: {
+            $gte: new Date(startDate),
+            $lte: new Date(endDate)
+          }
+        }
       },
       {
         $group: {
-          _id: {
-            serial:"$serial",
-            month: "$month",
-            year: "$year",
-          },
-          totalContracts: { $sum: 1 },
-          totalIncome: { $sum: "$incomeField" },
-        },
-      },
-      {
-        $addFields: {
-          monthString: {
-            $let: {
-              vars: {
-                months: [
-                  "",
-                  "January",
-                  "February",
-                  "March",
-                  "April",
-                  "May",
-                  "June",
-                  "July",
-                  "August",
-                  "September",
-                  "October",
-                  "November",
-                  "December",
-                ],
-              },
-              in: { $arrayElemAt: ["$$months", "$_id.month"] },
-            },
-          },
-        },
+          _id: { $dateToString: { format: "%Y-%m", date: "$carOutDate" } }, // Group by month
+          totalIncome: { $sum: "$payable" }
+        }
       },
       {
         $project: {
           _id: 0,
-          month: "$monthString",
-          year: "$_id.year",
-          totalIncome: 1,
-          totalContracts: 1,
-        },
+          month: "$_id",
+          totalIncome: 1
+        }
       },
-    ];
+      {
+        $sort: { month: 1 } // Sort by month
+      }
+    ]);
 
-    const reports = await Report.aggregate(aggregationPipeline);
+    console.log("Monthly Reports:", reports);
 
     return reports;
   } catch (err) {
     console.error(err);
-    return [];
+    return []; // Return empty array on error
   }
 }
 
 
 async function getWeeklyReports(startDate, endDate) {
   try {
-    const aggregationPipeline = [
-      {
-        $lookup: {
-          from: "contracts",
-          localField: "contract",
-          foreignField: "_id",
-          as: "contractDetails",
-        },
-      },
-      {
-        $unwind: "$contractDetails",
-      },
+    const reports = await Contract.aggregate([
       {
         $addFields: {
-          incomeField: {
-            $subtract: [
-              "$contractDetails.sum",
-              {
-                $multiply: [
-                  "$contractDetails.sum",
-                  "$contractDetails.discount",
-                ],
-              },
-            ],
-          },
-          carOutDate: { $toDate: "$contractDetails.car_out" },
-          week: { $week: { $toDate: "$contractDetails.car_out" } },
-          monthString: {
-            $switch: {
-              branches: [
-                {
-                  case: {
-                    $eq: [
-                      { $month: { $toDate: "$contractDetails.car_out" } },
-                      1,
-                    ],
-                  },
-                  then: "January",
-                },
-                {
-                  case: {
-                    $eq: [
-                      { $month: { $toDate: "$contractDetails.car_out" } },
-                      2,
-                    ],
-                  },
-                  then: "February",
-                },
-                {
-                  case: {
-                    $eq: [
-                      { $month: { $toDate: "$contractDetails.car_out" } },
-                      3,
-                    ],
-                  },
-                  then: "March",
-                },
-                {
-                  case: {
-                    $eq: [
-                      { $month: { $toDate: "$contractDetails.car_out" } },
-                      4,
-                    ],
-                  },
-                  then: "April",
-                },
-                {
-                  case: {
-                    $eq: [
-                      { $month: { $toDate: "$contractDetails.car_out" } },
-                      5,
-                    ],
-                  },
-                  then: "May",
-                },
-                {
-                  case: {
-                    $eq: [
-                      { $month: { $toDate: "$contractDetails.car_out" } },
-                      6,
-                    ],
-                  },
-                  then: "June",
-                },
-                {
-                  case: {
-                    $eq: [
-                      { $month: { $toDate: "$contractDetails.car_out" } },
-                      7,
-                    ],
-                  },
-                  then: "July",
-                },
-                {
-                  case: {
-                    $eq: [
-                      { $month: { $toDate: "$contractDetails.car_out" } },
-                      8,
-                    ],
-                  },
-                  then: "August",
-                },
-                {
-                  case: {
-                    $eq: [
-                      { $month: { $toDate: "$contractDetails.car_out" } },
-                      9,
-                    ],
-                  },
-                  then: "September",
-                },
-                {
-                  case: {
-                    $eq: [
-                      { $month: { $toDate: "$contractDetails.car_out" } },
-                      10,
-                    ],
-                  },
-                  then: "October",
-                },
-                {
-                  case: {
-                    $eq: [
-                      { $month: { $toDate: "$contractDetails.car_out" } },
-                      11,
-                    ],
-                  },
-                  then: "November",
-                },
-                {
-                  case: {
-                    $eq: [
-                      { $month: { $toDate: "$contractDetails.car_out" } },
-                      12,
-                    ],
-                  },
-                  then: "December",
-                },
-              ],
-              default: "Invalid Month",
-            },
-          },
-          year: { $year: { $toDate: "$contractDetails.car_out" } },
-
-          dayOfWeek: {
-            $switch: {
-              branches: [
-                {
-                  case: {
-                    $eq: [
-                      { $dayOfWeek: { $toDate: "$contractDetails.car_out" } },
-                      1,
-                    ],
-                  },
-                  then: "Sunday",
-                },
-                {
-                  case: {
-                    $eq: [
-                      { $dayOfWeek: { $toDate: "$contractDetails.car_out" } },
-                      2,
-                    ],
-                  },
-                  then: "Monday",
-                },
-                {
-                  case: {
-                    $eq: [
-                      { $dayOfWeek: { $toDate: "$contractDetails.car_out" } },
-                      3,
-                    ],
-                  },
-                  then: "Tuesday",
-                },
-                {
-                  case: {
-                    $eq: [
-                      { $dayOfWeek: { $toDate: "$contractDetails.car_out" } },
-                      4,
-                    ],
-                  },
-                  then: "Wednesday",
-                },
-                {
-                  case: {
-                    $eq: [
-                      { $dayOfWeek: { $toDate: "$contractDetails.car_out" } },
-                      5,
-                    ],
-                  },
-                  then: "Thursday",
-                },
-                {
-                  case: {
-                    $eq: [
-                      { $dayOfWeek: { $toDate: "$contractDetails.car_out" } },
-                      6,
-                    ],
-                  },
-                  then: "Friday",
-                },
-                {
-                  case: {
-                    $eq: [
-                      { $dayOfWeek: { $toDate: "$contractDetails.car_out" } },
-                      7,
-                    ],
-                  },
-                  then: "Saturday",
-                },
-              ],
-              default: "Invalid Day",
-            },
-          },
-        },
+          carOutDate: {
+            $toDate: "$car_out"
+          }
+        }
       },
       {
         $match: {
           carOutDate: {
             $gte: new Date(startDate),
-            $lte: new Date(endDate),
-          },
-        },
+            $lte: new Date(endDate)
+          }
+        }
       },
       {
         $group: {
-          _id: {
-            week: "$week",
-            month: "$monthString",
-            year: "$year",
-            dayOfWeek: "$dayOfWeek",
-          },
-          totalContracts: { $sum: 1 },
-          totalIncome: { $sum: "$incomeField" },
-        },
+          _id: { $dayOfWeek: "$carOutDate" }, // Group by day of the week (1-7)
+          totalIncome: { $sum: "$payable" }
+        }
+      },
+      {
+        $addFields: {
+          dayOfWeek: {
+            $switch: {
+              branches: [
+                { case: { $eq: ["$_id", 1] }, then: "Sunday" },
+                { case: { $eq: ["$_id", 2] }, then: "Monday" },
+                { case: { $eq: ["$_id", 3] }, then: "Tuesday" },
+                { case: { $eq: ["$_id", 4] }, then: "Wednesday" },
+                { case: { $eq: ["$_id", 5] }, then: "Thursday" },
+                { case: { $eq: ["$_id", 6] }, then: "Friday" },
+                { case: { $eq: ["$_id", 7] }, then: "Saturday" }
+              ],
+              default: "Unknown"
+            }
+          }
+        }
       },
       {
         $project: {
           _id: 0,
-          week: "$_id.week",
-          month: "$_id.month",
-          year: "$_id.year",
-          dayOfWeek: "$_id.dayOfWeek",
-          totalIncome: 1,
-          totalContracts: 1,
-        },
+          dayOfWeek: 1,
+          totalIncome: 1
+        }
       },
-    ];
+      {
+        $sort: { dayOfWeek: 1 } // Sort by day of the week
+      }
+    ]);
 
-    "Initial Pipeline:", aggregationPipeline;
-
-    const reports = await Report.aggregate(aggregationPipeline);
-
-    "Reports:", reports;
+    console.log("RENTALs", reports);
 
     return reports;
   } catch (err) {
     console.error(err);
-    return [];
+    return []; // Return empty array on error
   }
 }
+
+
 
 // async function getWeeklyReports(startDate, endDate) {
 
