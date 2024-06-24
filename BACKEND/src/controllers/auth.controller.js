@@ -104,6 +104,7 @@ const loginUser = async (req, res) => {
 
     let userData = await User.findOne({ email });
 
+    console.log("user data", userData);
 
     if (!userData) {
       return res.status(400).json({

@@ -35,6 +35,7 @@ import { StorageService } from "src/app/core/services/storage.service";
 
 import { checkboxItems, checkboxItemsBack } from "./../../../data/features";
 import { trace } from "console";
+import { DrawingComponent } from "src/app/lib/drawing/drawing.component";
 
 @Component({
   selector: "app-contract-details",
@@ -89,7 +90,7 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
   payable: any;
   discount: any;
   sum: any;
-  currentData: any[] = []; 
+  currentData: any[] = [];
 
   currentPage: number = 1;
   selectedFeatures: any[];
@@ -114,7 +115,7 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
   selectedItems: any[] = [];
   selectedItemsBackCar: any[] = [];
 
-  enableEditIc:boolean = false;
+  enableEditIc: boolean = false;
 
   reportData: Report;
   selectedItemsBack: string[] = [];
@@ -122,7 +123,7 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
   currentData1: { label: string; checked: boolean }[][];
   formattedaddress: any;
 
-  filteredData=[];
+  filteredData = [];
   show_pdf = false;
   checkVidange: boolean = false;
 
@@ -232,56 +233,70 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
     });
   }
 
-
-  
-
-
-  
   updateFilteredData(searchQuery: string) {
-    
-    if (searchQuery.trim() === '') {
-      this.filteredData = this.formData; // If search query is empty, show all data
+    if (searchQuery.trim() === "") {
+      this.filteredData = this.formData;
     } else {
-    
-      const searchTerms = searchQuery.trim().toLowerCase().split(' ');
-      this.filteredData = this.formData.filter(car =>
-     
-        searchTerms.every(term =>
-          Object.values(car).some(value =>
-            value && value.toString().toLowerCase().includes(term)
-          )
-        )
-        
-      );   
-
+      const searchTerms = searchQuery.trim().toLowerCase().split(" ");
+  
+      this.filteredData = this.formData.filter((contract) => {
+        console.log("Contract:", contract); // Debugging
+  
+        return searchTerms.every((term) => {
+          // Check in car object
+          const carMatch =
+            contract.car &&
+            Object.values(contract.car).some(
+              (value) => value && value.toString().toLowerCase().includes(term)
+            );
+  
+          // Check in contract object itself
+          const contractMatch = Object.values(contract).some(
+            (value) => value && value.toString().toLowerCase().includes(term)
+          );
+  
+          // Check in customer object
+          const customerMatch =
+            contract.owner &&
+            Object.values(contract.owner).some(
+              (value) => value && value.toString().toLowerCase().includes(term)
+            );
+  
+          // Check in owner's fullname
+          const ownerMatch =
+            contract.owner &&
+            contract.owner.fullname &&
+            contract.owner.fullname.toLowerCase().includes(term);
+  
+          console.log(
+            "Search Term:", term,
+            "Car Match:", carMatch,
+            "Contract Match:", contractMatch,
+            "Customer Match:", customerMatch,
+            "Owner Match:", ownerMatch
+          ); // Debugging
+  
+          return carMatch || contractMatch || customerMatch || ownerMatch;
+        });
+      });
     }
-    this.currentPage = 1; 
+    this.currentPage = 1;
+  }
+  
+  openModalD(idContract: string) {
+    const modalRef = this.modalService.open(DrawingComponent, { size: 'lg' });
+    modalRef.componentInstance.idContract = idContract;
   }
 
-
-
-
-
-
   onSearchChange(query: string) {
-    this.filteredData = this.formData.filter(item =>
-      item.sponsor.toLowerCase().includes(query.toLowerCase()) ||  item.days.toLowerCase().includes(query.toLowerCase())
-    );
-
-
-}
-
-
-
-
-
+    console.log(query);
+    this.updateFilteredData(query);
+  }
 
   onChangeInputValue(event: Event, index: number) {
     const target = event.target as HTMLInputElement;
 
     this.inputsValue[index] = target.value;
-
-
 
     console.log(
       `inputValue: ${index + 1}  changed to : ${this.inputsValue[index]}`
@@ -320,7 +335,6 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
       this.updateContract(ContractId);
     }
   }
-
 
   checkKM(contract: Contract) {
     let array = [];
@@ -363,10 +377,10 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
           //   this.checkVidange = false;
           // }
 
-        this.inputsValue[22] = this.ContractForm.controls['daily_val2'].value;
-        this.inputsValue[21] = this.ContractForm.controls['daily_val1'].value;
-        this.inputsValue[23] = this.ContractForm.controls['daily_result'].value;
-
+          this.inputsValue[22] = this.ContractForm.controls["daily_val2"].value;
+          this.inputsValue[21] = this.ContractForm.controls["daily_val1"].value;
+          this.inputsValue[23] =
+            this.ContractForm.controls["daily_result"].value;
 
           const updatedContract = createUpdatedContract(
             this.inputsValue,
@@ -396,10 +410,10 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
 
           // }
           if (response) {
-            if(response.attempts){
-
-              return this.toastr.showError("You cannot update contract more ...");
-
+            if (response.attempts) {
+              return this.toastr.showError(
+                "You cannot update contract more ..."
+              );
             }
 
             if (response.rented == true) {
@@ -459,8 +473,8 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
     if (this.storageService.getRole() == 1) {
       this.carService.getCars();
 
-      this.carService.cars$.subscribe((res) => {
-        this.carData = res;
+      this.carService.cars$.subscribe((res: Car[]) => {
+        this.carData = res.filter((car) => !car.rented);
       });
     } else if (
       this.storageService.getRole() == 2 ||
@@ -468,32 +482,31 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
     ) {
       this.carService.getCarsByBranch();
       this.carService.cars$.subscribe((res) => {
-        this.carData = res;
+        this.carData = res.filter((car) => !car.rented);
       });
     }
   }
   fetchAllCustomers() {
-    
-    if(JSON.parse(this.storageService.getCurrentUser()).data.role === 1) {
+    if (JSON.parse(this.storageService.getCurrentUser()).data.role === 1) {
       this.customerService.fetchAllCustomers();
-    this.customerService.customers$.subscribe((res) => {
-      this.customerData = res;
-    });
+      this.customerService.customers$.subscribe((res) => {
+        this.customerData = res;
+      });
 
-    // this.carService.cars$.subscribe((res) => {
-    //   this.carData = res;
-    // });
-    }else {
+      // this.carService.cars$.subscribe((res) => {
+      //   this.carData = res;
+      // });
+    } else {
       this.customerService.fetchAllCustomersByBranch();
-    this.customerService.customers$.subscribe((res) => {
-      this.customerData = res;
-    });
+      this.customerService.customers$.subscribe((res) => {
+        this.customerData = res;
+      });
 
-    // this.carService.cars$.subscribe((res) => {
-    //   this.carData = res;
-    // });
+      // this.carService.cars$.subscribe((res) => {
+      //   this.carData = res;
+      // });
     }
-    }
+  }
   // async loadData() {
 
   //   this.contractService.getContracts();
@@ -518,7 +531,7 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
 
         // this.filteredData = [...this.formData]
         this.formData = res;
-        this.filteredData=[...this.formData];
+        this.filteredData = [...this.formData];
         this.selectedItems = [...checkboxItems];
         this.selectedItemsBackCar = [...checkboxItemsBack];
         this.getCurrentData();
@@ -536,26 +549,23 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
         this.selectedItems = [...checkboxItems];
         this.selectedItemsBackCar = [...checkboxItemsBack];
 
-         this.filteredData = [...this.formData]
+        this.filteredData = [...this.formData];
         this.getCurrentData();
       });
     }
   }
 
   async onChangeRadioValue(event: any, days, daily_val2) {
-
     this.selectedRadioValue = event.target.value;
 
     let res = this.dateService.convertDaysToMWY(days, this.selectedRadioValue);
-    console.log('res',res)
-
+    console.log("res", res);
 
     if (this.selectedRadioValue == "daily") {
       this.daily_val1 = days;
       this.daily_val2 = daily_val2;
-      console.log('daily_val1',this.daily_val1)
-      console.log('daily_val2',this.daily_val2)
-
+      console.log("daily_val1", this.daily_val1);
+      console.log("daily_val2", this.daily_val2);
     } else if (this.selectedRadioValue == "weekly") {
       this.daily_val1 = res;
       this.daily_val2 = daily_val2;
@@ -575,15 +585,14 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
   }
   calculateResult(event: any) {
     this.daily_result = this.daily_val1 * event.target.value;
-   // this.inputsValue[23] = this.daily_result;
-    this.inputsValue[22] =  this.ContractForm.controls['daily_val2'].value;
-    
+    // this.inputsValue[23] = this.daily_result;
+    this.inputsValue[22] = this.ContractForm.controls["daily_val2"].value;
   }
 
   calculate() {
     if (this.inputsValue[26] == null || this.inputsValue[25] === null) {
       this.inputpayable.nativeElement.value = this.daily_result;
-      this.inputsum.nativeElement.value= this.daily_result;
+      this.inputsum.nativeElement.value = this.daily_result;
     }
     this.inputpayable.nativeElement.value =
       this.daily_result -
@@ -699,7 +708,6 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
       });
   }
 
-
   pageChanged(event: any, p: any) {
     this.currentPage = event;
 
@@ -708,8 +716,6 @@ export class ContractDetailsComponent implements OnChanges, OnInit {
 
     this.loadData();
   }
-
-
 
   shareCheckedList(item: any[]) {
     item = item.map((res) => {

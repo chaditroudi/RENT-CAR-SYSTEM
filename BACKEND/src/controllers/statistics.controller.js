@@ -43,14 +43,14 @@ exports.countContractClosed = async (req, res) => {
 
 exports.countCarRented = async (req, res) => {
   if (req.user.role === 2) {
-    Contract.countDocuments({
+    Car.countDocuments({
       branch_id: req.user.branch_id,
       rented:true
     }).then((count) => {
       return res.status(200).json(count);
     });
   } else {
-    Contract.countDocuments({
+    Car.countDocuments({
       rented:true
     }).then((count) => {
       return res.status(200).json(count);
@@ -60,18 +60,17 @@ exports.countCarRented = async (req, res) => {
 
 exports.countCarAvailable = async (req, res) => {
   if (req.user.role === 2) {
-    Contract.countDocuments({
+    Car.countDocuments({
       branch_id: req.user.branch_id,
-      rented:false
+      rented:false || null
 
     }).then((count) => {
       console.log("count",count)
       return res.status(200).json(count);
     });
   } else {
-    Contract.countDocuments({
-      rented:false
-      
+    Car.countDocuments({
+      rented:false || null
     }).then((count) => {
       return res.status(200).json(count);
     });

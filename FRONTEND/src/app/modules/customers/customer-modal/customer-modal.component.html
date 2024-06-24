@@ -14,7 +14,7 @@
           <div class="card">
 
             <div class="card-header">
-              <input type="text" class="form-control" [(ngModel)]="searchQuery" placeholder="Search...">
+              <input type="text" class="form-control" [(ngModel)]="searchQuery" [ngModelOptions]="{ standalone: true }" placeholder="Search...">
 
 
             </div>

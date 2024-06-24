@@ -3,6 +3,16 @@
 h5,h6,label  {
     color:#000 !important;
 }
+.text-center{}
+.custom-list {
+  list-style-type: none; /* Remove default bullet points */
+  padding-left: 0; /* Remove default padding */
+}
+
+.custom-list li {
+  margin-bottom: 5px; /* Optional: Add space between list items */
+}
+
 
 
 .action {

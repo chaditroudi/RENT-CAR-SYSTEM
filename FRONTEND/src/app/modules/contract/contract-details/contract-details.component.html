@@ -95,7 +95,15 @@
             <div class="card-header">
               <div class="text-end">
                 <app-search (searchChange)="updateFilteredData($event)"></app-search>
+           
+                <div class="text-center">
+                  <ul class="custom-list">
+                    <li><strong>*Search by:</strong> car name, customer fullName</li>
 
+                    </ul>
+
+                 
+                </div>
               </div>
             </div>
             <div class="card-body">
@@ -280,7 +288,7 @@
                     <div class="row g-4">
                       <div class="col-md-6">
                         <div class="mb-3">
-                          <label class="col-form-label">Car</label>
+                          <label class="col-form-label">Car name</label>
                           <div class="d-flex">
                             <input
                               class="form-control"
@@ -1156,7 +1164,10 @@
                           <li [ngbNavItem]="3">
                             <a ngbNavLink>Car body</a>
                             <ng-template ngbNavContent>
-                              <app-drawing [idContract]="c._id"></app-drawing>
+
+                              <div class="form-group mt-3">
+                                <button class="btn btn-primary" (click)="openModalD(c._id)">Open Drawing Modal</button>
+                              </div>
                             </ng-template>
                           </li>
                         </ul>

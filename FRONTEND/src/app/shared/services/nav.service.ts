@@ -138,21 +138,21 @@ export class NavService implements OnDestroy {
       
           ],
         },
-        {
-          title: "Customers",
-          icon: "user",
-          type: "sub",
-          badgeType: "light-primary",
-          badgeValue: "1",
-          active: false,
-          children: [
-            {
-              path: "/modules/customers/customers-list",
-              title: "Customers Page",
-              type: "link",
-            },
-          ],
-        },
+        // {
+        //   title: "Customers",
+        //   icon: "user",
+        //   type: "sub",
+        //   badgeType: "light-primary",
+        //   badgeValue: "1",
+        //   active: false,
+        //   children: [
+        //     {
+        //       path: "/modules/customers/customers-list",
+        //       title: "Customers Page",
+        //       type: "link",
+        //     },
+        //   ],
+        // },
 
         {
           headTitle1: "Permissions Users",

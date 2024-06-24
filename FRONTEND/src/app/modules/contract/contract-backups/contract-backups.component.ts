@@ -30,7 +30,6 @@ export class ContractBackupsComponent implements OnInit {
 
   ngOnInit(): void {
     this.contractId = this.route.snapshot.paramMap.get('id');
-    console.log
 
     this.contractService.getContractsBackup(this.contractId);
 

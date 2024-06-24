@@ -23,7 +23,8 @@ import { DrawingComponent } from 'src/app/lib/drawing/drawing.component';
     ContractInvoiceComponent,
     InitContractFormComponent,
     ContractBackupsComponent,
-    DrawingComponent
+    DrawingComponent,
+    
   ],
   imports: [
     HttpClientModule,
