@@ -139,43 +139,6 @@ exports.getYearlyReports = async (req, res) => {
   return res.status(200).json(result);
 };
 
-exports.getContractCount = async (req, res) => {
-  const aggragationPip = [
-    {
-      $lookup: {
-        from: "contracts",
-        localField: "contract",
-        foreignField: "_id",
-        as: "contractDetails",
-      },
-    },
-    {
-      $unwind: "$contractDetails",
-    },
-
-    {
-      $group: {
-        _id: "$contractDetails.status",
-        count: { $sum: 1 },
-      },
-    },
-  ];
-
-  let openContracts = 0;
-  let closedContracts = 0;
-
-  Report.aggregate(aggragationPip).then((item) => {
-    openContracts =
-      item.find((result) => result._id === "Contract is Open")?.count || 0;
-    console.log("open contract", openContracts);
-    closedContracts =
-    item.find((result) => result._id === "Contract is Closed")?.count || 0;
-    console.log("closed contract", closedContracts);
-  
-  return res.status(200).json({ openContracts, closedContracts });
-  })
-};
-
 async function getYearlyReports(startDate, endDate) {
   try {
     const reports = await Contract.aggregate([

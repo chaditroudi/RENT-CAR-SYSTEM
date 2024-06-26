@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ContractService } from 'src/app/core/services/contract.service';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-drawing',
@@ -24,7 +25,12 @@ export class DrawingComponent implements AfterViewInit, OnInit {
   isErasing: boolean = false;
   brushShape: CanvasLineCap = 'round';
 
-  constructor(private http: HttpClient, private storageServ: StorageService, private readonly contractService: ContractService) {}
+  
+
+  constructor(
+    
+    public activeModal:NgbActiveModal,
+    private http: HttpClient, private storageServ: StorageService, private readonly contractService: ContractService) {}
 
   ngOnInit(): void {
     this.loadContractImages();

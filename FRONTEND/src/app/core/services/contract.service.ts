@@ -141,6 +141,36 @@ export class ContractService {
 
 
 
+
+
+
+    weeklyReports() {
+      const headers = this.getHeaders();
+      return this.http.get(`${baseUrl}/contract/weekly-reports`,{headers});
+    }
+    monthlyReports(){
+      const headers = this.getHeaders();
+      return this.http.get(`${baseUrl}/contract/monthly-reports`,{headers});
+    }
+    annualReports(){
+      const headers = this.getHeaders();
+      return this.http.get(`${baseUrl}/contract/annual-reports`,{headers});
+    }
+
+    countStatusContract() {
+      const headers = this.getHeaders();
+      return this.http.get(`${baseUrl}/contract/count-status`,{headers});
+    }
+
+
+    getRentalCarsHistory() {
+      const headers = this.headers;
+      
+      return this.http.get<any>(`${baseUrl}/contract/get-rental-history
+      ` ,{headers})
+  
+    }
+  
 }
 
 

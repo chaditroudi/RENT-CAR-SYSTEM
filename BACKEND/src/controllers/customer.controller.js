@@ -14,14 +14,19 @@ exports.createCustomer = async (req, res) => {
       nameArray.push(req.files[i].filename);
     }
     
-    const newCustomer = new Customer({...req.body,code:autoInc,files:nameArray,branch_id:req.user.branch_id});
+    var newCustomer = new Customer({...req.body,code:autoInc,files:nameArray,branch_id:req.user.branch_id});
 
+    console.log("new customer",newCustomer)
     
 
     const savedCustomer = await newCustomer.save();
 
     return res.status(201).json(savedCustomer);
   } catch (error) {
+    return res.status(400).json({
+      success: false,
+      msg: error.message,
+    });
   }
 };
 

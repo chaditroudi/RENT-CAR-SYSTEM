@@ -4,155 +4,27 @@
   [active_item]="'Contracts Page'"
 ></app-breadcrumb>
 
-<div class="md-sidebar">
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card shadow-sm"> 
+        <div class="card-header">
+          <button class="btn btn-outline-dark me-2" (click)="fetchWeeklyReport()">Income Weekly Report</button>
+          <button class="btn btn-outline-dark me-2" (click)="fetchMonthlyReport()">Income Monthly Report</button>
+          <button class="btn btn-outline-dark me-2" (click)="fetchAnnualReport()">Income Annual Report</button>
+          <button class="btn btn-outline-dark me-2" (click)="fetchtStatusContract()">Contracts Status</button>
+          <button class="btn btn-outline-dark me-2" (click)="fetchRentedCar()">Rented Cars</button>
 
-  <a class="btn btn-primary email-aside-toggle md-sidebar-toggle">Reports</a>
-  <div class="md-sidebar-aside job-sidebar">
-    <div
-      class="default-according style-1 faq-accordion job-accordion"
-      id="accordionoc"
-    >
-      <div class="accordion">
-        <div class="card">
-          <div class="card-header">
-            <h5 class="mb-0">
-              <button
-                class="btn btn-link"
-                (click)="isFilter = !isFilter"
-                [attr.aria-expanded]="!isFilter"
-                aria-controls="collapse"
-              >
-                Reports by date
-              </button>
-            </h5>
-          </div>
-          <div class="collapse show" id="collapseicon" [ngbCollapse]="isFilter">
-            <div class="card-body filter-cards-view animate-chk">
 
-            <div class="container-fluid">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="card">
-                    <div class="card-header">
-                      <div>
-
-                        <div class="row">
-                          <div class="col-md-6">
-                            <label for="startDate">Start Date:</label>
-                            <input
-                              type="date"
-                              class="form-control"
-                              id="startDate"
-                              [(ngModel)]="startDate"
-                            />
-                          </div>
-                          <div class="col-md-6">
-                            <label for="endDate">End Date:</label>
-                            <input
-                              type="date"
-                              class="form-control"
-                              id="endDate"
-                              [(ngModel)]="endDate"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                      <div class="row g-4">
-                        <div class="col-md-3">
-                          <div class="p-2">
-                            <div class="mb-3">
-                              <button
-                                class="btn btn-dark w-100"
-                                (click)="fetchWeeklyReports()"
-                              >
-                                Weekly
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-md-3">
-                          <div class="p-2">
-                            <div class="mb-3">
-                              <button
-                                class="btn btn-dark w-100"
-                                (click)="fetchMonthlyReports()"
-                              >
-                                Monthly
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-md-3">
-                          <div class="p-2">
-                            <div class="mb-3">
-                              <button
-                                class="btn btn-dark w-100"
-                                (click)="fetchYearlyReports()"
-                              >
-                                Annual
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="card shadow mb-4">
-                            <div class="card-body p-4">
-                              <h4 class="text-primary">Report Weekly:</h4>
-                              <div
-                                id="echarts-container-weekly"
-                                #weeklyChartContainer
-                                class="chart-container"
-                              ></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="card shadow mb-4">
-                            <div class="card-body p-4">
-                              <h4 class="text-primary">Report Monthly:</h4>
-                              <div
-                                id="echarts-container-monthly"
-                                #monthlyChartContainer
-                                class="chart-container"
-                              ></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="card shadow mb-4">
-                            <div class="card-body p-4">
-                              <h4 class="text-primary">Report Yearly:</h4>
-                              <div
-                                id="echarts-container-yearly"
-                                #yearlyChartContainer
-                                class="chart-container"
-                              ></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-         
-          </div>
+        </div>
+        <div class="card-body">
+          <div id="myChart" style="height: 400px;" ></div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
 
 
 <!-- 
@@ -270,3 +142,4 @@
     </div>
   </div>
 </div> -->
+

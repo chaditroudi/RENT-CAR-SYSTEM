@@ -1,7 +1,13 @@
 .chart-container {
-    width: 100%; /* Set width to 100% */
-    max-width: 5000px; /* Set maximum width if needed */
-    max-height: 5000px; /* Set maximum width if needed */
-    height: 500px; /* Set height as needed */
-    overflow-x: auto; /* Add horizontal scrollbar */
-  }
+  width: 80%; /* Adjust width as per your layout */
+  margin: 20px auto; /* Center align and provide spacing */
+  border: 1px solid #ccc; /* Optional: Add a border for clarity */
+  border-radius: 5px; /* Optional: Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for depth */
+}
+
+canvas {
+  display: block; /* Remove any default canvas styling */
+  width: 100%; /* Ensure canvas takes up full width of its container */
+  height: auto; /* Allow canvas to resize proportionally */
+}

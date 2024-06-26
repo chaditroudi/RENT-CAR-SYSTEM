@@ -16,7 +16,6 @@ router.put('/update-report/:id', auth, reportController.updateReport);
 router.post('/getWeeklyReports',auth, reportController.getWeeklyReports);
 router.post('/getMonthlyReports', auth,reportController.getMonthlyReports);
 router.post('/getYearlyReports',auth, reportController.getYearlyReports);
-router.get('/getContractCount',auth, reportController.getContractCount);
 
 
 

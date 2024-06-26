@@ -66,14 +66,7 @@ export class StatisticsService {
     return this.http.get<any>(`${baseUrl}/statistics/count-available-car` ,{headers});
 
   }
-  getRentalCarsHistory() {
-    const headers = this.headers;
-    
-    return this.http.get<any>(`${baseUrl}/statistics/get-rental-history
-    ` ,{headers})
-
-  }
-
+  
 
 
   

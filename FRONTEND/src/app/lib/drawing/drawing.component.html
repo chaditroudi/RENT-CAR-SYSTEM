@@ -1,7 +1,9 @@
 <div class="modal-header">
   <h4 class="modal-title">Preferences</h4>
-  <button type="button" class="close" aria-label="Close">
-  </button>
+  <button type="button" class="close" aria-label="Close"
+  (click)="activeModal.close('Save click')"
+
+  ></button>
 </div>
 <div class="modal-body">
   <div class="content">
@@ -11,7 +13,7 @@
         id="colorPicker"
         type="color"
         (change)="setColor($event.target.value)"
-        value="#ff0000"
+        value="#000000"
         class="form-control"
       />
     </div>
@@ -56,16 +58,36 @@
     </div>
 
     <div class="form-group mt-3">
-      <button (click)="saveImage()" class="btn btn-success me-2">Save Image</button>
+      <button (click)="saveImage()" class="btn btn-success me-2">
+        Save Image
+      </button>
       <button (click)="toggleEraser()" class="btn btn-warning me-2">
         {{ isErasing ? "Disable Eraser" : "Enable Eraser" }}
       </button>
-      <button (click)="resetDrawing()" class="btn btn-danger">Reset Drawing</button>
+      <button (click)="resetDrawing()" class="btn btn-danger">
+        Reset Drawing
+      </button>
     </div>
 
+    <img
+      [src]="images | uploads"
+      class="img-fluid resized-image border border-primary mb-3"
+      alt="Current Car Image"
+    />
+
     <div class="canvas-container">
-      <canvas #backgroundCanvas width="700" height="400" class="responsive-canvas border border-danger mb-3"></canvas>
-      <canvas #drawingCanvas width="700" height="400" class="responsive-canvas border border-danger"></canvas>
+      <canvas
+        #backgroundCanvas
+        width="700"
+        height="400"
+        class="responsive-canvas border border-danger mb-3"
+      ></canvas>
+      <canvas
+        #drawingCanvas
+        width="700"
+        height="400"
+        class="responsive-canvas border border-danger"
+      ></canvas>
     </div>
   </div>
 </div>

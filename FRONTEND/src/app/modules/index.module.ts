@@ -58,7 +58,7 @@ import { ImageUrlPipe } from '../shared/pipe/image-url.pipe';
     
     UserAddComponent,
 
-    ImageUrlPipe,
+    // ImageUrlPipe,
 
     FilterPipe,
       NotificationsListComponent,

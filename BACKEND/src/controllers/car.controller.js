@@ -128,7 +128,7 @@ exports.fetchCars
 
 exports.getAllCarsByBranch = async (req, res) => {
   try {
-    const cars= await Car.find({branch_id: req.user.branch_id,rented:false
+    const cars= await Car.find({branch_id: req.user.branch_id
     });
     return res.status(200).json(cars);
   } catch (error) {

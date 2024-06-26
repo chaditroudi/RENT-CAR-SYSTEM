@@ -1,434 +1,337 @@
-import { ReportService } from "./../../core/services/report.service";
+import { Component, OnInit } from '@angular/core';
+import * as echarts from 'echarts/core';
+import { BarChart, BarSeriesOption } from 'echarts/charts';
+import { TitleComponent, TooltipComponent, GridComponent } from 'echarts/components';
+import { CanvasRenderer } from 'echarts/renderers';
+import { ContractService } from 'src/app/core/services/contract.service';
+import { Car } from 'src/app/core/models/car.model';
 
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-} from "@angular/core";
-import {  Router } from "@angular/router";
-
-import {ReportManager} from "src/app/shared/components/report-manager/report-manager";
+echarts.use([BarChart, TitleComponent, TooltipComponent, GridComponent, CanvasRenderer]);
 
 @Component({
-  selector: "app-reports",
-  templateUrl: "./reports.component.html",
-  styleUrls: ["./reports.component.scss"],
+  selector: 'app-reports',
+  templateUrl: './reports.component.html',
+  styleUrls: ['./reports.component.scss']
 })
-export class ReportsComponent implements OnInit, AfterViewInit {
-  reports: any[] = [];
-  carsRented: any[] = [];
-  carsA: any[] = [];
-  monthlyRep: any[] = [];
+export class ReportsComponent implements OnInit {
+  chartData: any;
+  originalData: any;
+  myChart: echarts.ECharts;
+  rentedCars:any[] = [];
 
-  isFilter: boolean = false;
-
-  startDate: string; 
-  endDate: string; 
-  weeklyReports: any[] = [];
-  monthlyReports: any[] = [];
-  yearlyReports: any[] = [];
-  chartOption: any;
-  countContracts :any;
-
-  
-
-  @ViewChild("weeklyChartContainer") weeklyChartContainer: ElementRef;
-  @ViewChild("monthlyChartContainer") monthlyChartContainer: ElementRef;
-  @ViewChild("yearlyChartContainer") yearlyChartContainer: ElementRef;
-
-  constructor(private reportService: ReportService,
-    
-    
-    private router: Router, private reportManager:ReportManager) {}
-  ngAfterViewInit(): void {
-    this.fetchWeeklyReports();
-    this.fetchMonthlyReports();
-    this.fetchYearlyReports();
-  }
-
-
-
-
+  constructor(private chartService: ContractService) {}
 
   ngOnInit(): void {
+    this.fetchWeeklyReport();  
+  }
+
+  fetchWeeklyReport(): void {
+    this.chartService.weeklyReports().subscribe(
+      (data) => {
+        this.originalData = data;
+        this.chartData = data;
+        this.createChart('Weekly Income Report', 'dayOfWeek', ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']);
+      },
+      (error) => {
+        console.error('Error fetching weekly report:', error);
+      }
+    );
+  }
+
+  fetchMonthlyReport(): void {
+    this.chartService.monthlyReports().subscribe(
+      (data) => {
+        this.originalData = data;
+        this.chartData = data;
+        this.createChart('Monthly Income Report', 'month', null);
+      },
+      (error) => {
+        console.error('Error fetching monthly report:', error);
+      }
+    );
+  }
+  fetchAnnualReport(): void {
+    this.chartService.annualReports().subscribe(
+      (data) => {
+        this.originalData = data;
+        this.chartData = data;
+        this.createChart('Annual Income Report', 'year', null);
+      },
+      (error) => {
+        console.error('Error fetching annual report:', error);
+      }
+    );
+  }
+
+  filterData(selectedYearInput: any): void {
+    const selectedYear = selectedYearInput ? parseInt(selectedYearInput, 10) : null;
+  
+    this.chartData = this.originalData.filter(item => {
+      const date = new Date(item.date);
+      return selectedYear === null || date.getFullYear() === selectedYear;
+    });
+  
+    this.updateChart();
+  }
+
+  createChart(title: string, xAxisKey: string, xAxisLabels: string[] | null): void {
+    const chartDom = document.getElementById('myChart') as HTMLDivElement;
+    this.myChart = echarts.init(chartDom);
+
+    const option = {
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        }
+      },
+      xAxis: {
+        type: 'category',
+        data: xAxisLabels
+        ? this.chartData.map(item => xAxisLabels[item._id[xAxisKey] - 1])
+        : this.chartData.map(item => item._id.month ? `${item._id.month}/${item._id.year}` : `${item._id.year}`),
+        axisLabel: {
+          rotate: 45,  
+          formatter: (value: string) => value.split('/').join('\n')  
+        }
+      },
+      yAxis: {
+        type: 'value',
+        axisLabel: {
+          formatter: '${value}'  
+        }
+      },
+      
+      toolbox: {
+        feature: {
+          saveAsImage: { show: true, title: 'Save as Image' },
+          dataZoom: { show: true, title: 'Data Zoom' },
+          dataView: { show: true, title: 'Data View', readOnly: true },
+          magicType: {
+            show: true,
+            type: ['pie', 'funnel'],
+            title: {
+              pie: 'Switch to Pie Chart',
+              funnel: 'Switch to Funnel Chart'
+            }
+          },
+          restore: { show: true, title: 'Restore' },
+          saveAsPDF: { show: true, title: 'Save as PDF', pixelRatio: 2 }
+        }
+      
+      },
+      series: [{
+        name: 'Total Income',
+        type: 'bar',
+        data: this.chartData.map(item => item.totalIncome),
+        itemStyle: {
+          color: '#5A8DEE'  
+        },
+        emphasis: {
+          itemStyle: {
+            color: '#4174D9' 
+          }
+        }
+      }],
+      grid: {
+        top: '10%',  
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      title: {
+        text: title
+      }
+    };
+
+    this.myChart.setOption(option);
+  }
+
+  updateChart(): void {
+    const xAxisKey = this.chartData.length > 0 && this.chartData[0]._id.hasOwnProperty('dayOfWeek') ? 'dayOfWeek' : 'month';
+    const xAxisLabels = xAxisKey === 'dayOfWeek' ? ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] : null;
+
+    this.myChart.setOption({
+      xAxis: {
+        data: xAxisLabels ? this.chartData.map(item => xAxisLabels[item._id[xAxisKey] - 1]) : this.chartData.map(item => `${item._id.month}/${item._id.year}`)
+      },
+      series: [{
+        data: this.chartData.map(item => item.totalIncome)
+      }]
+    });
+  }
+
+
+
+  createPieChart(data:any) {
     
-    this.initDate();
-    this.reportManager.getContractCounts(this.countContracts);
-    this.fetchWeeklyReports();
-    this.fetchMonthlyReports();
-
-   // this.fetchReports();
-
- 
-  }
-
-  initDate() {
-    this.startDate = this.getFormattedDateTime(new Date());
-    this.endDate = this.getFormattedDateTime(new Date());
-  }
-
-
-
-
-
-
-
-
-  // fetchReports() {
-  //   this.reportService.fetchAllreports();
-
-  //   this.reportService.reports$.subscribe((data: any) => {
-  //     this.reports = data;
-
-  //     this.carsRented = data.rentedCars || [];
-  //     this.carsA = data.availableCars || [];
-  //   });
-  // }
-
-  // goToDetails() {
-  //   this.router.navigate(["modules/cars/car-details"]);
-  // }
-
-  // fetchWeeklyReports() {
-  //   const data = {
-  //     startDate: this.startDate,
-  //     endDate: this.endDate,
-  //   };
-  //   this.reportService.reportsStatistics(data);
-
-  //   this.reportService.reports$.subscribe((data: any) => {
-  //     this.weeklyReports = data;
-  //     this.renderECharts();
-  //   });
-  // }
-
-  // fetchMonthlyReports() {
-  //   const data = {
-  //     startDate: this.startDate,
-  //     endDate: this.endDate,
-  //   };
-  //   this.reportService.fetchMonthlyReports(data);
-
-  //   this.reportService.reportsMonthly$.subscribe((data: any) => {
-  //     this.monthlyReports = data;
-  //     this.renderEChartsReportMonthly();
-  //   });
-  // }
-
-  // fetchYearlyReports() {
-  //   const data = {
-  //     startDate: this.startDate,
-  //     endDate: this.endDate,
-  //   };
-  //   this.reportService.fetchYearlyReports(data);
-
-  //   this.reportService.reportsYearly$.subscribe((data: any) => {
-  //     this.yearlyReports = data;
-  //     this.renderEChartsReportYearly();
-  //   });
-  // }
-
-  // renderEChartsReportMonthly() {
-  //   const chartElement1 = document.getElementById("echarts-container-monthly");
-  //   const chart1 = echarts.init(chartElement1);
-
-  //   const chartOptions1 = {
-  //     xAxis: {
-  //       type: "category",
-  //       data: this.monthlyReports.map((report) => report.month), // Extract dayOfWeek from each report
-  //       axisLabel: {
-  //         color: "#333", // Set axis label color
-  //       },
-  //     },
-  //     yAxis: {
-  //       type: "value",
-  //       axisLabel: {
-  //         formatter: (value) => `$${value.toFixed(2)}`, // Format y-axis labels with currency symbol
-  //         color: "#333", // Set axis label color
-  //       },
-  //     },
-  //     series: [
-  //       {
-  //         data: this.monthlyReports.map((report) => report.totalIncome),
-  //         type: "bar",
-  //         name: "Total Income",
-  //         stack: "a", // Stack bars for better comparison (optional)
-  //         label: {
-  //           show: true,
-  //           position: "inside",
-  //           formatter: (params) =>
-  //             `${params.seriesName}: $${params.value.toFixed(2)}`,
-  //           color: "#fff", // Set label text color to white
-  //         },
-  //         itemStyle: {
-  //           // Style the bars
-  //           color: "#38cc4c", // Set bar color
-  //         },
-  //       },
-  //       {
-  //         data: this.monthlyReports.map((report) => report.totalContracts),
-  //         type: "bar",
-  //         name: "Total Contract",
-  //         stack: "a", // Stack bars for better comparison (optional)
-  //         label: {
-  //           show: true,
-  //           position: "inside",
-  //           formatter: (params) => `${params.seriesName}: ${params.value}`,
-  //           color: "#99CC33", // Set label text color to white
-  //         },
-  //         itemStyle: {
-  //           // Style the bars
-  //           color: "#228B22", // Set bar color
-  //         },
-  //       },
-  //     ],
-  //     grid: {
-  //       // Configure grid area
-  //       left: "3%",
-  //       right: "4%",
-  //       bottom: "3%",
-  //       containLabel: true, // Adjust to avoid overlapping labels
-  //     },
-  //     tooltip: {
-  //       // Add tooltip for data point hover
-  //       trigger: "axis",
-  //       formatter: (params) => {
-  //         let tooltip = `${params[0].seriesName}: $${params[0].value.toFixed(
-  //           2
-  //         )}<br>`;
-  //         if (params.length > 1) {
-  //           // Handle multiple stacked bars
-  //           tooltip += `${params[1].seriesName}: ${params[1].value}`;
-  //         }
-  //         return tooltip;
-  //       },
-  //     },
-  //     legend: {
-  //       // Include legend for clarity
-  //       data: ["Total Income", "Total Contracts"],
-  //       textStyle: {
-  //         color: "#000",
-  //       },
-  //     },
-  //   };
-
-  //   // Set chart options and render chart
-  //   chart1.setOption(chartOptions1);
-  // }
-  // renderEChartsReportYearly() {
-  //   const chartElement1 = document.getElementById("echarts-container-yearly");
-  //   const chart1 = echarts.init(chartElement1);
-
-  //   const chartOptions1 = {
-  //     xAxis: {
-  //       type: "category",
-  //       data: this.yearlyReports.map((report) => report.year), // Extract dayOfWeek from each report
-  //       axisLabel: {
-  //         color: "#333", // Set axis label color
-  //       },
-  //     },
-  //     yAxis: {
-  //       type: "value",
-  //       axisLabel: {
-  //         formatter: (value) => `$${value.toFixed(2)}`, // Format y-axis labels with currency symbol
-  //         color: "#333", // Set axis label color
-  //       },
-  //     },
-  //     series: [
-  //       {
-  //         data: this.yearlyReports.map((report) => report.totalIncome),
-  //         type: "bar",
-  //         name: "Total Income",
-  //         stack: "a", // Stack bars for better comparison (optional)
-  //         label: {
-  //           show: true,
-  //           position: "inside",
-  //           formatter: (params) =>
-  //             `${params.seriesName}: $${params.value.toFixed(2)}`,
-  //           color: "#fff", // Set label text color to white
-  //         },
-  //         itemStyle: {
-  //           // Style the bars
-  //           color: "#4c38cc", // Set bar color
-  //         },
-  //       },
-  //       {
-  //         data: this.yearlyReports.map((report) => report.totalContracts),
-  //         type: "bar",
-  //         name: "Total Contract",
-  //         stack: "a", // Stack bars for better comparison (optional)
-  //         label: {
-  //           show: true,
-  //           position: "inside",
-  //           formatter: (params) => `${params.seriesName}: ${params.value}`,
-  //           color: "#99CC33", // Set label text color to white
-  //         },
-  //         itemStyle: {
-  //           // Style the bars
-  //           color: "#228B22", // Set bar color
-  //         },
-  //       },
-  //     ],
-  //     grid: {
-  //       // Configure grid area
-  //       left: "3%",
-  //       right: "4%",
-  //       bottom: "3%",
-  //       containLabel: true, // Adjust to avoid overlapping labels
-  //     },
-  //     tooltip: {
-  //       // Add tooltip for data point hover
-  //       trigger: "axis",
-  //       formatter: (params) => {
-  //         let tooltip = `${params[0].seriesName}: $${params[0].value.toFixed(
-  //           2
-  //         )}<br>`;
-  //         if (params.length > 1) {
-  //           // Handle multiple stacked bars
-  //           tooltip += `${params[1].seriesName}: ${params[1].value}`;
-  //         }
-  //         return tooltip;
-  //       },
-  //     },
-  //     legend: {
-  //       // Include legend for clarity
-  //       data: ["Total Income", "Total Contracts"],
-  //       textStyle: {
-  //         color: "#000",
-  //       },
-  //     },
-  //   };
-
-  //   // Set chart options and render chart
-  //   chart1.setOption(chartOptions1);
-  // }
-
-  // renderECharts() {
-  //   const chartElement = document.getElementById("echarts-container-weekly");
-  //   const chart = echarts.init(chartElement);
-
-  //   const chartOptions = {
-  //     xAxis: {
-  //       type: "category",
-  //       data: this.weeklyReports.map((report) => report.dayOfWeek), // Extract dayOfWeek from each report
-  //       axisLabel: {
-  //         color: "#333", // Set axis label color
-  //       },
-  //     },
-  //     yAxis: {
-  //       type: "value",
-  //       axisLabel: {
-  //         formatter: (value) => `$${value.toFixed(2)}`, // Format y-axis labels with currency symbol
-  //         color: "#333", // Set axis label color
-  //       },
-  //     },
-  //     series: [
-  //       {
-  //         data: this.weeklyReports.map((report) => report.totalIncome),
-  //         type: "bar",
-  //         name: "Total Income",
-  //         stack: "a", // Stack bars for better comparison (optional)
-  //         label: {
-  //           show: true,
-  //           position: "inside",
-  //           formatter: (params) =>
-  //             `${params.seriesName}: $${params.value.toFixed(2)}`,
-  //           color: "#fff", // Set label text color to white
-  //         },
-  //         itemStyle: {
-  //           // Style the bars
-  //           color: "#FF9933", // Set bar color
-  //         },
-  //       },
-  //       {
-  //         data: this.weeklyReports.map((report) => report.totalContracts),
-  //         type: "bar",
-  //         name: "Total Contract",
-  //         stack: "a", // Stack bars for better comparison (optional)
-  //         label: {
-  //           show: true,
-  //           position: "inside",
-  //           formatter: (params) => `${params.seriesName}: ${params.value}`,
-  //           color: "#99CC33", // Set label text color to white
-  //         },
-  //         itemStyle: {
-  //           // Style the bars
-  //           color: "#33CCFF", // Set bar color
-  //         },
-  //       },
-  //     ],
-  //     grid: {
-  //       // Configure grid area
-  //       left: "3%",
-  //       right: "4%",
-  //       bottom: "3%",
-  //       containLabel: true, // Adjust to avoid overlapping labels
-  //     },
-  //     tooltip: {
-  //       // Add tooltip for data point hover
-  //       trigger: "axis",
-  //       formatter: (params) => {
-  //         let tooltip = `${params[0].seriesName}: $${params[0].value.toFixed(
-  //           2
-  //         )}<br>`;
-  //         if (params.length > 1) {
-  //           // Handle multiple stacked bars
-  //           tooltip += `${params[1].seriesName}: ${params[1].value}`;
-  //         }
-  //         return tooltip;
-  //       },
-  //     },
-  //     legend: {
-  //       data: ["Total Income", "Total Contracts"],
-  //       textStyle: {
-  //         color: "#000",
-  //       },
-  //     },
-  //   };
-
-  //   // Set chart options and render chart
-  //   chart.setOption(chartOptions);
-  // }
-
-
-
-
-
-  fetchWeeklyReports() {
+    if(this.myChart) {
+      this.myChart.dispose();
+    }
     
-    this.reportManager.fetchReports("weekly",this.startDate,this.endDate);
+    const chartDom = document.getElementById('myChart') as HTMLDivElement;
+    this.myChart = echarts.init(chartDom);
+
+
+    const options = {
+      title:{
+        text:'Contract Status',
+        left:"center",
+
+      },
+      tooltip:{
+        trigger:'item',
+        // formatter:'{a} <br/>{b} : {c} ({d}%)'
+      },
+
+      series:[
+        {
+          name:'Contracts',
+          type:'pie',
+          radius:['50%','70%'],
+          data:[
+            
+              { value: data.openContracts, name: 'Open Contracts' },
+              { value: data.closedContracts, name: 'Closed Contracts' }    
+            
+            
+          ],
+          emphasis:{
+            itemStyle:{
+              shadowBlur:10,
+              shadowOffsetX:0,
+              shadowColor:'rgba(0,0,0,0.5)'
+            }
+          }
+        }
+      ],
+      toolbox: {
+        feature: {
+          saveAsImage: { show: true, title: 'Save as Image' },
+          dataZoom: { show: true, title: 'Data Zoom' },
+          dataView: { show: true, title: 'Data View', readOnly: true },
+          magicType: {
+            show: true,
+            type: ['pie', 'funnel'],
+            title: {
+              pie: 'Switch to Pie Chart',
+              funnel: 'Switch to Funnel Chart'
+            }
+          },
+          restore: { show: true, title: 'Restore' },
+          saveAsPDF: { show: true, title: 'Save as PDF', pixelRatio: 2 }
+        }
+      
+      }
+    };
+
+    this.myChart.setOption(options);
+
   }
 
-  fetchMonthlyReports() {
-    this.reportManager.fetchReports("monthly",this.startDate,this.endDate);
+
+
+
+  fetchRentedCar(){
+
+    this.chartService.getRentalCarsHistory().subscribe(data => {
+
+      this.rentedCars = JSON.parse(JSON.stringify(data));
+
+      this.createRentedCarChart();
+
+    }
+    )
   }
 
-  fetchYearlyReports() {
-    this.reportManager.fetchReports("yearly",this.startDate,this.endDate);
+  createRentedCarChart(): void {
+    const xAxisData = this.rentedCars.map(item => item.car.model);
+const seriesData = this.rentedCars.map(item => item.count);
+
+if (this.myChart) {
+  this.myChart.dispose();
+}
+
+const chartDom = document.getElementById('myChart') as HTMLDivElement;
+this.myChart = echarts.init(chartDom);
+
+const options :  any = {
+  title: {
+    text: 'Rented Cars By Customers',
+    textStyle: {
+      fontWeight: 'normal', 
+      fontSize: 16,        
+      lineHeight: 22        
+    }
+  },
+  tooltip: {
+    trigger: 'axis'
+  },
+  legend: {
+    data: ['Number of Rented'],
+    textStyle: {
+      fontSize: 12       
+    }
+  },
+  grid: {
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true
+  },
+  xAxis: {
+    type: 'category',
+    data: xAxisData,
+    axisLabel: {
+      interval: 0,
+      rotate: 45,
+      textStyle: {
+        fontSize: 10 
+      }
+    }
+  },
+  yAxis: {
+    type: 'value',
+    axisLabel: {
+      textStyle: {
+        fontSize: 12 
+      }
+    }
+  },
+  series: [{
+    name: 'Number of Rented',
+    type: 'line',
+    data: seriesData,
+    smooth: true,
+    symbol: 'circle',
+    symbolSize: 8,
+    itemStyle: {
+      color: '#5A8DEE'
+    },
+    lineStyle: {
+      width: 3
+    }
+  }],
+  animationEasing: 'easeOutQuart', 
+  animationDuration: 1000        
+};
+
+
+    this.myChart.setOption(options);
+}
+
+  fetchtStatusContract() {
+    this.chartService.countStatusContract().subscribe(
+      (data) => {
+        this.createPieChart(data);
+      },
+      (error) => {
+        console.error('Error fetching contract status report:', error);
+      }
+    );
   }
 
-
-
-
-
-
-
-
-
-  // Helper function to format date-time to string compatible with datetime-local input
-  private getFormattedDateTime(date: Date): string {
-    const year = date.getFullYear();
-    const month = this.padZero(date.getMonth() + 1);
-    const day = this.padZero(date.getDate());
-    const hours = this.padZero(date.getHours());
-    const minutes = this.padZero(date.getMinutes());
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
-  }
-
-  // Helper function to pad zero to single-digit numbers
-  private padZero(num: number): string {
-    return num < 10 ? "0" + num : num.toString();
+  goToDetails(): void {
   }
 }

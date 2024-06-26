@@ -49,3 +49,12 @@ img {
 .text-muted{
   color:black !important;
 }
+
+.img {
+  background-image: url('../../../../assets/images/login/bg-login.jpg'); 
+  padding:8px;
+  background-size: cover; 
+  background-position: center center; 
+  display: block;
+}
+

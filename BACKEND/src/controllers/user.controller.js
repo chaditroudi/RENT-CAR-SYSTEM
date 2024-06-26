@@ -8,6 +8,7 @@ const mongoose = require("mongoose");
 
 const bcrypt = require("bcrypt");
 const randomstring = require("randomstring");
+const { Mongoose } = require("mongoose");
 
 const createUser = async (req, res) => {
   try {
@@ -22,7 +23,7 @@ const createUser = async (req, res) => {
     }
 
 
-    const { name, email,administration,password,branch_id } = req.body;
+    const { name, email,administration,password } = req.body;
 
 
     const isExists = await User.findOne({
@@ -38,10 +39,13 @@ const createUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 15);
 
 
+    var x =new mongoose.Types.ObjectId(req.body.branch_id);
+
+    
     var obj = {
       name,
       email,
-      branch_id,
+      branch_id: new mongoose.Types.ObjectId(req.body.branch_id),
       password: hashedPassword,
       administration:administration,
     };
@@ -110,7 +114,7 @@ const getUsers = async (req, res) => {
       {
         $match: {
           _id: {
-            $ne: new mongoose.Types.ObjectId(req.user._id),
+            $ne: fx
           },
         },
       },

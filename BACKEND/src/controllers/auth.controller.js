@@ -116,10 +116,11 @@ const loginUser = async (req, res) => {
 
     const isPasswordMatch = await bcrypt.compare(password, userData.password);
 
+    console.log(password, userData.password);
     if (!isPasswordMatch) {
       return res.status(420).json({
         success: false,
-        msg: "E-mail or Password does not match!",
+        msg: "E-mail or Password does not match!",isPasswordMatch
       });
     }
 

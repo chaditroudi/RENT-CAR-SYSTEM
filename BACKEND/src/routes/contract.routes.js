@@ -20,8 +20,17 @@ const auth = require('../middleware/auth.middleware');
 const { OnlyAdminCanAccess, OnlyEditorAdminCanAccess } = require('../middleware/admin.midlleware');
 const { uploadSingleMiddleware, uploadMultipleMiddleware } = require('../middleware/update.middlleware');
 router.get('/backups-contracts/:id',contractController.getAllContractsBackups);
-
+router.get('/weekly-reports',auth,
+  contractController.weeklyReportContract);
+  
+  router.get('/monthly-reports',auth,
+    contractController.monthlyReportContract);
+    
+  router.get('/annual-reports',auth,
+    contractController.annualReportContract);
 router.get('/autoinc', auth, OnlyEditorAdminCanAccess,contractController.getAutoInc);
+router.get('/count-status',auth, contractController.getContractCount);
+router.get('/get-rental-history', auth,contractController.getRentalHistory);
 
 
 
@@ -36,7 +45,8 @@ router.delete('/:id',auth,OnlyAdminCanAccess, contractController.deleteContract)
 router.get('/:id',auth,OnlyEditorAdminCanAccess,contractController.getContractById);
 router.get('/features/:id',contractController.getFeaturesByContract);
 
-router.get('/get-images/:contractId',contractController.getImages)
+router.get('/get-images/:contractId',contractController.getImages
+)
 
 
 

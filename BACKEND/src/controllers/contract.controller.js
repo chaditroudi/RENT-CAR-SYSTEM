@@ -375,7 +375,6 @@ exports.getAllContractsBackups = async (req, res) => {
       },
     ]);
 
-    console.log("XXXXXXXXXXXXXxxxx", contracts);
     return res.status(200).json(contracts);
   } catch (error) {
     return res.status(400).json({ status: 400, message: error.message });
@@ -424,5 +423,280 @@ async function checkKM(current, km_back) {
 }
 
 
+exports
+
+exports.weeklyReportContract = async (req, res) => {
+  
+  var branchObjectId = new mongoose.Types.ObjectId(req.user.branch_id);
+
+  console.log(branchObjectId)
+  try {
+    let pipeline = [
+      {
+      $match: {
+        branch_id:branchObjectId
+
+      }
+      },
+      {
+        $project: {
+          car_out: {
+            $dateFromString: {
+              dateString: "$car_out",
+              format: "%Y-%m-%d %H:%M",
+            },
+          },
+          payable: 1,
+        },
+      },
+      {
+        $group: {
+          _id: { dayOfWeek: { $dayOfWeek: "$car_out" } },
+          totalIncome: { $sum: "$payable" },
+          count: { $sum: 1 }, 
+        },
+      },
+      {
+        $sort: { "_id.dayOfWeek": 1 },
+      },
+    ];
+
+    const weeklyData = await Contract.aggregate(pipeline);
+
+    const fullWeeklyData = [];
+    for (let dayOfWeek = 1; dayOfWeek <= 7; dayOfWeek++) {
+      const foundDay = weeklyData.find(item => item._id.dayOfWeek === dayOfWeek);
+      if (foundDay) {
+        fullWeeklyData.push(foundDay);
+      } else {
+        fullWeeklyData.push({ _id: { dayOfWeek }, totalIncome: 0, count: 0 });
+      }
+    }
+
+    res.json(fullWeeklyData);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to retrieve chart data', details: error });
+  }
+};
+exports.monthlyReportContract = async (req, res) => {
+  var branchObjectId = new mongoose.Types.ObjectId(req.user.branch_id);
+
+  try {
+    let pipeline = [
+      {
+        $match: {
+          branch_id:branchObjectId
+  
+        }
+        },
+      {
+        $project: {
+          car_out: {
+            $dateFromString: {
+              dateString: "$car_out",
+              format: "%Y-%m-%d %H:%M",
+            },
+          },
+          payable: 1,
+        },
+      },
+      {
+        $group: {
+          _id: {
+            month: { $month: "$car_out" },
+            year: { $year: "$car_out" }
+          },
+          totalIncome: { $sum: "$payable" },
+          count: { $sum: 1 }, 
+        },
+      },
+      {
+        $sort: { "_id.year": 1, "_id.month": 1 },
+      },
+    ];
+
+    const monthlyData = await Contract.aggregate(pipeline);
+
+    const fullMonthlyData = [];
+    for (let month = 1; month <= 12; month++) {
+      const foundMonth = monthlyData.find(item => item._id.month === month);
+      if (foundMonth) {
+        fullMonthlyData.push(foundMonth);
+      } else {
+        fullMonthlyData.push({ _id: { month, year: new Date().getFullYear() }, totalIncome: 0, count: 0 });
+      }
+    }
+
+    res.json(fullMonthlyData);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to retrieve chart data', details: error });
+  }
+};
+
+exports.annualReportContract = async (req, res) => {
+  var branchObjectId = new mongoose.Types.ObjectId(req.user.branch_id);
+
+  try {
+    let pipeline = [
+      {
+        $match: {
+          branch_id:branchObjectId
+  
+        }
+        },
+      {
+        $project: {
+          car_out: {
+            $dateFromString: {
+              dateString: "$car_out",
+              format: "%Y-%m-%d %H:%M",
+            },
+          },
+          payable: 1,
+        },
+      },
+      {
+        $group: {
+          _id: {
+            year: { $year: "$car_out" }
+          },
+          totalIncome: { $sum: "$payable" },
+          count: { $sum: 1 }, // Optional: If you need to count contracts per year
+        },
+      },
+      {
+        $sort: { "_id.year": 1 },
+      },
+    ];
+
+    const annualData = await Contract.aggregate(pipeline);
+
+    res.json(annualData);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to retrieve chart data', details: error });
+  }
+};
 
 
+
+exports.getContractCount = async (req, res) => {
+try {
+  const aggragationPip = [
+    
+    {
+      $group: {
+        _id: "$status",
+        count: { $sum: 1 },
+      },
+    },
+  ];
+
+  let openContracts = 0;
+  let closedContracts = 0;
+
+  await Contract.aggregate(aggragationPip).then((item) => {
+    openContracts =
+      item.find((result) => result._id === "Contract is Open")?.count || 0;
+    console.log("open contract", openContracts);
+      closedContracts =
+    item.find((result) => result._id === "Contract is Closed")?.count || 0;
+    console.log("closed contract", closedContracts);
+  
+  return res.status(200).json({ openContracts, closedContracts });
+  })
+
+} catch(e) {
+  return res.status(500).json(e.error);
+
+} 
+
+};
+
+
+exports.getRentalHistory = async (req, res) => {
+  var branchObjectId = new mongoose.Types.ObjectId(req.user.branch_id);
+
+  try {
+    const rentals = await Contract.aggregate([
+      {
+        $lookup: {
+          from: "customers",
+          localField: "owner",
+          foreignField: "_id",
+          as: "customerDetails",
+        },
+      },
+      {
+        $lookup: {
+          from: "cars",
+          localField: "car",
+          foreignField: "_id",
+          as: "carDetails",
+        },
+      },
+      { $unwind: "$carDetails" },
+      { $unwind: "$customerDetails" },
+      {
+        $match: {
+          "carDetails.rented": true,
+          "carDetails.branch_id": branchObjectId,
+          branch_id: branchObjectId,
+        },
+      },
+      {
+        $group: {
+          _id: "$carDetails.car",
+          count: { $sum: 1 },
+          carDetails: { $first: "$carDetails" },
+          customerDetails: { $first: "$customerDetails" },
+          daily: { $first: "$daily" },
+          car_out: { $first: "$car_out" },
+          car_back: { $first: "$car_back" },
+          daily_val1: { $first: "$daily_val1" },
+          daily_val2: { $first: "$daily_val2" },
+          daily_result: { $first: "$daily_result" },
+          status_contract: { $first: "$status_contract" },
+          sum: { $first: "$sum" },
+          payable: { $first: "$payable" },
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          count: 1,
+          car_out: 1,
+          car_back: 1,
+          daily_val1: 1,
+          daily_val2: 1,
+          daily_result: 1,
+          status_contract: 1,
+          sum: 1,
+          payable: 1,
+
+          customer: {
+            _id: 1,
+            fullName: "$customerDetails.fullName",
+          },
+          car: {
+            _id: 1,
+            model: "$_id",
+            insurance: "$carDetails.insurance",
+            plate: "$carDetails.plate",
+            color: "$carDetails.color",
+            category: "$carDetails.category",
+            rented: "$carDetails.rented",
+            branch_id: "$carDetails.branch_id",
+
+            year: "$carDetails.year",
+            registration: "$carDetails.registration",
+          },
+        },
+      },
+    ]);
+
+    res.json(rentals);
+  } catch (error) {
+    console.error("Error getting rental history:", error);
+    res.status(500).json({ message: "Error fetching rental history" });
+  }
+};

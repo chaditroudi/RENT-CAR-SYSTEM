@@ -16,6 +16,7 @@ import { ContractDetailsComponent } from "./contract-details/contract-details.co
 import { ContractBackupsComponent } from "./contract-backups/contract-backups.component";
 import { AuthGuard } from 'src/app/core/guards';
 import { DrawingComponent } from 'src/app/lib/drawing/drawing.component';
+import { ImageUrlPipe } from 'src/app/shared/pipe/image-url.pipe';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { DrawingComponent } from 'src/app/lib/drawing/drawing.component';
     InitContractFormComponent,
     ContractBackupsComponent,
     DrawingComponent,
+    ImageUrlPipe,
     
   ],
   imports: [
