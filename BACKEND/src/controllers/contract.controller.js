@@ -434,7 +434,8 @@ exports.weeklyReportContract = async (req, res) => {
     let pipeline = [
       {
       $match: {
-        branch_id:branchObjectId
+        branch_id:branchObjectId,
+          // $expr: { $eq: [ "$sum", "$payable" ] }
 
       }
       },
@@ -676,6 +677,27 @@ exports.getRentalHistory = async (req, res) => {
           customer: {
             _id: 1,
             fullName: "$customerDetails.fullName",
+            _id: "$customerDetails._id",
+            passport_number: "$customerDetails.passport_number",
+            code: "$customerDetails.code",
+            id_number: "$customerDetails.id_number",
+            title: "$customerDetails.title",
+            date_birth: "$customerDetails.date_birth",
+            license_number: "$customerDetails.license_number",
+            issued_by: "$customerDetails.issued_by",
+            issued_on: "$customerDetails.issued_on",
+            expiry_date: "$customerDetails.expiry_date",
+            passport_expiry: "$customerDetails.passport_expiry",
+            mobile: "$customerDetails.mobile",
+            telephone: "$customerDetails.telephone",
+            email: "$customerDetails.email",
+            QAR_address: "$customerDetails.QAR_address",
+            permanent_address: "$customerDetails.permanent_address",
+            files: "$customerDetails.files",
+            createdAt: "$customerDetails.createdAt"  ,
+            updatedAt: "$customerDetails.updatedAt"  
+            
+
           },
           car: {
             _id: 1,

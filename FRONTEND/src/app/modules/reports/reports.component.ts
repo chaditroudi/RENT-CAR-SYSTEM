@@ -109,10 +109,11 @@ export class ReportsComponent implements OnInit {
           dataView: { show: true, title: 'Data View', readOnly: true },
           magicType: {
             show: true,
-            type: ['pie', 'funnel'],
+            type: ['line', 'bar',], 
             title: {
-              pie: 'Switch to Pie Chart',
-              funnel: 'Switch to Funnel Chart'
+              line: 'Switch to Line Chart',
+              bar: 'Switch to Bar Chart',
+              Area: 'Switch to Funnel Chart'
             }
           },
           restore: { show: true, title: 'Restore' },

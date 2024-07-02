@@ -10,6 +10,7 @@
             <div class="col-md-3 d-flex flex-wrap image-container">
                 <div class="image-scroll">
             <div class="col-md-12 d-flex flex-wrap">
+              
               <div *ngFor="let image of customer.files" class="p-2">
                 <img [src]="image | uploads" class="img-fluid rounded shadow-sm resized-image" alt="Customer Image">
               </div>

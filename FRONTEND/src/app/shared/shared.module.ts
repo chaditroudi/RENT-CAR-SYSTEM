@@ -74,6 +74,7 @@ import { ImageUrlPipe } from './pipe/image-url.pipe';
     NotFoundPageComponent,
     MainComponent,
     ChartBoxComponent,
+    
       
   ],
   imports: [

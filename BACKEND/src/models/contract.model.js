@@ -151,7 +151,7 @@ const contractSchema = new mongoose.Schema({
   
       branch_id: { type: Schema.Types.ObjectId, ref: 'Branch' }
 
-})
+    }, { timestamps: true });
 
 
 module.exports = mongoose.model('contract', contractSchema);

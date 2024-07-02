@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 export class ImageUrlPipe implements PipeTransform {
   transform(img: string | null): string {
     if (!img) {
-      return ''; // Handle null or undefined input gracefully if needed
+      return ''; 
     }
     console.log( environment.DOMAIN_URL + '/uploads/' + img)
     return environment.DOMAIN_URL + '/uploads/' + img;

@@ -57,6 +57,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserAnimationsModule,
     BaseModule,
 
+    
 
     
     ReactiveFormsModule,

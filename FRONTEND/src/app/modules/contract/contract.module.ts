@@ -24,8 +24,7 @@ import { ImageUrlPipe } from 'src/app/shared/pipe/image-url.pipe';
     ContractInvoiceComponent,
     InitContractFormComponent,
     ContractBackupsComponent,
-    DrawingComponent,
-    ImageUrlPipe,
+    // DrawingComponent,
     
   ],
   imports: [
